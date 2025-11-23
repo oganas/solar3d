@@ -72,22 +72,22 @@ float rotSpeed = 0.1f;
 // solar system specific state and constants
 // scaling factors
 const float sizeScale = 15.0f;
-const float posScale = 3000.0f;
+const float posScale = 2000.0f;
 
 vec3 sunMovementDirection = vec3(0.0f, 0.0f, 1.0f);
 float sunMovementSpeed = 2.0f;
 
 // orbit radii (pre calculated from init setup position.x * posScale)
-const float mercuryRadius = 0.39f * posScale;
-const float venusRadius = 0.72f * posScale;
-const float earthRadius = 1.00f * posScale;
-const float marsRadius = 1.52f * posScale;
-const float jupiterRadius = 5.20f * posScale;
-const float saturnRadius = 9.58f * posScale;
-const float uranusRadius = 19.20f * posScale;
-const float neptuneRadius = 30.05f * posScale;
-const float plutoRadius = 39.48f * posScale;
-const float moonRadius = 0.21f * sizeScale;
+const float mercuryRadius = 0.39f * 2 * posScale;
+const float venusRadius = 0.72f * 2 * posScale;
+const float earthRadius = 1.00f * 2 * posScale;
+const float marsRadius = 1.52f * 2 * posScale;
+const float jupiterRadius = 5.20f * 0.7 * posScale;
+const float saturnRadius = 9.58f * 0.7 * posScale;
+const float uranusRadius = 19.20f * 0.7 * posScale;
+const float neptuneRadius = 30.05f * 0.7 * posScale;
+const float plutoRadius = 39.48f * 0.7 *posScale;
+const float moonRadius = 0.105f * posScale;
 
 // orbital speeds (degrees per second)
 const float mercuryOrbitSpeed = 2.5f;
