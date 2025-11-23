@@ -50,14 +50,14 @@ int windowWidth = 1024, windowHeight = 768;
 // camera
 Camera camera(vec3(50.0f, 0.0f, 50.0f));
 
-float renderDistance = 10000.0f;
+float renderDistance = 1000000000.0f;
 
 // lighting
 vec3 lightPosition(0.0f, 0.0f, 0.0f);
 vec3 lightColour(1.0f, 1.0f, 1.0f); // white
 float ambientStrength = 0.15f;
 float shininess = 1.0f;
-float specularStrength = 0.1f;
+float specularStrength = 0.05f;
 
 // scene
 Scene scene;
@@ -67,53 +67,53 @@ Skybox *skybox;
 UIManager ui;
 
 // rotation speeds
-float rotSpeed = 0.2f;
+float rotSpeed = 0.1f;
 
 // solar system specific state and constants
 // scaling factors
-const float sizeScale = 5.0f;
-const float posScale = 15.0f;
+const float sizeScale = 15.0f;
+const float posScale = 3000.0f;
 
 vec3 sunMovementDirection = vec3(0.0f, 0.0f, 1.0f);
-float sunMovementSpeed = 3.0f;
+float sunMovementSpeed = 2.0f;
 
 // orbit radii (pre calculated from init setup position.x * posScale)
-const float mercuryRadius = 6.0f * posScale;
-const float venusRadius = 10.0f * posScale;
-const float earthRadius = 14.0f * posScale;
-const float marsRadius = 18.0f * posScale;
-const float jupiterRadius = 35.0f * posScale;
-const float saturnRadius = 55.0f * posScale;
-const float uranusRadius = 75.0f * posScale;
-const float neptuneRadius = 95.0f * posScale;
-const float plutoRadius = 110.0f * posScale;
-const float moonRadius = 4.0f * sizeScale;
+const float mercuryRadius = 0.39f * posScale;
+const float venusRadius = 0.72f * posScale;
+const float earthRadius = 1.00f * posScale;
+const float marsRadius = 1.52f * posScale;
+const float jupiterRadius = 5.20f * posScale;
+const float saturnRadius = 9.58f * posScale;
+const float uranusRadius = 19.20f * posScale;
+const float neptuneRadius = 30.05f * posScale;
+const float plutoRadius = 39.48f * posScale;
+const float moonRadius = 0.21f * sizeScale;
 
 // orbital speeds (degrees per second)
-const float mercuryOrbitSpeed = 5.0f;
-const float venusOrbitSpeed = 3.75f;
-const float earthOrbitSpeed = 2.5f;
-const float marsOrbitSpeed = 2.0f;
-const float jupiterOrbitSpeed = 1.0f;
-const float saturnOrbitSpeed = 0.75f;
-const float uranusOrbitSpeed = 0.375f;
-const float neptuneOrbitSpeed = 0.25f;
-const float plutoOrbitSpeed = 0.125f;
-const float moonOrbitSpeed = 15.0f;
+const float mercuryOrbitSpeed = 2.5f;
+const float venusOrbitSpeed = 1.875f;
+const float earthOrbitSpeed = 1.25f;
+const float marsOrbitSpeed = 1.0f;
+const float jupiterOrbitSpeed = 0.5f;
+const float saturnOrbitSpeed = 0.375f;
+const float uranusOrbitSpeed = 0.1875f;
+const float neptuneOrbitSpeed = 0.125f;
+const float plutoOrbitSpeed = 0.0625f;
+const float moonOrbitSpeed = 10.0f;
 
 // axial rotation speeds (degrees per second)
 // how fast the planet spins
-const float sunAxialSpeed = 0.50f;
-const float mercuryAxialSpeed = 0.375f;
-const float venusAxialSpeed = 0.25f;
-const float earthAxialSpeed = 7.5f;
-const float marsAxialSpeed = 0.45f;
-const float jupiterAxialSpeed = 12.5f;
-const float saturnAxialSpeed = 11.25f;
-const float uranusAxialSpeed = 0.3f;
-const float neptuneAxialSpeed = 2.75f;
-const float plutoAxialSpeed = 0.125f;
-const float moonAxialSpeed = 0.50f;
+const float sunAxialSpeed = 0.25f;
+const float mercuryAxialSpeed = 0.1875f;
+const float venusAxialSpeed = 0.125f;
+const float earthAxialSpeed = 2.5f;
+const float marsAxialSpeed = 0.25f;
+const float jupiterAxialSpeed = 6.25f;
+const float saturnAxialSpeed = 5.625f;
+const float uranusAxialSpeed = 0.15f;
+const float neptuneAxialSpeed = 1.25f;
+const float plutoAxialSpeed = 0.0625f;
+const float moonAxialSpeed = 0.25f;
 
 // current orbital angles (in radians)
 // state variables updated every frame
@@ -321,8 +321,7 @@ void render() {
 
       obj->transform.position.x = orbitCenter.x + radius * glm::cos(*anglePtr);
       obj->transform.position.z = orbitCenter.z + radius * glm::sin(*anglePtr);
-      obj->transform.position.y =
-          orbitCenter.y;
+      obj->transform.position.y = orbitCenter.y;
     }
 
     glUniformMatrix4fv(modelId, 1, GL_FALSE, &obj->transform.getMatrix()[0][0]);
@@ -389,10 +388,10 @@ void init() {
 
   skybox = new Skybox(glw, faces);
 
-	// camera
-	camera.position = vec3(-355.0f, 65.0f, 273.0f);
-	camera.yaw = -400.0f;
-	camera.pitch = -9.8f;
+  // camera
+  camera.position = vec3(322.0f, 2022.0f, 6654.0f);
+  camera.yaw = -97.0f;
+  camera.pitch = -15.0f;
 
   // create premade meshes
   Mesh cubeMesh = createCube();
@@ -438,52 +437,52 @@ void init() {
   // create scene objects
   auto sun = scene.createObject("sun", sphereMesh);
   sun->transform.position = vec3(0.0f);
-  sun->transform.scale = vec3(5.0f) * sizeScale;
+  sun->transform.scale = vec3(30.0f) * sizeScale;
   sun->textureId = sunTex;
 
   auto mercury = scene.createObject("mercury", sphereMesh);
   setPlanetInitialPosition(mercury.get(), mercuryRadius, mercuryOrbitAngle);
-  mercury->transform.scale = vec3(0.2f) * sizeScale;
+  mercury->transform.scale = vec3(2.4f) * sizeScale;
   mercury->textureId = mercuryTex;
 
   auto venus = scene.createObject("venus", sphereMesh);
   setPlanetInitialPosition(venus.get(), venusRadius, venusOrbitAngle);
-  venus->transform.scale = vec3(0.4f) * sizeScale;
+  venus->transform.scale = vec3(4.8f) * sizeScale;
   venus->textureId = venusTex;
 
   auto earth = scene.createObject("earth", sphereMesh);
   setPlanetInitialPosition(earth.get(), earthRadius, earthOrbitAngle);
-  earth->transform.scale = vec3(0.45f) * sizeScale;
+  earth->transform.scale = vec3(5.4f) * sizeScale;
   earth->textureId = earthTex;
 
   auto mars = scene.createObject("mars", sphereMesh);
   setPlanetInitialPosition(mars.get(), marsRadius, marsOrbitAngle);
-  mars->transform.scale = vec3(0.3f) * sizeScale;
+  mars->transform.scale = vec3(3.6f) * sizeScale;
   mars->textureId = marsTex;
 
   auto jupiter = scene.createObject("jupiter", sphereMesh);
   setPlanetInitialPosition(jupiter.get(), jupiterRadius, jupiterOrbitAngle);
-  jupiter->transform.scale = vec3(2.5f) * sizeScale;
+  jupiter->transform.scale = vec3(30.0f) * sizeScale;
   jupiter->textureId = jupiterTex;
 
   auto saturn = scene.createObject("saturn", sphereMesh);
   setPlanetInitialPosition(saturn.get(), saturnRadius, saturnOrbitAngle);
-  saturn->transform.scale = vec3(2.2f) * sizeScale;
+  saturn->transform.scale = vec3(26.4f) * sizeScale;
   saturn->textureId = saturnTex;
 
   auto uranus = scene.createObject("uranus", sphereMesh);
   setPlanetInitialPosition(uranus.get(), uranusRadius, uranusOrbitAngle);
-  uranus->transform.scale = vec3(1.0f) * sizeScale;
+  uranus->transform.scale = vec3(12.0f) * sizeScale;
   uranus->textureId = uranusTex;
 
   auto neptune = scene.createObject("neptune", sphereMesh);
   setPlanetInitialPosition(neptune.get(), neptuneRadius, neptuneOrbitAngle);
-  neptune->transform.scale = vec3(1.0f) * sizeScale;
+  neptune->transform.scale = vec3(12.0f) * sizeScale;
   neptune->textureId = neptuneTex;
 
   auto pluto = scene.createObject("pluto", sphereMesh);
   setPlanetInitialPosition(pluto.get(), plutoRadius, plutoOrbitAngle);
-  pluto->transform.scale = vec3(0.1f) * sizeScale;
+  pluto->transform.scale = vec3(1.2f) * sizeScale;
   pluto->textureId = plutoTex;
 
   vec3 initialEarthPos = earth->transform.position;
@@ -494,13 +493,13 @@ void init() {
   moon->transform.position.z =
       initialEarthPos.z + moonRadius * glm::sin(moonOrbitAngle);
   moon->transform.position.y = 0.0f;
-  moon->transform.scale = vec3(0.08f) * sizeScale;
+  moon->transform.scale = vec3(0.6f) * sizeScale;
   moon->textureId = moonTex;
 
-	auto spaceShip = ObjectLoader::loadOBJObject("spaceship2.obj");
-	spaceShip->transform.position = camera.position;
-	spaceShip->transform.scale = vec3(0.1f) * sizeScale;
-	scene.addObject(spaceShip);
+  auto spaceShip = ObjectLoader::loadOBJObject("spaceship2.obj");
+  spaceShip->transform.position = camera.position;
+  spaceShip->transform.scale = vec3(0.1f) * sizeScale;
+  scene.addObject(spaceShip);
 }
 
 int main() {
