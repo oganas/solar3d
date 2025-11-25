@@ -50,7 +50,7 @@ int windowWidth = 1024, windowHeight = 768;
 // camera
 Camera camera(vec3(50.0f, 0.0f, 50.0f));
 
-float renderDistance = 1000000000.0f;
+float renderDistance = 10000000000000.0f;
 
 // lighting
 vec3 lightPosition(0.0f, 0.0f, 0.0f);
@@ -82,24 +82,24 @@ const float mercuryRadius = 0.39f * 2 * posScale;
 const float venusRadius = 0.72f * 2 * posScale;
 const float earthRadius = 1.00f * 2 * posScale;
 const float marsRadius = 1.52f * 2 * posScale;
-const float jupiterRadius = 5.20f * 0.7 * posScale;
+const float jupiterRadius = 7.20f * 0.7 * posScale;
 const float saturnRadius = 9.58f * 0.7 * posScale;
 const float uranusRadius = 19.20f * 0.7 * posScale;
 const float neptuneRadius = 30.05f * 0.7 * posScale;
-const float plutoRadius = 39.48f * 0.7 *posScale;
+const float plutoRadius = 39.48f * 0.7 * posScale;
 const float moonRadius = 0.105f * posScale;
 
 // orbital speeds (degrees per second)
-const float mercuryOrbitSpeed = 2.5f;
-const float venusOrbitSpeed = 1.875f;
-const float earthOrbitSpeed = 1.25f;
-const float marsOrbitSpeed = 1.0f;
-const float jupiterOrbitSpeed = 0.5f;
-const float saturnOrbitSpeed = 0.375f;
-const float uranusOrbitSpeed = 0.1875f;
-const float neptuneOrbitSpeed = 0.125f;
-const float plutoOrbitSpeed = 0.0625f;
-const float moonOrbitSpeed = 10.0f;
+const float mercuryOrbitSpeed = 1.25f;
+const float venusOrbitSpeed = 0.9125f;
+const float earthOrbitSpeed = 0.625f;
+const float marsOrbitSpeed = 0.375f;
+const float jupiterOrbitSpeed = 0.25f;
+const float saturnOrbitSpeed = 0.1875f;
+const float uranusOrbitSpeed = 0.09375f;
+const float neptuneOrbitSpeed = 0.0625f;
+const float plutoOrbitSpeed = 0.03125f;
+const float moonOrbitSpeed = 5.0f;
 
 // axial rotation speeds (degrees per second)
 // how fast the planet spins
