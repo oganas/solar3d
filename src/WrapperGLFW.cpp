@@ -32,6 +32,7 @@ GLWrapper::GLWrapper(int width, int height, const char *title)
 
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
   glEnable(GL_TEXTURE_2D);
 }
 

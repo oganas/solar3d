@@ -72,7 +72,7 @@ float rotSpeed = 0.1f;
 // solar system specific state and constants
 // scaling factors
 const float sizeScale = 15.0f;
-const float posScale = 2000.0f;
+const float posScale = 3000.0f;
 
 vec3 sunMovementDirection = vec3(0.0f, 0.0f, 1.0f);
 float sunMovementSpeed = 2.0f;
@@ -198,7 +198,7 @@ void render() {
 
   float aspect = (float)windowWidth / (float)windowHeight;
   glm::mat4 projection =
-      glm::perspective(glm::radians(45.0f), aspect, 0.1f, renderDistance);
+      glm::perspective(glm::radians(45.0f), aspect, 10.0f, renderDistance);
 
   camera.processCameraMovement(window, deltaTime);
   camera.processCameraLook(window, deltaTime);
@@ -297,6 +297,11 @@ void render() {
       axialSpeed = plutoAxialSpeed;
       radius = plutoRadius;
       anglePtr = &plutoOrbitAngle;
+    } else if (obj->name == "saturnRing") {
+      orbitSpeed = saturnOrbitSpeed;
+      axialSpeed = saturnAxialSpeed;
+      radius = saturnRadius;
+      anglePtr = &saturnOrbitAngle;
     }
     // moon special case (orbit the earth which orbits the sun)
     else if (obj->name == "moon" && earthObj != nullptr) {
@@ -416,6 +421,8 @@ void init() {
 
   GLuint moonTex = gTextureManager.loadTexture("planets/moon_diffuse.jpg");
   GLuint sunTex = gTextureManager.loadTexture("planets/sun_diffuse.jpg");
+  GLuint saturnRingTex =
+      gTextureManager.loadTexture("planets/saturn_ring_diffuse2.jpg");
 
   // seed random number generator to start planets in different places
   std::srand(static_cast<unsigned int>(time(nullptr)));
@@ -437,7 +444,7 @@ void init() {
   // create scene objects
   auto sun = scene.createObject("sun", sphereMesh);
   sun->transform.position = vec3(0.0f);
-  sun->transform.scale = vec3(30.0f) * sizeScale;
+  sun->transform.scale = vec3(100.0f) * sizeScale;
   sun->textureId = sunTex;
 
   auto mercury = scene.createObject("mercury", sphereMesh);
@@ -468,6 +475,8 @@ void init() {
   auto saturn = scene.createObject("saturn", sphereMesh);
   setPlanetInitialPosition(saturn.get(), saturnRadius, saturnOrbitAngle);
   saturn->transform.scale = vec3(26.4f) * sizeScale;
+  saturn->transform.rotation.x = glm::radians(-26.7f);
+	saturn->transform.rotation.y = glm::radians(-26.7f);
   saturn->textureId = saturnTex;
 
   auto uranus = scene.createObject("uranus", sphereMesh);
@@ -500,6 +509,13 @@ void init() {
   spaceShip->transform.position = camera.position;
   spaceShip->transform.scale = vec3(0.1f) * sizeScale;
   scene.addObject(spaceShip);
+
+  auto saturnRingMesh = createTorus(1.3f, 0.3f);
+  auto saturnRing = scene.createObject("saturnRing", saturnRingMesh);
+  saturnRing->transform.position = saturn->transform.position;
+  saturnRing->transform.rotation.x = saturn->transform.rotation.x;
+  saturnRing->transform.scale = vec3(40.0f, 0.5f, 40.0f) * sizeScale;
+  saturnRing->textureId = saturnRingTex;
 }
 
 int main() {
