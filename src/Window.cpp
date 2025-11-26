@@ -11,7 +11,7 @@ Window *Window::createWindow(int width, int height, const std::string &title) {
     glfwInitialised = true;
   }
 
-  // window hitns
+  // m_window hitns
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -23,11 +23,11 @@ Window *Window::createWindow(int width, int height, const std::string &title) {
 }
 
 Window::Window(int width, int height, const std::string &title) {
-  window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-  if (!window)
-    throw std::runtime_error("Failed to create GLFW window");
+  m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+  if (!m_window)
+    throw std::runtime_error("Failed to create GLFW m_window");
 
-  glfwMakeContextCurrent(window);
+  glfwMakeContextCurrent(m_window);
 
   // vsync on
   glfwSwapInterval(1);
@@ -36,7 +36,7 @@ Window::Window(int width, int height, const std::string &title) {
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     throw std::runtime_error("Failed to load GLAD");
 
-  glfwSetWindowUserPointer(window, this);
+  glfwSetWindowUserPointer(m_window, this);
 
   // per context gl state
   glEnable(GL_MULTISAMPLE);
@@ -46,36 +46,36 @@ Window::Window(int width, int height, const std::string &title) {
 }
 
 Window::~Window() {
-  if (window)
-    glfwDestroyWindow(window);
+  if (m_window)
+    glfwDestroyWindow(m_window);
 }
 
 void Window::pollGlobalEvents() { glfwPollEvents(); }
 
-bool Window::shouldClose() const { return glfwWindowShouldClose(window); }
+bool Window::shouldClose() const { return glfwWindowShouldClose(m_window); }
 
-void Window::makeContextCurrent() { glfwMakeContextCurrent(window); }
+void Window::makeContextCurrent() { glfwMakeContextCurrent(m_window); }
 
-void Window::swapBuffers() { glfwSwapBuffers(window); }
+void Window::swapBuffers() { glfwSwapBuffers(m_window); }
 
 void Window::clear() {
-  glClearColor(clearR, clearG, clearB, clearA);
+  glClearColor(m_clearR, m_clearG, m_clearB, m_clearA);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::setRenderCallback(RenderCallback callback) {
-  renderCallback = std::move(callback);
+  m_renderCallback = std::move(callback);
 }
 
 void Window::onRender() {
-  if (renderCallback) {
-    renderCallback(this);
+  if (m_renderCallback) {
+    m_renderCallback(this);
   }
 }
 
 void Window::setBackgroundColour(float r, float g, float b, float a) {
-  clearR = r;
-  clearG = g;
-  clearB = b;
-  clearA = a;
+  m_clearR = r;
+  m_clearG = g;
+  m_clearB = b;
+  m_clearA = a;
 }

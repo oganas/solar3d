@@ -1,30 +1,40 @@
-#include "Window.h"
+#include "Input.h"
+#include "Key.h"
 #include "WindowManager.h"
 
+#include <iostream>
+
 int main() {
-  WindowManager windows;
+  WindowManager windowManager;
 
-  // main window
-  windows.create(1024, 768, "Main", [](Window *w) {});
+  // Create two windows
+  Window *mainWindow = windowManager.create(600, 400, "Main Window");
+  Window *debugWindow = windowManager.create(400, 300, "Debug Window");
 
-  bool openedDebugOnce = false;
-  Window *debugWindow = nullptr;
+  // Create input objects for each window
+  Input mainInput;
+  Input debugInput;
 
-  while (windows.update()) {
+  mainInput.init(mainWindow);
+  debugInput.init(debugWindow);
 
-    // spawn debug window once
-    if (!openedDebugOnce) {
-      openedDebugOnce = true;
+  while (windowManager.update()) {
+    // Reset per-frame states
+    mainInput.resetStates();
+    debugInput.resetStates();
 
-      debugWindow = windows.create(500, 400, "Debug Info", [](Window *w) {
-        w->setBackgroundColour(0.2f, 0.2f, 0.2f, 1.0f);
-      });
+    // Check keys in main window
+    for (int k = 32; k < 350; ++k) { // GLFW key range
+      if (mainInput.getKeyPress(static_cast<Key>(k))) {
+        std::cout << "[Main] Key pressed: " << k << std::endl;
+      }
     }
 
-    static double startTime = glfwGetTime();
-    if (debugWindow && glfwGetTime() - startTime > 5.0) {
-      windows.destroy(debugWindow);
-      debugWindow = nullptr;
+    // Check keys in debug window
+    for (int k = 32; k < 350; ++k) {
+      if (debugInput.getKeyPress(static_cast<Key>(k))) {
+        std::cout << "[Debug] Key pressed: " << k << std::endl;
+      }
     }
   }
 

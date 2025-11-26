@@ -25,18 +25,18 @@ public:
   void setBackgroundColour(float r, float g, float b, float a);
 
   bool shouldClose() const;
-  GLFWwindow *getWindow() const { return window; }
+  GLFWwindow *getWindow() const { return m_window; }
 
   ~Window();
 
 private:
   Window(int width, int height, const std::string &title);
 
-  GLFWwindow *window;
-  RenderCallback renderCallback;
+  GLFWwindow *m_window;
+  RenderCallback m_renderCallback;
 
-  float clearR = 0.0f;
-  float clearG = 0.0f;
-  float clearB = 0.0f;
-  float clearA = 1.0f;
+  float m_clearR = 0.0f;
+  float m_clearG = 0.0f;
+  float m_clearB = 0.0f;
+  float m_clearA = 1.0f;
 };
