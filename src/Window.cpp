@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "../include/Window.h"
+#include "Window.h"
 
 static bool glfwInitialised = false;
 

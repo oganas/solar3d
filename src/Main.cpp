@@ -1,5 +1,5 @@
-#include "../include/Window.h"
-#include "../include/WindowManager.h"
+#include "Window.h"
+#include "WindowManager.h"
 
 int main() {
   WindowManager windows;
