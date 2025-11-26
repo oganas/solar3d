@@ -5,37 +5,25 @@
 #include <iostream>
 
 int main() {
-  WindowManager windowManager;
+  WindowManager wm;
+  Window *win = wm.create(600, 400, "Test Window");
 
-  // Create two windows
-  Window *mainWindow = windowManager.create(600, 400, "Main Window");
-  Window *debugWindow = windowManager.create(400, 300, "Debug Window");
+  Input input;
+  input.init(win);
 
-  // Create input objects for each window
-  Input mainInput;
-  Input debugInput;
+  while (wm.update()) {
+    input.update();
 
-  mainInput.init(mainWindow);
-  debugInput.init(debugWindow);
+    if (input.isKeyDown(Key::W))
+      std::cout << "W is held\n";
 
-  while (windowManager.update()) {
-    // Reset per-frame states
-    mainInput.resetStates();
-    debugInput.resetStates();
+    if (input.isKeyPressed(Key::SPACE))
+      std::cout << "Space just pressed\n";
 
-    // Check keys in main window
-    for (int k = 32; k < 350; ++k) { // GLFW key range
-      if (mainInput.getKeyPress(static_cast<Key>(k))) {
-        std::cout << "[Main] Key pressed: " << k << std::endl;
-      }
-    }
+    if (input.isKeyReleased(Key::SPACE))
+      std::cout << "Space just released\n";
 
-    // Check keys in debug window
-    for (int k = 32; k < 350; ++k) {
-      if (debugInput.getKeyPress(static_cast<Key>(k))) {
-        std::cout << "[Debug] Key pressed: " << k << std::endl;
-      }
-    }
+    input.endFrame();
   }
 
   return 0;
