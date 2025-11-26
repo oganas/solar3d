@@ -2,49 +2,80 @@
 
 #include "../include/Window.h"
 
-Window::Window(int width, int height, const char *title)
-    : m_width(width), m_height(height), m_title(title), m_window(nullptr) {
-  if (!glfwInit())
-    throw std::runtime_error("Failed to initialize GLFW");
+static bool glfwInitialised = false;
 
+Window *Window::createWindow(int width, int height, const std::string &title) {
+  if (!glfwInitialised) {
+    if (!glfwInit())
+      throw std::runtime_error("Failed to initialise GLFW");
+    glfwInitialised = true;
+  }
+
+  // window hitns
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_SAMPLES, 8);
   glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
-  m_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-  if (!m_window)
+  Window *w = new Window(width, height, title);
+  return w;
+}
+
+Window::Window(int width, int height, const std::string &title) {
+  window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+  if (!window)
     throw std::runtime_error("Failed to create GLFW window");
 
-  glfwMakeContextCurrent(m_window);
+  glfwMakeContextCurrent(window);
 
   // vsync on
   glfwSwapInterval(1);
 
+  // load gl per context
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    throw std::runtime_error("Failed to initialize GLAD");
+    throw std::runtime_error("Failed to load GLAD");
 
-  glfwSetWindowUserPointer(m_window, this);
+  glfwSetWindowUserPointer(window, this);
 
+  // per context gl state
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
   glEnable(GL_TEXTURE_2D);
 }
 
-Window::~Window() { glfwTerminate(); }
-
-GLFWwindow *Window::getWindow() { return m_window; }
-
-void Window::setBackgroundColour(float r, float g, float b, float a) {
-  glClearColor(r, g, b, a);
+Window::~Window() {
+  if (window)
+    glfwDestroyWindow(window);
 }
 
-void Window::clear() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
+void Window::pollGlobalEvents() { glfwPollEvents(); }
 
-void Window::pollEvents() { glfwPollEvents(); }
+bool Window::shouldClose() const { return glfwWindowShouldClose(window); }
 
-void Window::swapBuffers() { glfwSwapBuffers(m_window); }
+void Window::makeContextCurrent() { glfwMakeContextCurrent(window); }
 
-void Window::shouldClose() { glfwSetWindowShouldClose(m_window, true); }
+void Window::swapBuffers() { glfwSwapBuffers(window); }
+
+void Window::clear() {
+  glClearColor(clearR, clearG, clearB, clearA);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Window::setRenderCallback(RenderCallback callback) {
+  renderCallback = std::move(callback);
+}
+
+void Window::onRender() {
+  if (renderCallback) {
+    renderCallback(this);
+  }
+}
+
+void Window::setBackgroundColour(float r, float g, float b, float a) {
+  clearR = r;
+  clearG = g;
+  clearB = b;
+  clearA = a;
+}

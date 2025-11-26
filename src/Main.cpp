@@ -1,25 +1,32 @@
-#include <iostream>
-
 #include "../include/Window.h"
-
-Window *window;
+#include "../include/WindowManager.h"
 
 int main() {
-  try {
-		window = new Window(1024, 768, "3D Engine");
-		window->setBackgroundColour(1.0f, 0.1f, 0.1f, 1.0f);
+  WindowManager windows;
 
-		while (!glfwWindowShouldClose(window->getWindow())) {
-			window->clear();
-			window->swapBuffers();
-			window->pollEvents();
-		}
+  // main window
+  windows.create(1024, 768, "Main", [](Window *w) {});
 
-		delete window;
-  } catch (const std::exception &e) {
-    std::cerr << "Fatal Error: " << e.what() << std::endl;
-    return EXIT_FAILURE;
+  bool openedDebugOnce = false;
+  Window *debugWindow = nullptr;
+
+  while (windows.update()) {
+
+    // spawn debug window once
+    if (!openedDebugOnce) {
+      openedDebugOnce = true;
+
+      debugWindow = windows.create(500, 400, "Debug Info", [](Window *w) {
+        w->setBackgroundColour(0.2f, 0.2f, 0.2f, 1.0f);
+      });
+    }
+
+    static double startTime = glfwGetTime();
+    if (debugWindow && glfwGetTime() - startTime > 5.0) {
+      windows.destroy(debugWindow);
+      debugWindow = nullptr;
+    }
   }
 
-  return EXIT_SUCCESS;
+  return 0;
 }
