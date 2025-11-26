@@ -90,7 +90,7 @@ enum Key {
   BACKTICK,
 };
 
-int keyToOpenGL[] = {
+inline int keyToOpenGL[] = {
     GLFW_KEY_A,
     GLFW_KEY_B,
     GLFW_KEY_C,
@@ -177,7 +177,7 @@ int keyToOpenGL[] = {
     GLFW_KEY_GRAVE_ACCENT,
 };
 
-std::unordered_map<int, int> openGLtoKey = {
+inline std::unordered_map<int, int> openGLtoKey = {
     {GLFW_KEY_A, Key::A},
     {GLFW_KEY_B, Key::B},
     {GLFW_KEY_C, Key::C},
