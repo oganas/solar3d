@@ -13,6 +13,7 @@ GLWrapper::GLWrapper(int width, int height, const char *title)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_SAMPLES, 8);
+  glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
   m_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
   if (!m_window)
@@ -20,8 +21,8 @@ GLWrapper::GLWrapper(int width, int height, const char *title)
 
   glfwMakeContextCurrent(m_window);
 
-	// vsync on
-	glfwSwapInterval(1);
+  // vsync on
+  glfwSwapInterval(1);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     throw std::runtime_error("Failed to initialize GLAD");
@@ -31,7 +32,8 @@ GLWrapper::GLWrapper(int width, int height, const char *title)
 
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+  glEnable(GL_TEXTURE_2D);
 }
 
 GLWrapper::~GLWrapper() { glfwTerminate(); }

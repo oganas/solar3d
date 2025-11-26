@@ -17,7 +17,7 @@ std::string mtlBaseDir = "assets/materials/";
 
 std::shared_ptr<Object> ObjectLoader::loadOBJObject(
     const std::string &filename,
-    const glm::vec4 &defaultColour = glm::vec4(1.0f)) 
+    const glm::vec4 &defaultColour) 
 {
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
