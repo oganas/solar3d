@@ -1,11 +1,9 @@
 #include "Input.h"
-#include <algorithm>
 #include <iostream>
-#include <stdexcept>
 
-void Input::init(Window *window) {
-  m_window = window;
+Input::Input(Window &window) : m_window(&window) {
   GLFWwindow *glfwWin = m_window->getWindow();
+
   glfwSetWindowUserPointer(glfwWin, this);
   glfwSetKeyCallback(glfwWin, keyCallback);
 
@@ -15,7 +13,7 @@ void Input::init(Window *window) {
 }
 
 void Input::update() {
-  // later for mouse movement
+  // placeholder for mouse movement or other input polling
 }
 
 bool Input::isKeyDown(Key key) const { return m_held[toGLFWKey(key)]; }
@@ -38,11 +36,9 @@ void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action,
   if (action == GLFW_PRESS) {
     input->m_held[key] = true;
     input->m_pressed[key] = true;
-    std::cout << "Key pressed: " << key << std::endl;
   } else if (action == GLFW_RELEASE) {
     input->m_held[key] = false;
     input->m_released[key] = true;
-    std::cout << "Key released: " << key << std::endl;
   }
 }
 

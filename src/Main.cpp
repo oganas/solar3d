@@ -1,30 +1,23 @@
+#include "Engine.h"
 #include "Input.h"
-#include "Key.h"
-#include "WindowManager.h"
-
+#include "Window.h"
 #include <iostream>
 
-int main() {
-  WindowManager wm;
-  Window *win = wm.create(600, 400, "Test Window");
+class App : public Engine {
+public:
+  void start() override {
+    window->setBackgroundColour(0.2f, 0.3f, 0.4f, 1.0f);
 
-  Input input;
-  input.init(win);
-
-  while (wm.update()) {
-    input.update();
-
-    if (input.isKeyDown(Key::W))
-      std::cout << "W is held\n";
-
-    if (input.isKeyPressed(Key::SPACE))
-      std::cout << "Space just pressed\n";
-
-    if (input.isKeyReleased(Key::SPACE))
-      std::cout << "Space just released\n";
-
-    input.endFrame();
   }
 
-  return 0;
+  void update(float dt) override {
+    if (input->isKeyDown(Key::SPACE)) {
+      std::cout << "Jump!\n";
+			window->setBackgroundColour(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+  }
+};
+int main() {
+  App simulation;
+  simulation.run(1280, 720, "solar system");
 }
