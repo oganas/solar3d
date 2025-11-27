@@ -24,10 +24,15 @@ public:
   void setBackgroundColour(float r, float g, float b, float a);
   bool shouldClose() const;
   GLFWwindow *getWindow() const { return m_window; }
+	int getWidth() const;
+	int getHeight() const;
 
 private:
   GLFWwindow *m_window = nullptr;
   RenderCallback m_renderCallback;
+
+	int m_width = 0;
+	int m_height = 0;
 
   float m_clearR = 0.0f, m_clearG = 0.0f, m_clearB = 0.0f, m_clearA = 1.0f;
 };

@@ -7,13 +7,14 @@
 
 class Shader {
 public:
+	Shader() {};
   Shader(const std::string &vertexPath, const std::string &fragmentPath);
   ~Shader();
 
   void bind() const;
   void unbind() const;
 
-  GLuint getID() const { return m_ID; }
+  GLuint getId() const;
 
   // overloaded uniform setters
   void setUniform(const std::string &name, int value);
@@ -24,7 +25,7 @@ public:
   void setUniform(const std::string &name, const glm::mat4 &value);
 
 private:
-  GLuint m_ID = 0;
+  GLuint m_Id = 0;
   std::unordered_map<std::string, GLint> m_uniformCache;
 
   GLint getUniformLocation(const std::string &name);

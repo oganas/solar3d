@@ -16,12 +16,16 @@ Window::Window(int width, int height, const std::string &title) {
   glfwWindowHint(GLFW_SAMPLES, 8);
   glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
+	m_width = width;
+	m_height = height;
+
   m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
   if (!m_window)
     throw std::runtime_error("Failed to create GLFW window");
 
   glfwMakeContextCurrent(m_window);
-  glfwSwapInterval(1); // vsync
+	// vsync on
+  glfwSwapInterval(1);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     throw std::runtime_error("Failed to load GLAD");
@@ -52,8 +56,8 @@ void Window::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::setRenderCallback(RenderCallback cb) {
-  m_renderCallback = std::move(cb);
+void Window::setRenderCallback(RenderCallback callback) {
+  m_renderCallback = std::move(callback);
 }
 
 void Window::setBackgroundColour(float r, float g, float b, float a) {
@@ -69,6 +73,13 @@ bool Window::update() {
     return false;
 
   makeContextCurrent();
+
+	int framebufferWidth, framebufferHeight;
+	glfwGetFramebufferSize(m_window, &framebufferWidth, &framebufferHeight);
+	glViewport(0, 0, framebufferWidth, framebufferHeight);
+	m_width = framebufferWidth;
+	m_height = framebufferHeight;
+
   clear();
 
   if (m_renderCallback)
@@ -78,3 +89,7 @@ bool Window::update() {
 
   return true;
 }
+
+int Window::getWidth() const { return m_width; }
+
+int Window::getHeight() const { return m_height; }

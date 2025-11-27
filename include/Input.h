@@ -18,7 +18,8 @@ public:
   bool isKeyReleased(Key key) const;
 
 private:
-  Window *m_window; // non-owning
+	// non onwing instance
+  Window *m_window;
 
   static constexpr int MAX_KEYS = GLFW_KEY_LAST + 1;
   std::array<bool, MAX_KEYS> m_pressed{};
