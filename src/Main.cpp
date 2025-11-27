@@ -6,14 +6,15 @@
 class App : public Engine {
 public:
   void start() override {
-    window->setBackgroundColour(0.2f, 0.3f, 0.4f, 1.0f);
+		loadShader("shader", "shaders/vs.vert", "shaders/fs.frag");
+    setWindowBackgroundColour(0.2f, 0.3f, 0.4f, 1.0f);
 
   }
 
   void update(float dt) override {
-    if (input->isKeyDown(Key::SPACE)) {
+    if (isKeyDown(Key::SPACE)) {
       std::cout << "Jump!\n";
-			window->setBackgroundColour(0.0f, 0.0f, 0.0f, 1.0f);
+			setWindowBackgroundColour(0.0f, 0.0f, 0.0f, 1.0f);
     }
   }
 };
