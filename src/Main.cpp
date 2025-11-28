@@ -79,10 +79,14 @@ void start() {
 
 // program logic
 void update(float dt) {
-  if (i.isKeyPressed(Key::SPACE)) {
-    std::cout << "Jump!\n";
-    w.setBackgroundColour(1.0f, 0.0f, 0.0f, 1.0f);
-  }
+  if (i.isKeyPressed(Key::D)) {
+		cube.setVisibility(false);
+  } if (i.isKeyPressed(Key::A)) {
+		cube.setVisibility(true);
+	}
+
+	cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f);
+
 }
 
 int main() {

@@ -9,6 +9,8 @@ Object::Object(std::string name, Mesh mesh) : name(name), mesh(mesh) {
 }
 
 void Object::draw(Shader &shader) const {
+	if (getVisibility() == false) return;
+
   glm::mat4 model = Object::transform.getMatrix();
 
   shader.setUniform("model", model);
