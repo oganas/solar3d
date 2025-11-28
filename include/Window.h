@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glad/glad.h"
+#include "glm/ext/vector_float4.hpp"
 
 #include <GLFW/glfw3.h>
 #include <functional>
@@ -21,7 +22,7 @@ public:
   void makeContextCurrent();
   void swapBuffers();
   void clear();
-  void setBackgroundColour(float r, float g, float b, float a);
+  void setBackgroundColour(glm::vec4 colour);
   bool shouldClose() const;
   GLFWwindow *getWindow() const { return m_window; }
 	int getWidth() const;

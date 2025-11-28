@@ -2,7 +2,7 @@
 #include <cmath>
 
 const float DEFAULT_SPEED = 2.5f;
-const float DEFAULT_SENSITIVITY = 0.1f;
+const float DEFAULT_SENSITIVITY = 75.0f;
 
 Camera::Camera(float startFov, float startNearClip, float startFarClip,
                glm::vec3 startPosition, glm::vec3 upVector, float startYaw,
@@ -38,12 +38,27 @@ void Camera::move(Direction direction, float dt) {
   case RIGHT:
     position += right * velocity;
     break;
+  case UP:
+    position += worldUp * velocity;
+    break;
+  case DOWN:
+    position -= worldUp * velocity;
+    break;
   }
 }
 
 void Camera::look(float xoffset, float yoffset, float dt) {
-  xoffset *= sensitivity * dt;
-  yoffset *= sensitivity * dt;
+  glm::vec2 rotationVector = glm::vec2(xoffset, yoffset);
+
+	// normalise
+  if (glm::length(rotationVector) > 0.0f) {
+    rotationVector = glm::normalize(rotationVector);
+  }
+
+  float totalRotationAmount = sensitivity * dt;
+
+  xoffset = rotationVector.x * totalRotationAmount;
+  yoffset = rotationVector.y * totalRotationAmount;
 
   yaw += xoffset;
   pitch += yoffset;
@@ -53,7 +68,6 @@ void Camera::look(float xoffset, float yoffset, float dt) {
 
   updateCameraVectors();
 }
-
 void Camera::updateCameraVectors() {
   glm::vec3 newFront;
   newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));

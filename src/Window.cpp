@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "glm/ext/vector_float4.hpp"
 #include <stdexcept>
 
 static bool glfwInitialised = false;
@@ -60,11 +61,11 @@ void Window::setRenderCallback(RenderCallback callback) {
   m_renderCallback = std::move(callback);
 }
 
-void Window::setBackgroundColour(float r, float g, float b, float a) {
-  m_clearR = r;
-  m_clearG = g;
-  m_clearB = b;
-  m_clearA = a;
+void Window::setBackgroundColour(glm::vec4 colour) {
+	m_clearR = colour.r;
+	m_clearG = colour.g;
+	m_clearB = colour.b;
+	m_clearA = colour.a;
 }
 
 bool Window::update() {

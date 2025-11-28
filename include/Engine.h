@@ -16,7 +16,7 @@ public:
   virtual void update(float dt) {}
 
   // window api
-  void setWindowBackgroundColour(float r, float g, float b, float a);
+  void setWindowBackgroundColour(glm::vec4 colour);
 
   // input api
   bool isKeyDown(Key key) const { return m_input->isKeyDown(key); }

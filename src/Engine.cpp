@@ -27,8 +27,8 @@ void Engine::run(int width, int height, const std::string &title) {
 }
 
 // window api implementation
-void Engine::setWindowBackgroundColour(float r, float g, float b, float a) {
-  m_window->setBackgroundColour(r, g, b, a);
+void Engine::setWindowBackgroundColour(glm::vec4 colour) {
+  m_window->setBackgroundColour(colour);
 }
 
 // input api implementation
