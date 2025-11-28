@@ -6,7 +6,7 @@
  * Colour namespace.
  * Contains a list of colour macros for global easy use of colours.
  *
- * This list of colours was generated using AI.
+ * !!! This list of colours was generated using AI. !!!
  */
 namespace Colour {
 static constexpr glm::vec4 BLACK = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);

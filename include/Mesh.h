@@ -53,6 +53,8 @@ private:
 
 /*
  * Namespace containing mesh primitives such as cube, sphere, and torus.
+ *
+ * !!! These 3 functions were generated using AI !!!
  */
 namespace MeshPrimitives {
 /*
@@ -70,24 +72,15 @@ inline Mesh cube(float size = 1.0f) {
   std::vector<Vertex> vertices;
   std::vector<GLuint> indices;
 
-  // positions
-  glm::vec3 positions[] = {
-      {-s, -s, -s}, {s, -s, -s}, {s, s, -s}, {-s, s, -s}, // back
-      {-s, -s, s},  {s, -s, s},  {s, s, s},  {-s, s, s},  // front
-      {-s, -s, -s}, {-s, s, -s}, {-s, s, s}, {-s, -s, s}, // left
-      {s, -s, -s},  {s, s, -s},  {s, s, s},  {s, -s, s},  // right
-      {-s, s, -s},  {s, s, -s},  {s, s, s},  {-s, s, s},  // top
-      {-s, -s, -s}, {s, -s, -s}, {s, -s, s}, {-s, -s, s}  // bottom
-  };
+  glm::vec3 positions[] = {{-s, -s, -s}, {s, -s, -s}, {s, s, -s}, {-s, s, -s},
+                           {-s, -s, s},  {s, -s, s},  {s, s, s},  {-s, s, s},
+                           {-s, -s, -s}, {-s, s, -s}, {-s, s, s}, {-s, -s, s},
+                           {s, -s, -s},  {s, s, -s},  {s, s, s},  {s, -s, s},
+                           {-s, s, -s},  {s, s, -s},  {s, s, s},  {-s, s, s},
+                           {-s, -s, -s}, {s, -s, -s}, {s, -s, s}, {-s, -s, s}};
 
-  glm::vec3 normals[] = {
-      {0, 0, -1}, // back
-      {0, 0, 1},  // front
-      {-1, 0, 0}, // left
-      {1, 0, 0},  // right
-      {0, 1, 0},  // top
-      {0, -1, 0}  // bottom
-  };
+  glm::vec3 normals[] = {{0, 0, -1}, {0, 0, 1}, {-1, 0, 0},
+                         {1, 0, 0},  {0, 1, 0}, {0, -1, 0}};
 
   glm::vec2 uv[] = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
 

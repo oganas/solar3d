@@ -1,7 +1,10 @@
 #include "Key.h"
 
-// Array of GLFW key int macros
-// This was generated using AI.
+/*
+ * Array of GLFW key int macros
+ *
+ * !!! This was generated using AI. !!!
+ */
 int keyToOpenGL[] = {
     GLFW_KEY_A,
     GLFW_KEY_B,
@@ -89,8 +92,11 @@ int keyToOpenGL[] = {
     GLFW_KEY_GRAVE_ACCENT,
 };
 
-// Map of GLFW key macros to my custom key enum types.
-// This was generated using AI.
+/*
+ * Map of GLFW key macros to my custom key enum types.
+ *
+ * !!! This was generated using AI. !!!
+ */
 std::unordered_map<int, int> openGLtoKey = {
     {GLFW_KEY_A, Key::A},
     {GLFW_KEY_B, Key::B},
