@@ -20,14 +20,21 @@ Object sphere2;
 
 std::vector<Light> lights;
 
-// render logic
+/*
+ * Render logic.
+ * This is where rendering objects is handled.
+ */
 void render(Window *window) {
   renderer.renderObject(shader, sphere, lights, 0.001f, 0.01f, 1.0f);
   renderer.renderObject(shader, sphere2, lights, 0.1f, 0.8f, 8.0f);
-	renderer.renderObject(shader, cube, lights, 0.001f, 0.8f, 0.2f);
+  renderer.renderObject(shader, cube, lights, 0.001f, 0.8f, 0.2f);
 }
 
-// init logic
+/*
+ * Initialisation logic.
+ * This is where the window is set up and the camera is initialised.
+ * + anything else that needs to be initialised.
+ */
 void start() {
   window.setRenderCallback(render);
 
@@ -51,7 +58,11 @@ void start() {
   lights.emplace_back(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
-// program logic
+/*
+ * Program logic.
+ * This is where the main logic is handled.
+ * + anything else that needs to be updated every frame.
+ */
 void update(float dt) {
   if (input.isKeyPressed(Key::Z)) {
     cube.setVisibility(false);
@@ -94,8 +105,10 @@ void update(float dt) {
 }
 
 int main() {
+	// initialise whatever needs to be initialised
   start();
 
+	// last frame time
   auto last = std::chrono::high_resolution_clock::now();
 
   while (window.update()) {

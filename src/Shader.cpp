@@ -19,24 +19,25 @@ Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) {
   glAttachShader(m_Id, frag);
   glLinkProgram(m_Id);
 
-	/*
-  GLint activeUniforms = 0;
-  glGetProgramiv(m_Id, GL_ACTIVE_UNIFORMS, &activeUniforms);
-  std::cout << "Active uniforms: " << activeUniforms << std::endl;
+  // Debug why uniforms were not working / were not being found.
+  /*
+GLint activeUniforms = 0;
+glGetProgramiv(m_Id, GL_ACTIVE_UNIFORMS, &activeUniforms);
+std::cout << "Active uniforms: " << activeUniforms << std::endl;
 
-  if (activeUniforms > 0) {
-    for (int i = 0; i < activeUniforms; i++) {
-      char name[256];
-      GLsizei length;
-      GLint size;
-      GLenum type;
-      glGetActiveUniform(m_Id, i, 256, &length, &size, &type, name);
-      std::cout << "Uniform " << i << ": " << name << std::endl;
-    }
-  } else {
-    std::cout << "NO uniform found in linked program." << std::endl;
-  }
-	*/
+if (activeUniforms > 0) {
+for (int i = 0; i < activeUniforms; i++) {
+char name[256];
+GLsizei length;
+GLint size;
+GLenum type;
+glGetActiveUniform(m_Id, i, 256, &length, &size, &type, name);
+std::cout << "Uniform " << i << ": " << name << std::endl;
+}
+} else {
+std::cout << "NO uniform found in linked program." << std::endl;
+}
+  */
 
   GLint success;
   glGetProgramiv(m_Id, GL_LINK_STATUS, &success);
@@ -55,6 +56,7 @@ Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) {
 Shader::~Shader() { glDeleteProgram(m_Id); }
 
 void Shader::bind() const { glUseProgram(m_Id); }
+
 void Shader::unbind() const { glUseProgram(0); }
 
 GLint Shader::getUniformLocation(const std::string &name) {

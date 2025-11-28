@@ -2,6 +2,12 @@
 
 #include <glm/glm.hpp>
 
+/*
+ * Colour namespace.
+ * Contains a list of colour macros for global easy use of colours.
+ *
+ * This list of colours was generated using AI.
+ */
 namespace Colour {
 static constexpr glm::vec4 BLACK = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 static constexpr glm::vec4 WHITE = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -21,4 +27,4 @@ static constexpr glm::vec4 PURPLE = glm::vec4(0.5f, 0.0f, 0.5f, 1.0f);
 static constexpr glm::vec4 BROWN = glm::vec4(0.6f, 0.4f, 0.2f, 1.0f);
 
 static constexpr glm::vec4 CLEAR = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
-}
+} // namespace Colour

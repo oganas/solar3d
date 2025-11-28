@@ -11,21 +11,23 @@ Window::Window(int width, int height, const std::string &title) {
     glfwInitialised = true;
   }
 
+	// Set window hints
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_SAMPLES, 8);
   glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
-	m_width = width;
-	m_height = height;
+  m_width = width;
+  m_height = height;
 
   m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
   if (!m_window)
     throw std::runtime_error("Failed to create GLFW window");
 
   glfwMakeContextCurrent(m_window);
-	// vsync on
+
+  // vsync on
   glfwSwapInterval(1);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -34,6 +36,7 @@ Window::Window(int width, int height, const std::string &title) {
   glfwSetWindowUserPointer(m_window, this);
 
   glEnable(GL_MULTISAMPLE);
+	// Enable depth test
   glEnable(GL_DEPTH_TEST);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
   glEnable(GL_TEXTURE_2D);
@@ -62,21 +65,27 @@ void Window::setRenderCallback(RenderCallback callback) {
 }
 
 void Window::setBackgroundColour(glm::vec4 colour) {
-	m_clearR = colour.r;
-	m_clearG = colour.g;
-	m_clearB = colour.b;
-	m_clearA = colour.a;
+  m_clearR = colour.r;
+  m_clearG = colour.g;
+  m_clearB = colour.b;
+  m_clearA = colour.a;
 }
 
 bool Window::update() {
   pollGlobalEvents();
+
+  // If the window should close, return false and this function will exit
+  // meaning the window was closed, which means the program should exit in
+  // main().
   if (shouldClose())
     return false;
 
   makeContextCurrent();
 
-	glfwGetFramebufferSize(m_window, &m_width, &m_height);
-	glViewport(0, 0, m_width, m_height);
+  // Get the window's framebuffer size and set the member variables to it then
+  // use them to update the viewport. This handles window resizing.
+  glfwGetFramebufferSize(m_window, &m_width, &m_height);
+  glViewport(0, 0, m_width, m_height);
 
   clear();
 

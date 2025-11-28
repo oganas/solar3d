@@ -9,7 +9,8 @@ Object::Object(std::string name, Mesh mesh) : name(name), mesh(mesh) {
 }
 
 void Object::draw() const {
-	if (getVisibility() == false) return;
+  if (getVisibility() == false)
+    return;
 
   mesh.draw();
 }

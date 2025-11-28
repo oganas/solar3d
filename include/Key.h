@@ -3,9 +3,16 @@
 #include <GLFW/glfw3.h>
 #include <unordered_map>
 
+// array of key enums to GLFW keys
 extern int keyToOpenGL[];
+
+// map of GLFW keys to key enums
 extern std::unordered_map<int, int> openGLtoKey;
 
+/*
+	* Custom key enum type.
+	* Contains all keys that are also used in GLFW.
+*/
 enum Key {
   A,
   B,

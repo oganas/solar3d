@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Light.h"
 
+// Maximum number of lights that can be used in the shader.
 #define MAX_LIGHTS 4
 
 void Renderer::setupViewProjection(Shader &shader) {
@@ -16,8 +17,7 @@ void Renderer::setupViewProjection(Shader &shader) {
 void Renderer::setupLightingUniforms(Shader &shader,
                                      const std::vector<Light> &lights,
                                      float ambientStrength,
-                                     float specularStrength,
-                                     float shininess) {
+                                     float specularStrength, float shininess) {
 
   int count = glm::min((int)lights.size(), MAX_LIGHTS);
   shader.setUniform("numLights", count);
@@ -38,11 +38,9 @@ void Renderer::setupLightingUniforms(Shader &shader,
   shader.setUniform("viewPosition", m_camera.position);
 }
 
-void Renderer::renderObject(Shader &shader,
-                            Object &objectToRender,
+void Renderer::renderObject(Shader &shader, Object &objectToRender,
                             const std::vector<Light> &lights,
-                            float ambientStrength,
-                            float specularStrength,
+                            float ambientStrength, float specularStrength,
                             float shininess) {
 
   if (objectToRender.getVisibility() == false)

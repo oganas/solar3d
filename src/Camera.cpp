@@ -1,9 +1,13 @@
 #include "Camera.h"
 #include <cmath>
 
+// Default camera movement speed.
 const float DEFAULT_SPEED = 2.5f;
+
+// Default camera sensitivity.
 const float DEFAULT_SENSITIVITY = 75.0f;
 
+// I pass the default values to the camera constructor.
 Camera::Camera(float startFov, float startNearClip, float startFarClip,
                glm::vec3 startPosition, glm::vec3 upVector, float startYaw,
                float startPitch)
@@ -23,6 +27,7 @@ glm::mat4 Camera::getProjectionMatrix(float aspect) const {
 }
 
 void Camera::move(Direction direction, float dt) {
+	// Multiply movement speed by dt to make it frame independent
   float velocity = movementSpeed * dt;
 
   switch (direction) {
@@ -63,7 +68,7 @@ void Camera::look(float xoffset, float yoffset, float dt) {
   yaw += xoffset;
   pitch += yoffset;
 
-  // clamp pitch
+  // clamp pitch at 90 degrees to prevent camera flipping upside down
   pitch = glm::clamp(pitch, -89.0f, 89.0f);
 
   updateCameraVectors();

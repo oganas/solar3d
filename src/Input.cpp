@@ -1,5 +1,4 @@
 #include "Input.h"
-#include <iostream>
 
 Input::Input(Window &window) : m_window(&window) {
   GLFWwindow *glfwWin = m_window->getWindow();
@@ -13,7 +12,7 @@ Input::Input(Window &window) : m_window(&window) {
 }
 
 void Input::update() {
-  // placeholder for mouse movement or other input polling
+  // Placeholder for mouse movement state tracking or other input polling
 }
 
 bool Input::isKeyDown(Key key) const { return m_held[toGLFWKey(key)]; }

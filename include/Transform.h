@@ -8,11 +8,24 @@
 
 using namespace glm;
 
+/*
+ * Transform struct component of an object.
+ * Contains the position, rotation, and scale of an object.
+ */
 struct Transform {
+  // position of the object
   vec3 position = vec3(0.0f);
+
+  // rotation of the object
   vec3 rotation = vec3(0.0f);
+
+  // scale of the object
   vec3 scale = vec3(1.0f);
 
+  /*
+   * Returns the matrix of the transform.
+   * This is the matrix that is used for rendering.
+   */
   mat4 getMatrix() const {
     // translation
     mat4 m = translate(mat4(1.0f), position);
