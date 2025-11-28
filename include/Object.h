@@ -20,7 +20,7 @@ public:
   Object(std::string name);
 	Object(std::string name, Mesh mesh);
 
-	void draw(Shader& shader) const;
+	void draw() const;
 
 	// 0 to not render (hide)
 	// 1 to render (show)

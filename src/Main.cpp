@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "Mesh.h"
 #include "Object.h"
+#include "Renderer.h"
 #include "Shader.h"
 #include "Window.h"
 
@@ -37,39 +38,20 @@ int main() {
 Window w(1280, 720, "solar system");
 Input i(w);
 
-GLuint modelId = 0, viewId = 0, projectionId = 0;
+Camera camera;
+Renderer r(camera);
 
 Shader s("shaders/vs.vert", "shaders/fs.frag");
 Object cube;
 
 // render logic
-void render(Window *window) {
-  s.bind();
-
-  float aspect = (float)w.getWidth() / (float)w.getHeight();
-  glm::mat4 projection =
-      glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
-
-  s.setUniform("projection", projection);
-
-  glm::mat4 view =
-      glm::lookAt(glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f),
-                  glm::vec3(0.0f, 1.0f, 0.0f));
-
-  s.setUniform("view", view);
-
-  cube.draw(s);
-
-  s.unbind();
-}
+void render(Window *window) { r.renderObject(*window, s, cube); }
 
 // init logic
 void start() {
   w.setRenderCallback(render);
 
-  modelId = glGetUniformLocation(s.getId(), "model");
-  viewId = glGetUniformLocation(s.getId(), "view");
-  projectionId = glGetUniformLocation(s.getId(), "projection");
+	camera.sensitivity = 75.0f;
 
   Mesh cubeMesh = MeshPrimitives::cube();
 
@@ -79,14 +61,38 @@ void start() {
 
 // program logic
 void update(float dt) {
-  if (i.isKeyPressed(Key::D)) {
-		cube.setVisibility(false);
-  } if (i.isKeyPressed(Key::A)) {
-		cube.setVisibility(true);
+  if (i.isKeyPressed(Key::Z)) {
+    cube.setVisibility(false);
+  }
+	if (i.isKeyPressed(Key::X)) {
+    cube.setVisibility(true);
 	}
-
-	cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f);
-
+	if (i.isKeyDown(Key::W)) {
+    camera.move(Direction::FORWARD, dt);
+  }
+	if (i.isKeyDown(Key::S)) {
+    camera.move(Direction::BACKWARD, dt);
+  }
+	if (i.isKeyDown(Key::A)) {
+    camera.move(Direction::LEFT, dt);
+  }
+	if (i.isKeyDown(Key::D)) {
+    camera.move(Direction::RIGHT, dt);
+  }
+	if (i.isKeyDown(Key::ARROW_KEY_LEFT)) {
+		camera.look(-1.0f, 0.0f, dt);
+	}
+	if (i.isKeyDown(Key::ARROW_KEY_RIGHT)) {
+		camera.look(1.0f, 0.0f, dt);
+	}
+	if (i.isKeyDown(Key::ARROW_KEY_UP)) {
+		camera.look(0.0f, 1.0f, dt);
+	} 
+	if (i.isKeyDown(Key::ARROW_KEY_DOWN)) {
+		camera.look(0.0f, -1.0f, dt);
+	}
+	
+  cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
 }
 
 int main() {

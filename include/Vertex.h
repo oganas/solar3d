@@ -15,7 +15,7 @@ struct Vertex {
 
   Vertex() = default;
   Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
-      : position(p), colour(Colour::white), normal(n), uv(t) {}
+      : position(p), colour(Colour::WHITE), normal(n), uv(t) {}
 };
 
 /*
