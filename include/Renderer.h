@@ -8,17 +8,18 @@
 
 class Renderer {
 private:
-  Camera &camera;
+  Camera &m_camera;
+	Window &m_window;
 
 public:
-  Renderer(Camera &c) : camera(c) {}
+  Renderer(Window &w, Camera &c) : m_window(w), m_camera(c) {}
 
-  void renderObject(Window &window, Shader &shader, Object &objectToRender,
+  void renderObject(Shader &shader, Object &objectToRender,
                     const std::vector<Light> &lights, float ambientStrength,
                     float specularStrength, float shininess);
 
 private:
-  void setupViewProjection(Window &window, Shader &shader);
+  void setupViewProjection(Shader &shader);
   void setupLightingUniforms(Shader &shader, const std::vector<Light> &lights,
                              float ambientStrength, float specularStrength,
                              float shininess);

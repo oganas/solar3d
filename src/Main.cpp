@@ -7,88 +7,86 @@
 
 #include <chrono>
 
-Window w(1280, 720, "solar system");
-Input i(w);
-
+Window window(1280, 720, "solar system");
+Input input(window);
 Camera camera;
-Renderer r(camera);
+Renderer renderer(window, camera);
 
-Shader s("shaders/vs.vert", "shaders/fs.frag");
+Shader shader("shaders/vs.vert", "shaders/fs.frag");
 
 Object cube;
 Object sphere;
 Object sphere2;
 
-std::vector<Light> sceneLights;
+std::vector<Light> lights;
 
 // render logic
 void render(Window *window) {
-	r.renderObject(*window, s, sphere, sceneLights, 0.001f, 0.01f, 1.0f);
-	r.renderObject(*window, s, sphere2, sceneLights, 0.1f, 0.8f, 8.0f);
+  renderer.renderObject(shader, sphere, lights, 0.001f, 0.01f, 1.0f);
+  renderer.renderObject(shader, sphere2, lights, 0.1f, 0.8f, 8.0f);
+	renderer.renderObject(shader, cube, lights, 0.001f, 0.8f, 0.2f);
 }
 
 // init logic
 void start() {
-  w.setRenderCallback(render);
+  window.setRenderCallback(render);
 
-	w.setBackgroundColour(Colour::GRAY);
+  window.setBackgroundColour(Colour::GRAY);
 
   camera.sensitivity = 85.0f;
-	camera.position = vec3(0.0f, 0.0f, 15.0f);
+  camera.position = vec3(0.0f, 0.0f, 15.0f);
 
   Mesh cubeMesh = MeshPrimitives::cube();
-	Mesh sphereMesh = MeshPrimitives::sphere();
+  Mesh sphereMesh = MeshPrimitives::sphere();
 
   cube = Object("cube", cubeMesh);
-  cube.transform.position = vec3(0.0f, 0.0f, 0.0f);
+  cube.transform.position = vec3(10.0f, 0.0f, 0.0f);
 
-	sphere = Object("sphere", sphereMesh);
-	sphere.transform.position = vec3(-10.0f, 0.0f, 0.0f);
+  sphere = Object("sphere", sphereMesh);
+  sphere.transform.position = vec3(-10.0f, 0.0f, 0.0f);
 
-	sphere2 = Object("sphere2", sphereMesh);
-	sphere2.transform.position = vec3(0.0f, 0.0f, 0.0f);
+  sphere2 = Object("sphere2", sphereMesh);
+  sphere2.transform.position = vec3(0.0f, 0.0f, 0.0f);
 
-  sceneLights.emplace_back(glm::vec3(5.0f, 5.0f, 5.0f),
-                           glm::vec3(1.0f, 1.0f, 1.0f), 0.1f,
-                           0.5f);
+  lights.emplace_back(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
 // program logic
 void update(float dt) {
-  if (i.isKeyPressed(Key::Z)) {
+  if (input.isKeyPressed(Key::Z)) {
     cube.setVisibility(false);
   }
-  if (i.isKeyPressed(Key::X)) {
+  if (input.isKeyPressed(Key::X)) {
     cube.setVisibility(true);
   }
-  if (i.isKeyDown(Key::W)) {
+  if (input.isKeyDown(Key::W)) {
     camera.move(Direction::FORWARD, dt);
   }
-  if (i.isKeyDown(Key::S)) {
+  if (input.isKeyDown(Key::S)) {
     camera.move(Direction::BACKWARD, dt);
   }
-  if (i.isKeyDown(Key::A)) {
+  if (input.isKeyDown(Key::A)) {
     camera.move(Direction::LEFT, dt);
   }
-  if (i.isKeyDown(Key::D)) {
+  if (input.isKeyDown(Key::D)) {
     camera.move(Direction::RIGHT, dt);
   }
-	if (i.isKeyDown(Key::SPACE)) {
+  if (input.isKeyDown(Key::SPACE)) {
     camera.move(Direction::UP, dt);
   }
-  if (i.isKeyDown(Key::L_SHIFT)) {
+  if (input.isKeyDown(Key::L_SHIFT)) {
     camera.move(Direction::DOWN, dt);
   }
-  if (i.isKeyDown(Key::ARROW_KEY_LEFT)) {
+  if (input.isKeyDown(Key::ARROW_KEY_LEFT)) {
     camera.look(-1.0f, 0.0f, dt);
   }
-  if (i.isKeyDown(Key::ARROW_KEY_RIGHT)) {
+  if (input.isKeyDown(Key::ARROW_KEY_RIGHT)) {
     camera.look(1.0f, 0.0f, dt);
   }
-  if (i.isKeyDown(Key::ARROW_KEY_UP)) {
+  if (input.isKeyDown(Key::ARROW_KEY_UP)) {
     camera.look(0.0f, 1.0f, dt);
   }
-  if (i.isKeyDown(Key::ARROW_KEY_DOWN)) {
+  if (input.isKeyDown(Key::ARROW_KEY_DOWN)) {
     camera.look(0.0f, -1.0f, dt);
   }
 
@@ -100,8 +98,8 @@ int main() {
 
   auto last = std::chrono::high_resolution_clock::now();
 
-  while (w.update()) {
-    i.update();
+  while (window.update()) {
+    input.update();
 
     auto now = std::chrono::high_resolution_clock::now();
     float dt = std::chrono::duration<float>(now - last).count();
@@ -109,6 +107,6 @@ int main() {
 
     update(dt);
 
-    i.endFrame();
+    input.endFrame();
   }
 }

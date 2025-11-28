@@ -75,11 +75,8 @@ bool Window::update() {
 
   makeContextCurrent();
 
-	int framebufferWidth, framebufferHeight;
-	glfwGetFramebufferSize(m_window, &framebufferWidth, &framebufferHeight);
-	glViewport(0, 0, framebufferWidth, framebufferHeight);
-	m_width = framebufferWidth;
-	m_height = framebufferHeight;
+	glfwGetFramebufferSize(m_window, &m_width, &m_height);
+	glViewport(0, 0, m_width, m_height);
 
   clear();
 

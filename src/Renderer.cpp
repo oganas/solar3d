@@ -3,11 +3,11 @@
 
 #define MAX_LIGHTS 4
 
-void Renderer::setupViewProjection(Window &window, Shader &shader) {
-  float aspect = (float)window.getWidth() / (float)window.getHeight();
+void Renderer::setupViewProjection(Shader &shader) {
+  float aspect = (float)m_window.getWidth() / (float)m_window.getHeight();
 
-  glm::mat4 view = camera.getViewMatrix();
-  glm::mat4 projection = camera.getProjectionMatrix(aspect);
+  glm::mat4 view = m_camera.getViewMatrix();
+  glm::mat4 projection = m_camera.getProjectionMatrix(aspect);
 
   shader.setUniform("projection", projection);
   shader.setUniform("view", view);
@@ -15,8 +15,8 @@ void Renderer::setupViewProjection(Window &window, Shader &shader) {
 
 void Renderer::setupLightingUniforms(Shader &shader,
                                      const std::vector<Light> &lights,
-                                     float ambientStrength,  // NEW
-                                     float specularStrength, // NEW
+                                     float ambientStrength,
+                                     float specularStrength,
                                      float shininess) {
 
   int count = glm::min((int)lights.size(), MAX_LIGHTS);
@@ -35,10 +35,10 @@ void Renderer::setupLightingUniforms(Shader &shader,
   shader.setUniform("specularStrength", specularStrength);
   shader.setUniform("shininess", shininess);
 
-  shader.setUniform("viewPosition", camera.position);
+  shader.setUniform("viewPosition", m_camera.position);
 }
 
-void Renderer::renderObject(Window &window, Shader &shader,
+void Renderer::renderObject(Shader &shader,
                             Object &objectToRender,
                             const std::vector<Light> &lights,
                             float ambientStrength,
@@ -50,7 +50,7 @@ void Renderer::renderObject(Window &window, Shader &shader,
 
   shader.bind();
 
-  setupViewProjection(window, shader);
+  setupViewProjection(shader);
 
   // Pass all three material properties to the lighting setup function
   setupLightingUniforms(shader, lights, ambientStrength, specularStrength,
