@@ -12,6 +12,8 @@ void Renderer::setupViewProjection(Window &window, Shader &shader) {
 
 void Renderer::renderObject(Window &window, Shader &shader,
                             Object &objectToRender) {
+	if (objectToRender.getVisibility() == false) return;
+
   shader.bind();
 
   setupViewProjection(window, shader);
