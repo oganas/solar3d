@@ -27,7 +27,7 @@ std::vector<Light> lights;
 void render(Window *window) {
   renderer.renderObject(shader, sphere, lights, 0.001f, 0.01f, 1.0f);
   renderer.renderObject(shader, sphere2, lights, 0.1f, 0.8f, 8.0f);
-  renderer.renderObject(shader, cube, lights, 0.001f, 0.8f, 0.2f);
+  renderer.renderObject(shader, cube, lights, 0.1f, 0.01f, 4.0f);
 }
 
 /*
