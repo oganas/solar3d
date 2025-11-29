@@ -16,8 +16,8 @@ void Renderer::setupViewProjection(Shader &shader) {
 
 void Renderer::setupLightingUniforms(Shader &shader,
                                      const std::vector<Light> &lights,
-                                     float ambientStrength,
-                                     float specularStrength, float shininess) {
+                                     float ambient, float strength,
+                                     float shininess) {
 
   int count = glm::min((int)lights.size(), MAX_LIGHTS);
   shader.setUniform("numLights", count);
@@ -31,18 +31,15 @@ void Renderer::setupLightingUniforms(Shader &shader,
     shader.setUniform(prefix + "colour", light.colour);
   }
 
-  shader.setUniform("ambientStrength", ambientStrength);
-  shader.setUniform("specularStrength", specularStrength);
+  shader.setUniform("ambient", ambient);
+  shader.setUniform("strength", strength);
   shader.setUniform("shininess", shininess);
 
   shader.setUniform("viewPosition", m_camera.position);
 }
 
 void Renderer::renderObject(Shader &shader, Object &objectToRender,
-                            const std::vector<Light> &lights,
-                            float ambientStrength, float specularStrength,
-                            float shininess) {
-
+                            Light light) {
   if (objectToRender.getVisibility() == false)
     return;
 
@@ -50,9 +47,10 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
 
   setupViewProjection(shader);
 
-  // Pass all three material properties to the lighting setup function
-  setupLightingUniforms(shader, lights, ambientStrength, specularStrength,
-                        shininess);
+  shader.setUniform("objectColour", glm::vec3(1.0, 0.5, 0.31));
+  shader.setUniform("light.colour", light.colour);
+	shader.setUniform("light.position", light.position);
+  shader.setUniform("viewPosition", m_camera.position);
 
   glm::mat4 model = objectToRender.transform.getMatrix();
   shader.setUniform("model", model);

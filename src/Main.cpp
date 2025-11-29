@@ -13,21 +13,22 @@ Camera camera;
 Renderer renderer(window, camera);
 
 Shader shader("shaders/vs.vert", "shaders/fs.frag");
+Shader sunShader("shaders/sun.vert", "shaders/sun.frag");
 
 Object cube;
 Object sphere;
-Object sphere2;
+Object sun;
 
-std::vector<Light> lights;
+Light light;
 
 /*
  * Render logic.
  * This is where rendering objects is handled.
  */
 void render(Window *window) {
-  renderer.renderObject(shader, sphere, lights, 0.001f, 0.01f, 1.0f);
-  renderer.renderObject(shader, sphere2, lights, 0.1f, 0.8f, 8.0f);
-  renderer.renderObject(shader, cube, lights, 0.1f, 0.01f, 4.0f);
+  renderer.renderObject(shader, sphere, light);
+  renderer.renderObject(sunShader, sun, light);
+  renderer.renderObject(shader, cube, light);
 }
 
 /*
@@ -38,7 +39,7 @@ void render(Window *window) {
 void start() {
   window.setRenderCallback(render);
 
-  window.setBackgroundColour(Colour::GRAY);
+  window.setBackgroundColour(Colour::BLACK);
 
   camera.sensitivity = 85.0f;
   camera.position = vec3(0.0f, 0.0f, 15.0f);
@@ -52,10 +53,11 @@ void start() {
   sphere = Object("sphere", sphereMesh);
   sphere.transform.position = vec3(-10.0f, 0.0f, 0.0f);
 
-  sphere2 = Object("sphere2", sphereMesh);
-  sphere2.transform.position = vec3(0.0f, 0.0f, 0.0f);
+  sun = Object("sun", sphereMesh);
+  sun.transform.position = vec3(0.0f, 10.0f, 0.0f);
 
-  lights.emplace_back(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+	light.position = sun.transform.position;
+	light.colour = Colour::WHITE;
 }
 
 /*
@@ -100,8 +102,6 @@ void update(float dt) {
   if (input.isKeyDown(Key::ARROW_KEY_DOWN)) {
     camera.look(0.0f, -1.0f, dt);
   }
-
-  cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
 }
 
 int main() {

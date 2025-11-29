@@ -15,6 +15,12 @@ public:
   // Colour of the light.
   glm::vec3 colour;
 
+	/*
+   * Creates a new light instance.
+   * This is the default constructor.
+   */
+	Light() = default;
+
   /*
    * Creates a new light instance.
    *

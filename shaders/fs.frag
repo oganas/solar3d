@@ -2,47 +2,32 @@
 
 in vec3 fragPosition;
 in vec3 fragNormal;
-in vec4 fragColour;
 
 out vec4 outputColour;
 
+uniform vec3 objectColour;
+
+struct Light { vec3 position; vec3 colour; };
+
+uniform Light light;
 uniform vec3 viewPosition;
-uniform float shininess;
-uniform float ambientStrength;
-uniform float specularStrength;
-
-struct Light {
-    vec3 position;
-    vec3 colour;
-};
-
-#define MAX_LIGHTS 4
-uniform Light pointLights[MAX_LIGHTS]; 
-uniform int numLights; 
 
 void main() {
-  vec3 totalLight = vec3(0.0);
-  vec3 objectColour = vec3(fragColour.rgb);
+	float ambientStrength = 0.1;
+	vec3 ambient = ambientStrength * light.colour;
 
-  for(int i = 0; i < numLights; i++) {
-      vec3 lightPos = pointLights[i].position;
-      vec3 lightCol = pointLights[i].colour;
-      
-      vec3 N = normalize(fragNormal);
-      vec3 L = normalize(lightPos - fragPosition);
-      vec3 V = normalize(viewPosition - fragPosition);
-      vec3 R = reflect(-L, N);
+	vec3 norm = normalize(fragNormal);
+	vec3 lightDir = normalize(light.position - fragPosition);
 
-      vec3 ambient = ambientStrength * lightCol;
+	float diff = max(dot(norm, lightDir), 0.0);
+	vec3 diffuse = diff * light.colour;
 
-      float diff = max(dot(N, L), 0.0);
-      vec3 diffuse = diff * lightCol;
+	float specularStrength = 0.5;
+	vec3 viewDir = normalize(viewPosition - fragPosition);
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+	vec3 specular = specularStrength * spec * light.colour;
 
-      float spec = pow(max(dot(V, R), 0.0), shininess) * specularStrength;
-      vec3 specular = spec * lightCol;
-
-      totalLight += (ambient + diffuse + specular) * objectColour;
-  }
-
-  outputColour = vec4(totalLight, 1.0);
+  vec3 result = (ambient + diffuse + specular) * objectColour;
+	outputColour = vec4(result, 1.0);
 }

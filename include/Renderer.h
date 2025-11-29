@@ -34,9 +34,7 @@ public:
    *	specularStrength: Specular strength of the object.
    *	shininess: Shininess of the object.
    */
-  void renderObject(Shader &shader, Object &objectToRender,
-                    const std::vector<Light> &lights, float ambientStrength,
-                    float specularStrength, float shininess);
+  void renderObject(Shader &shader, Object &objectToRender, Light light);
 
 private:
   /*

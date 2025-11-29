@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include "Material.h"
 #include "Mesh.h"
 #include "Shader.h"
 #include "Transform.h"
@@ -24,7 +25,7 @@ public:
   Transform transform;
 
   // Material component of the object.
-  // Material material;
+  Material material;
 
   /*
    * Creates a new object instance.
