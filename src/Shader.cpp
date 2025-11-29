@@ -4,6 +4,11 @@
 #include <sstream>
 #include <stdexcept>
 
+/*
+ * Took inspiration of parts of the code from the following:
+ * https://antongerdelan.net/opengl/shaders.html
+ */
+
 Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) {
   std::string vertexSrc = readFile(vertexPath);
   std::string fragmentSrc = readFile(fragmentPath);

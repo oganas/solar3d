@@ -2,6 +2,12 @@
 #include "glm/ext/vector_float4.hpp"
 #include <stdexcept>
 
+/*
+ * Took inspiration of parts of the code from the following:
+ * https://www.glfw.org/documentation.html
+ * https://www.glfw.org/docs/latest/window_guide.html
+ */
+
 static bool glfwInitialised = false;
 
 Window::Window(int width, int height, const std::string &title) {
@@ -11,7 +17,7 @@ Window::Window(int width, int height, const std::string &title) {
     glfwInitialised = true;
   }
 
-	// Set window hints
+  // Set window hints
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -36,7 +42,7 @@ Window::Window(int width, int height, const std::string &title) {
   glfwSetWindowUserPointer(m_window, this);
 
   glEnable(GL_MULTISAMPLE);
-	// Enable depth test
+  // Enable depth test
   glEnable(GL_DEPTH_TEST);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
   glEnable(GL_TEXTURE_2D);
