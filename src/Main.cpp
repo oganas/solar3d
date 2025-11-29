@@ -49,15 +49,25 @@ void start() {
 
   cube = Object("cube", cubeMesh);
   cube.transform.position = vec3(10.0f, 0.0f, 0.0f);
+	cube.material.ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+	cube.material.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+	cube.material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+	cube.material.shininess = 32.0f;
 
   sphere = Object("sphere", sphereMesh);
   sphere.transform.position = vec3(-10.0f, 0.0f, 0.0f);
+	sphere.material.ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+	sphere.material.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+	sphere.material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+	sphere.material.shininess = 32.0f;
 
   sun = Object("sun", sphereMesh);
-  sun.transform.position = vec3(0.0f, 10.0f, 0.0f);
+  sun.transform.position = vec3(0.0f, 0.0f, 0.0f);
 
 	light.position = sun.transform.position;
-	light.colour = Colour::WHITE;
+	light.ambient = glm::vec3(0.7f, 0.7f, 0.7f);
+	light.diffuse = glm::vec3(1.0f);
+	light.specular = glm::vec3(1.0f, 1.0f, 1.0f);
 }
 
 /*
@@ -102,6 +112,8 @@ void update(float dt) {
   if (input.isKeyDown(Key::ARROW_KEY_DOWN)) {
     camera.look(0.0f, -1.0f, dt);
   }
+
+	cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
 }
 
 int main() {

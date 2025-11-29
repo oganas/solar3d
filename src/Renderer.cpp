@@ -14,30 +14,6 @@ void Renderer::setupViewProjection(Shader &shader) {
   shader.setUniform("view", view);
 }
 
-void Renderer::setupLightingUniforms(Shader &shader,
-                                     const std::vector<Light> &lights,
-                                     float ambient, float strength,
-                                     float shininess) {
-
-  int count = glm::min((int)lights.size(), MAX_LIGHTS);
-  shader.setUniform("numLights", count);
-
-  for (int i = 0; i < count; i++) {
-    const Light &light = lights[i];
-
-    std::string prefix = "pointLights[" + std::to_string(i) + "].";
-
-    shader.setUniform(prefix + "position", light.position);
-    shader.setUniform(prefix + "colour", light.colour);
-  }
-
-  shader.setUniform("ambient", ambient);
-  shader.setUniform("strength", strength);
-  shader.setUniform("shininess", shininess);
-
-  shader.setUniform("viewPosition", m_camera.position);
-}
-
 void Renderer::renderObject(Shader &shader, Object &objectToRender,
                             Light light) {
   if (objectToRender.getVisibility() == false)
@@ -47,10 +23,17 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
 
   setupViewProjection(shader);
 
-  shader.setUniform("objectColour", glm::vec3(1.0, 0.5, 0.31));
-  shader.setUniform("light.colour", light.colour);
-	shader.setUniform("light.position", light.position);
   shader.setUniform("viewPosition", m_camera.position);
+
+	shader.setUniform("light.position", light.position);
+	shader.setUniform("light.ambient", light.ambient);
+	shader.setUniform("light.diffuse", light.diffuse);
+	shader.setUniform("light.specular", light.specular);
+
+	shader.setUniform("material.ambient", objectToRender.material.ambient);
+	shader.setUniform("material.diffuse", objectToRender.material.diffuse);
+	shader.setUniform("material.specular", objectToRender.material.specular);
+	shader.setUniform("material.shininess", objectToRender.material.shininess);
 
   glm::mat4 model = objectToRender.transform.getMatrix();
   shader.setUniform("model", model);

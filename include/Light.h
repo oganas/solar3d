@@ -12,8 +12,14 @@ public:
   // Position of the light in world space.
   glm::vec3 position;
 
-  // Colour of the light.
-  glm::vec3 colour;
+	// Ambient colour of the light.
+	glm::vec3 ambient;
+
+	// Diffuse colour of the light.
+	glm::vec3 diffuse;
+
+	// Specular colour of the light.
+	glm::vec3 specular;
 
 	/*
    * Creates a new light instance.
@@ -29,5 +35,5 @@ public:
    *	col: Colour of the light.
    */
   Light(const glm::vec3 &position, const glm::vec3 &colour)
-      : position(position), colour(colour) {}
+      : position(position), ambient(colour), diffuse(colour), specular(colour) {}
 };
