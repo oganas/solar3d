@@ -27,26 +27,28 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
   shader.setUniform("light.diffuse", light.diffuse);
   shader.setUniform("light.specular", light.specular);
 
+  unsigned int diffuseTextureId = objectToRender.material.diffuseTextureId;
+
+  if (diffuseTextureId != 0) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuseTextureId);
+    shader.setUniform("material.textureSampler", 0);
+    shader.setUniform("material.hasTexture", 1);
+  } else {
+    shader.setUniform("material.hasTexture", 0);
+    shader.setUniform("material.diffuse", objectToRender.material.diffuse);
+  }
+
   shader.setUniform("material.ambient", objectToRender.material.ambient);
-  std::cout << "material.ambient: " << objectToRender.material.ambient.r << ", "
-            << objectToRender.material.ambient.g << ", "
-            << objectToRender.material.ambient.b << std::endl;
-  shader.setUniform("material.diffuse", objectToRender.material.diffuse);
-  std::cout << "material.diffuse: " << objectToRender.material.diffuse.r << ", "
-            << objectToRender.material.diffuse.g << ", "
-            << objectToRender.material.diffuse.b << std::endl;
   shader.setUniform("material.specular", objectToRender.material.specular);
-  std::cout << "material.specular: " << objectToRender.material.specular.r
-            << ", " << objectToRender.material.specular.g << ", "
-            << objectToRender.material.specular.b << std::endl;
   shader.setUniform("material.shininess", objectToRender.material.shininess);
-  std::cout << "material.shininess: " << objectToRender.material.shininess
-            << std::endl;
 
   glm::mat4 model = objectToRender.transform.getMatrix();
   shader.setUniform("model", model);
 
   objectToRender.draw();
+
+  glBindTexture(GL_TEXTURE_2D, 0);
 
   shader.unbind();
 }

@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "Renderer.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "Window.h"
 
 #include <chrono>
@@ -23,9 +24,7 @@ Object cube("cube", cubeMesh);
 Object sphere("sphere", sphereMesh);
 Object sun("sun", sphereMesh);
 
-Light light(glm::vec3(0.7f), glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f));
-
-bool printDebug = true;
+Light light(glm::vec3(0.7f), glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f));
 
 /*
  * Render logic.
@@ -47,11 +46,14 @@ void start() {
 
   window.setBackgroundColour(Colour::BLACK);
 
-  camera.sensitivity = 85.0f;
+  camera.sensitivity = 100.0f;
   camera.position = vec3(0.0f, 0.0f, 30.0f);
+	camera.movementSpeed = 5.0f;
+
+  unsigned int textureId = Texture::loadTexture("crate.png");
 
   cube.transform.position = vec3(-10.0f, 0.0f, 0.0f);
-  cube.material = MaterialPresets::MATERIAL_GOLD;
+	cube.material.diffuseTextureId = textureId;
 
   sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
   sphere.material = MaterialPresets::MATERIAL_CHROME;
