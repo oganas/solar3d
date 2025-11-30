@@ -1,4 +1,12 @@
-#include "Engine.h"
+#include "Input.h"
+#include "Material.h"
+#include "Mesh.h"
+#include "Object.h"
+#include "Renderer.h"
+#include "Shader.h"
+#include "Window.h"
+
+#include <chrono>
 
 Window window(1280, 720, "solar system");
 Input input(window);
