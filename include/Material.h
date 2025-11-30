@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Colour.h"
 #include "glm/glm.hpp"
 
 /*
@@ -8,12 +9,37 @@
  * ambient, diffuse, specular, and shininess.
  */
 struct Material {
+	// Ambient colour of the material.
   glm::vec3 ambient;
+
+	// Diffuse colour of the material.
   glm::vec3 diffuse;
+
+	// Specular colour of the material.
   glm::vec3 specular;
+
+	// Shininess of the material.
   float shininess;
 
-  unsigned int diffuseTextureId = 0;
+	// Diffuse texture ID of the material.
+  unsigned int diffuseTextureId;
+
+	// Default constructor.
+  Material()
+      : ambient(0.1f, 0.1f, 0.1f), diffuse(Colour::WHITE),
+        specular(0.1f, 0.1f, 0.1f), shininess(32.0f), diffuseTextureId(0) {}
+
+	// Constructor with all properties.
+	Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
+			 float shininess, unsigned int diffuseTextureId)
+		: ambient(ambient), diffuse(diffuse), specular(specular),
+		  shininess(shininess), diffuseTextureId(diffuseTextureId) {}
+
+	// Constructor with all properties except diffuseTextureId.
+	Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
+			 float shininess)
+		: ambient(ambient), diffuse(diffuse), specular(specular),
+		  shininess(shininess), diffuseTextureId(0) {}
 };
 
 namespace MaterialPresets {

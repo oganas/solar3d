@@ -41,6 +41,15 @@ public:
    */
   Object(std::string name);
 
+	/*
+	 * Creates a new object instance.
+	 *
+	 * Parameters:
+	 *	name: Name of the object.
+	 *	mesh: Mesh of the object.
+	 */
+	Object(std::string name, Mesh mesh);
+
   /*
    * Creates a new object instance.
    *
@@ -48,7 +57,7 @@ public:
    *	name: Name of the object.
    *	mesh: Mesh of the object.
    */
-  Object(std::string name, Mesh mesh);
+  Object(std::string name, Mesh mesh, Material material);
 
   /*
    * Draws the object using the object's mesh's draw function.
