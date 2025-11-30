@@ -14,7 +14,7 @@ Input input(window);
 Camera camera;
 Renderer renderer(window, camera);
 
-Shader shader("mainShader", "shaders/vs.vert", "shaders/fs.frag");
+Shader shader("mainShader", "shaders/main.vert", "shaders/main.frag");
 Shader sunShader("sunShader", "shaders/sun.vert", "shaders/sun.frag");
 
 Mesh cubeMesh = MeshPrimitives::cube();
