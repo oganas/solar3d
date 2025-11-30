@@ -55,24 +55,6 @@ public:
    */
   void draw() const;
 
-  /*
-   * Sets the visibility of the object.
-   *
-   * Parameters:
-   *	visibility: 0 to not render (hide)
-   *              1 to render (show)
-   */
-  void setVisibility(bool visibility);
-
-  /*
-   * Gets the visibility of the object.
-   * Returns:
-   *	0 to not render (hidden)
-   *  1 to render (shown)
-   */
-  bool getVisibility() const;
-
 private:
-  // Visibility of the object (hidden or shown).
-  bool m_visibility;
+
 };

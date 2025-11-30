@@ -1,25 +1,23 @@
-#include "Input.h"
-#include "Mesh.h"
-#include "Object.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Window.h"
-
-#include <chrono>
+#include "Engine.h"
 
 Window window(1280, 720, "solar system");
 Input input(window);
 Camera camera;
 Renderer renderer(window, camera);
 
-Shader shader("shaders/vs.vert", "shaders/fs.frag");
-Shader sunShader("shaders/sun.vert", "shaders/sun.frag");
+Shader shader("mainShader", "shaders/vs.vert", "shaders/fs.frag");
+Shader sunShader("sunShader", "shaders/sun.vert", "shaders/sun.frag");
 
-Object cube;
-Object sphere;
-Object sun;
+Mesh cubeMesh = MeshPrimitives::cube();
+Mesh sphereMesh = MeshPrimitives::sphere();
 
-Light light;
+Object cube("cube", cubeMesh);
+Object sphere("sphere", sphereMesh);
+Object sun("sun", sphereMesh);
+
+Light light(glm::vec3(0.7f), glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f));
+
+bool printDebug = true;
 
 /*
  * Render logic.
@@ -27,7 +25,7 @@ Light light;
  */
 void render(Window *window) {
   renderer.renderObject(shader, sphere, light);
-  renderer.renderObject(sunShader, sun, light);
+  renderer.renderLightSource(sunShader, sun);
   renderer.renderObject(shader, cube, light);
 }
 
@@ -42,32 +40,17 @@ void start() {
   window.setBackgroundColour(Colour::BLACK);
 
   camera.sensitivity = 85.0f;
-  camera.position = vec3(0.0f, 0.0f, 15.0f);
+  camera.position = vec3(0.0f, 0.0f, 30.0f);
 
-  Mesh cubeMesh = MeshPrimitives::cube();
-  Mesh sphereMesh = MeshPrimitives::sphere();
+  cube.transform.position = vec3(-10.0f, 0.0f, 0.0f);
+  cube.material = MaterialPresets::MATERIAL_GOLD;
 
-  cube = Object("cube", cubeMesh);
-  cube.transform.position = vec3(10.0f, 0.0f, 0.0f);
-	cube.material.ambient = glm::vec3(0.1f, 0.1f, 0.1f);
-	cube.material.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
-	cube.material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-	cube.material.shininess = 32.0f;
+  sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
+  sphere.material = MaterialPresets::MATERIAL_CHROME;
 
-  sphere = Object("sphere", sphereMesh);
-  sphere.transform.position = vec3(-10.0f, 0.0f, 0.0f);
-	sphere.material.ambient = glm::vec3(0.1f, 0.1f, 0.1f);
-	sphere.material.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
-	sphere.material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-	sphere.material.shininess = 32.0f;
+  sun.transform.position = vec3(0.0f, 10.0f, 10.0f);
 
-  sun = Object("sun", sphereMesh);
-  sun.transform.position = vec3(0.0f, 0.0f, 0.0f);
-
-	light.position = sun.transform.position;
-	light.ambient = glm::vec3(0.7f, 0.7f, 0.7f);
-	light.diffuse = glm::vec3(1.0f);
-	light.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+  light.position = sun.transform.position;
 }
 
 /*
@@ -76,12 +59,6 @@ void start() {
  * + anything else that needs to be updated every frame.
  */
 void update(float dt) {
-  if (input.isKeyPressed(Key::Z)) {
-    cube.setVisibility(false);
-  }
-  if (input.isKeyPressed(Key::X)) {
-    cube.setVisibility(true);
-  }
   if (input.isKeyDown(Key::W)) {
     camera.move(Direction::FORWARD, dt);
   }
@@ -113,14 +90,14 @@ void update(float dt) {
     camera.look(0.0f, -1.0f, dt);
   }
 
-	cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
+  cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
 }
 
 int main() {
-	// initialise whatever needs to be initialised
+  // initialise whatever needs to be initialised
   start();
 
-	// last frame time
+  // last frame time
   auto last = std::chrono::high_resolution_clock::now();
 
   while (window.update()) {

@@ -16,24 +16,45 @@ void Renderer::setupViewProjection(Shader &shader) {
 
 void Renderer::renderObject(Shader &shader, Object &objectToRender,
                             Light light) {
-  if (objectToRender.getVisibility() == false)
-    return;
-
   shader.bind();
 
   setupViewProjection(shader);
 
   shader.setUniform("viewPosition", m_camera.position);
 
-	shader.setUniform("light.position", light.position);
-	shader.setUniform("light.ambient", light.ambient);
-	shader.setUniform("light.diffuse", light.diffuse);
-	shader.setUniform("light.specular", light.specular);
+  shader.setUniform("light.position", light.position);
+  shader.setUniform("light.ambient", light.ambient);
+  shader.setUniform("light.diffuse", light.diffuse);
+  shader.setUniform("light.specular", light.specular);
 
-	shader.setUniform("material.ambient", objectToRender.material.ambient);
-	shader.setUniform("material.diffuse", objectToRender.material.diffuse);
-	shader.setUniform("material.specular", objectToRender.material.specular);
-	shader.setUniform("material.shininess", objectToRender.material.shininess);
+  shader.setUniform("material.ambient", objectToRender.material.ambient);
+  std::cout << "material.ambient: " << objectToRender.material.ambient.r << ", "
+            << objectToRender.material.ambient.g << ", "
+            << objectToRender.material.ambient.b << std::endl;
+  shader.setUniform("material.diffuse", objectToRender.material.diffuse);
+  std::cout << "material.diffuse: " << objectToRender.material.diffuse.r << ", "
+            << objectToRender.material.diffuse.g << ", "
+            << objectToRender.material.diffuse.b << std::endl;
+  shader.setUniform("material.specular", objectToRender.material.specular);
+  std::cout << "material.specular: " << objectToRender.material.specular.r
+            << ", " << objectToRender.material.specular.g << ", "
+            << objectToRender.material.specular.b << std::endl;
+  shader.setUniform("material.shininess", objectToRender.material.shininess);
+  std::cout << "material.shininess: " << objectToRender.material.shininess
+            << std::endl;
+
+  glm::mat4 model = objectToRender.transform.getMatrix();
+  shader.setUniform("model", model);
+
+  objectToRender.draw();
+
+  shader.unbind();
+}
+
+void Renderer::renderLightSource(Shader &shader, Object &objectToRender) {
+  shader.bind();
+
+  setupViewProjection(shader);
 
   glm::mat4 model = objectToRender.transform.getMatrix();
   shader.setUniform("model", model);

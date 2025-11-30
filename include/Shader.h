@@ -25,7 +25,7 @@ public:
    *	vertexPath: Path to the vertex shader file.
    *	fragmentPath: Path to the fragment shader file.
    */
-  Shader(const std::string &vertexPath, const std::string &fragmentPath);
+  Shader(const std::string &name, const std::string &vertexPath, const std::string &fragmentPath);
 
   /*
    * Destroys the shader instance.
@@ -106,6 +106,9 @@ public:
   void setUniform(const std::string &name, const glm::mat4 &value);
 
 private:
+	// Shader name.
+	std::string m_name;
+
   // Shader program ID.
   GLuint m_Id = 0;
 

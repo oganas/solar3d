@@ -27,16 +27,23 @@ Mesh::Mesh(const std::vector<Vertex> &vertices,
   // std::cout << "offsetof(Vertex, position): " << offsetof(Vertex, position)
   // << std::endl;
 
-  // normal: location 1
+  // colour : location 1
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+  glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                        (void *)offsetof(Vertex, colour));
+  // std::cout << "offsetof(Vertex, colour): " << offsetof(Vertex, colour) <<
+  // std::endl;
+
+  // normal: location 2
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
                         (void *)offsetof(Vertex, normal));
   // std::cout << "offsetof(Vertex, normal): " << offsetof(Vertex, normal) <<
   // std::endl;
 
   // uv: location 3
-  glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+  glEnableVertexAttribArray(3);
+  glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
                         (void *)offsetof(Vertex, uv));
   // std::cout << "offsetof(Vertex, uv): " << offsetof(Vertex, uv) << std::endl;
 

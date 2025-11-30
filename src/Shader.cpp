@@ -9,7 +9,8 @@
  * https://antongerdelan.net/opengl/shaders.html
  */
 
-Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) {
+Shader::Shader(const std::string &name, const std::string &vertexPath,
+               const std::string &fragmentPath) {
   std::string vertexSrc = readFile(vertexPath);
   std::string fragmentSrc = readFile(fragmentPath);
 
@@ -18,6 +19,8 @@ Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) {
 
   GLuint vert = compileShader(GL_VERTEX_SHADER, vertexSrc);
   GLuint frag = compileShader(GL_FRAGMENT_SHADER, fragmentSrc);
+
+  m_name = name;
 
   m_Id = glCreateProgram();
   glAttachShader(m_Id, vert);
@@ -70,7 +73,8 @@ GLint Shader::getUniformLocation(const std::string &name) {
 
   GLint location = glGetUniformLocation(m_Id, name.c_str());
   if (location == -1)
-    std::cerr << "Uniform '" << name << "' not found!\n";
+    std::cerr << "Uniform '" << name << "' not found in shader '" << m_name
+              << "'!\n";
 
   m_uniformCache[name] = location;
   return location;

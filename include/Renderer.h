@@ -36,6 +36,16 @@ public:
    */
   void renderObject(Shader &shader, Object &objectToRender, Light light);
 
+	/*
+	 * Renders an object based on the provided shader, and the object's material's
+	 * detail (ambient strength, specular strength, and shininess)
+	 *
+	 * Parameters:
+	 *	shader: Shader instance to use for rendering.
+	 *	objectToRender: Object to render.
+	 */
+  void renderLightSource(Shader &shader, Object &objectToRender);
+
 private:
   /*
    * Layer of abstraction that sets up the view and projection matrices for the
