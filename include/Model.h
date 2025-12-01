@@ -2,9 +2,11 @@
 
 #include "Object.h"
 #include "Texture.h"
-#include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
-#include <assimp/scene.h>
+
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
+#include "assimp/scene.h"
+
 #include <iostream>
 #include <stb_image.h>
 #include <string>
@@ -29,9 +31,9 @@ public:
   void setRotation(const glm::vec3 &rotation);
   void setScale(const glm::vec3 &scale);
 
-	glm::vec3 getPosition() const;
-	glm::vec3 getRotation() const;
-	glm::vec3 getScale() const;
+  glm::vec3 getPosition() const;
+  glm::vec3 getRotation() const;
+  glm::vec3 getScale() const;
 
   std::vector<Object> getObjects() const;
 

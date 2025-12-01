@@ -150,15 +150,8 @@ void Model::setScale(const glm::vec3 &scale) {
 
 std::vector<Object> Model::getObjects() const { return objects; }
 
-glm::vec3 Model::getPosition() const { 
-	return objects[0].transform.position;
-}
+glm::vec3 Model::getPosition() const { return objects[0].transform.position; }
 
-glm::vec3 Model::getRotation() const {
-	return objects[0].transform.rotation;
-}
+glm::vec3 Model::getRotation() const { return objects[0].transform.rotation; }
 
-glm::vec3 Model::getScale() const {
-	return objects[0].transform.scale;
-}
-
+glm::vec3 Model::getScale() const { return objects[0].transform.scale; }

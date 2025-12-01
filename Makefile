@@ -27,8 +27,8 @@ $(LINUX_BUILD_DIR)/%.o: %.cpp
 
 # windows cross compile
 WIN_CXX = x86_64-w64-mingw32-g++
-WIN_CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/assimp
-WIN_LDFLAGS = -Llib/win -lglfw3 -lopengl32 -lgdi32 -luser32 -lassimp
+WIN_CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp/include
+WIN_LDFLAGS = -Llib/win -lassimp -lglfw3 -lopengl32 -lgdi32 -luser32 -lz
 
 WIN_BUILD_DIR = $(BUILD_DIR)/win
 WIN_OBJ = $(patsubst %.cpp,$(WIN_BUILD_DIR)/%.o,$(SRC))
