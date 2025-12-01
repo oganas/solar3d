@@ -27,16 +27,16 @@ Object sun("sun", sphereMesh);
 Light light(glm::vec3(0.7f), glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f));
 
 Texture crateTex("crate", "crate.png");
-Texture sunTex("sun", "planets/sun.png");
+Texture sunTex("sun", "planets/sun_diffuse.jpg");
 
 /*
  * Render logic.
  * This is where rendering objects is handled.
  */
 void render(Window *window) {
-  renderer.renderObject(shader, sphere, light);
-  renderer.renderLightSource(sunShader, sun);
-  renderer.renderObject(shader, cube, light);
+  renderer.renderObject(shader, sphere, light, false);
+  renderer.renderObject(shader, sun, light, true);
+  renderer.renderObject(shader, cube, light, false);
 }
 
 /*

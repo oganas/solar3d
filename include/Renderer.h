@@ -34,7 +34,7 @@ public:
    *	specularStrength: Specular strength of the object.
    *	shininess: Shininess of the object.
    */
-  void renderObject(Shader &shader, Object &objectToRender, Light light);
+  void renderObject(Shader &shader, Object &objectToRender, Light light, bool isLightSource);
 
 	/*
 	 * Renders an object based on the provided shader, and the object's material's

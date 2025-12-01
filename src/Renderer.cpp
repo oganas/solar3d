@@ -15,7 +15,7 @@ void Renderer::setupViewProjection(Shader &shader) {
 }
 
 void Renderer::renderObject(Shader &shader, Object &objectToRender,
-                            Light light) {
+                            Light light, bool isLightSource) {
   shader.bind();
 
   setupViewProjection(shader);
@@ -26,6 +26,8 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
   shader.setUniform("light.ambient", light.ambient);
   shader.setUniform("light.diffuse", light.diffuse);
   shader.setUniform("light.specular", light.specular);
+
+	shader.setUniform("isLightSource", isLightSource);
 
   GLuint diffuseTextureId = 0;
 
