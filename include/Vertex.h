@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Colour.h"
-#include "glad/glad.h"
+#include "glad.h"
 #include <glm/glm.hpp>
 #include <vector>
 

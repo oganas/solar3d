@@ -2,7 +2,7 @@
 
 #include "Mesh.h"
 #include "Texture.h"
-#include <glad/glad.h>
+#include "glad.h"
 #include <string>
 #include <vector>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glad/glad.h"
+#include "glad.h"
 #include "glm/ext/vector_float4.hpp"
 
 #include <GLFW/glfw3.h>

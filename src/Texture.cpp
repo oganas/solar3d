@@ -2,7 +2,7 @@
 #include "../external/stb/stb_image.h"
 
 #include "Texture.h"
-#include "glad/glad.h"
+#include "glad.h"
 
 #include <iostream>
 #include <string>
