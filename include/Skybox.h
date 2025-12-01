@@ -6,19 +6,33 @@
 #include <string>
 #include <vector>
 
+/*
+ * Skybox class.
+ *
+ * Represents a skybox background.
+ */
 class Skybox {
 public:
   // Skybox cubemap texture.
   Texture *cubemapTexture;
 
-	Mesh mesh;
+  // Skybox mesh.
+  Mesh mesh;
 
+  /*
+   * Creates a skybox instance.
+   */
   Skybox();
 
+  /*
+   * Creates a skybox with the given faces.
+   */
   Skybox(const std::vector<std::string> &faces);
 
-	void draw() const;
+  /*
+   * Draws the skybox.
+   */
+  void draw() const;
 
 private:
-
 };

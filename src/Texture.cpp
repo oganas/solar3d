@@ -11,12 +11,12 @@ Texture::Texture() {}
 
 Texture::Texture(std::string name, const std::string &texturePath) {
   m_name = name;
-	m_id = loadTexture(texturePath);
+  m_id = loadTexture(texturePath);
 }
 
 Texture::Texture(std::string name, std::vector<std::string> faces) {
   m_name = name;
-	m_id = loadCubemap(faces);
+  m_id = loadCubemap(faces);
 }
 
 GLuint Texture::getId() const { return m_id; }
@@ -56,6 +56,10 @@ GLuint Texture::loadTexture(const std::string &texPath) {
   return textureID;
 }
 
+/*
+ * Partially inspired by:
+ * https://www.ogldev.org/www/tutorial25/tutorial25.html
+ */
 GLuint Texture::loadCubemap(const std::vector<std::string> &faces) {
   GLuint textureID;
   glGenTextures(1, &textureID);

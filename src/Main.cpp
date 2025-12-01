@@ -17,7 +17,8 @@ Renderer renderer(window, camera);
 
 // Shaders
 Shader shader("mainShader", "shaders/main.vert", "shaders/main.frag");
-Shader skyboxShader("skyboxShader", "shaders/skybox.vert", "shaders/skybox.frag");
+Shader skyboxShader("skyboxShader", "shaders/skybox.vert",
+                    "shaders/skybox.frag");
 
 // Meshes
 Mesh cubeMesh = MeshPrimitives::cube();
@@ -44,7 +45,7 @@ Skybox space;
  * This is where rendering objects is handled.
  */
 void render(Window *window) {
-	renderer.renderSkybox(skyboxShader, space);
+  renderer.renderSkybox(skyboxShader, space);
   renderer.renderObject(shader, sphere, light, false);
   renderer.renderObject(shader, sun, light, true);
   renderer.renderObject(shader, cube, light, false);
@@ -68,15 +69,19 @@ void start() {
   cube.material.diffuseTexture = &crateTex;
 
   sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
-	sphere.material.diffuseTexture = &earthTex;
-	sphere.material.specular = glm::vec3(0.01f);
-	sphere.material.shininess = 1.0f;
+  sphere.material.diffuseTexture = &earthTex;
+  sphere.material.specular = glm::vec3(0.01f);
+  sphere.material.shininess = 1.0f;
 
   sun.transform.position = vec3(0.0f, 10.0f, 10.0f);
   sun.material.diffuseTexture = &sunTex;
 
   light.position = sun.transform.position;
 
+  /*
+   * Used the following to generate the faces of the cubemap:
+   * https://jaxry.github.io/panorama-to-cubemap/
+   */
   std::vector<std::string> faces;
   faces.push_back("space3/px.png");
   faces.push_back("space3/nx.png");
@@ -84,8 +89,8 @@ void start() {
   faces.push_back("space3/ny.png");
   faces.push_back("space3/pz.png");
   faces.push_back("space3/nz.png");
-	
-	space = Skybox(faces);
+
+  space = Skybox(faces);
 }
 
 /*
