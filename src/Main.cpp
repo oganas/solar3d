@@ -41,6 +41,7 @@ Texture earthTex("earth", "use/planets/earth_diffuse.jpg");
 // Skybox
 Skybox space;
 
+// Models
 Model model("assets/models/Car.obj");
 
 /*
@@ -52,10 +53,7 @@ void render(Window *window) {
   renderer.renderObject(shader, sphere, light, false);
   renderer.renderObject(shader, sun, light, true);
   renderer.renderObject(shader, cube, light, false);
-
-  for (auto &obj : model.objects) {
-    renderer.renderObject(shader, obj, light, false);
-  }
+  renderer.renderModel(shader, model, light, false);
 }
 
 /*
@@ -84,18 +82,7 @@ void start() {
 
   light.position = sun.transform.position;
 
-	for (auto &obj : model.objects) {
-		// obj.transform.scale = vec3(0.01f);
-	}
-
-	// print all material properties of model
-	for (auto &obj : model.objects) {
-		std::cout << obj.name << std::endl;
-		std::cout << "diffuse: " << obj.material.diffuse.x << " " << obj.material.diffuse.y << " " << obj.material.diffuse.z << std::endl;
-		std::cout << "ambient: " << obj.material.ambient.x << " " << obj.material.ambient.y << " " << obj.material.ambient.z << std::endl;
-		std::cout << "specular: " << obj.material.specular.x << " " << obj.material.specular.y << " " << obj.material.specular.z << std::endl;
-		std::cout << "shininess: " << obj.material.shininess << std::endl;
-	}
+	model.setPosition(vec3(0.0f, 0.0f, 0.0f));
 
   /*
    * Used the following to generate the faces of the cubemap:
@@ -150,10 +137,11 @@ void update(float dt) {
   }
 
   cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
+
+	model.setPosition(model.getPosition() + vec3(0.0f, 0.0f, 0.1f) * dt);
 }
 
 int main() {
-  // initialise whatever needs to be initialised
   start();
 
   // last frame time

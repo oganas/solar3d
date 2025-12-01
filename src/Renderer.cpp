@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Light.h"
+#include "Model.h"
 #include "Skybox.h"
 
 // Maximum number of lights that can be used in the shader.
@@ -81,4 +82,10 @@ void Renderer::renderSkybox(Shader &shader, Skybox &skybox) {
   glDepthFunc(GL_LESS);
 
   shader.unbind();
+}
+
+void Renderer::renderModel(Shader &shader, Model &model, Light light, bool isLightSource) {
+	for (auto &obj : model.getObjects()) {
+		renderObject(shader, obj, light, isLightSource);
+	}
 }

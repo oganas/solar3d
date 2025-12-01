@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/assimp
+CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp
 
 SRC_DIR = src
 EXTERNAL_IMGUI_DIR = external/imgui

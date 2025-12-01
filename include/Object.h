@@ -64,6 +64,10 @@ public:
    */
   void draw() const;
 
+	void setPosition(const glm::vec3 &position);
+	void setRotation(const glm::vec3 &rotation);
+	void setScale(const glm::vec3 &scale);
+
 private:
 
 };

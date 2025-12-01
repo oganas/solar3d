@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Light.h"
+#include "Model.h"
 #include "Object.h"
 #include "Shader.h"
 #include "Skybox.h"
@@ -45,6 +46,8 @@ public:
 	 *	skybox: Skybox to render.
 	 */
   void renderSkybox(Shader &shader, Skybox &skybox);
+
+	void renderModel(Shader &shader, Model &model, Light light, bool isLightSource);
 
 private:
   /*
