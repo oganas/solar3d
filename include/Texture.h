@@ -45,6 +45,14 @@ public:
 	GLuint getId() const;
 
 	/*
+   * Sets the texture's OpenGL ID.
+	 *
+   * Parameters:
+   *	id: The texture's OpenGL ID.
+   */
+	void setId(GLuint id);
+
+	/*
    * Loads a texture.
    *
    * Parameters:

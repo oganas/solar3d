@@ -41,6 +41,7 @@ private:
 #include <iostream>
 #include <string>
 #include <vector>
+#include <../external/stb/stb_image.h>
 
 class Model {
 public:
@@ -122,10 +123,59 @@ private:
       material->Get(AI_MATKEY_SHININESS, shininess);
       mat.shininess = shininess;
 
+      // Handle diffuse texture
       if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
         aiString str;
         material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
-        mat.diffuseTexture = new Texture(str.C_Str(), str.C_Str());
+        std::string path = str.C_Str();
+
+        if (!path.empty() && path[0] == '*') {
+          // Embedded texture
+          unsigned int texIndex = std::stoi(path.substr(1));
+          if (texIndex < scene->mNumTextures) {
+            aiTexture *tex = scene->mTextures[texIndex];
+            // Create a Texture from memory
+            GLuint texID;
+            glGenTextures(1, &texID);
+            glBindTexture(GL_TEXTURE_2D, texID);
+
+            if (tex->mHeight == 0) {
+              // Compressed (PNG/JPG)
+              int width, height, nrChannels;
+              unsigned char *data = stbi_load_from_memory(
+                  reinterpret_cast<unsigned char *>(tex->pcData), tex->mWidth,
+                  &width, &height, &nrChannels, 0);
+
+              if (data) {
+                GLenum format = nrChannels == 4 ? GL_RGBA : GL_RGB;
+                glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format,
+                             GL_UNSIGNED_BYTE, data);
+                glGenerateMipmap(GL_TEXTURE_2D);
+                stbi_image_free(data);
+              }
+            } else {
+              // Uncompressed RGBA
+              glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex->mWidth, tex->mHeight,
+                           0, GL_RGBA, GL_UNSIGNED_BYTE, tex->pcData);
+              glGenerateMipmap(GL_TEXTURE_2D);
+            }
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                            GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            mat.diffuseTexture = new Texture();
+            mat.diffuseTexture->setId(texID);
+          }
+        } else {
+          // External file
+          std::string directory =
+              ""; // you can extract directory from model path
+          std::string fullPath = directory + "/" + path;
+          mat.diffuseTexture = new Texture(path, fullPath);
+        }
       }
     }
 

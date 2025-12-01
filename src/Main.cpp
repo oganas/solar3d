@@ -35,13 +35,13 @@ Light light(glm::vec3(0.7f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f));
 
 // Textures
 Texture crateTex("crate", "crate.png");
-Texture sunTex("sun", "planets/sun_diffuse.jpg");
-Texture earthTex("earth", "planets/earth_diffuse.jpg");
+Texture sunTex("sun", "use/planets/sun_diffuse.jpg");
+Texture earthTex("earth", "use/planets/earth_diffuse.jpg");
 
 // Skybox
 Skybox space;
 
-Model model("assets/models/spaceship6.glb");
+Model model("assets/models/Car.obj");
 
 /*
  * Render logic.
@@ -84,6 +84,10 @@ void start() {
 
   light.position = sun.transform.position;
 
+	for (auto &obj : model.objects) {
+		// obj.transform.scale = vec3(0.01f);
+	}
+
 	// print all material properties of model
 	for (auto &obj : model.objects) {
 		std::cout << obj.name << std::endl;
@@ -98,12 +102,12 @@ void start() {
    * https://jaxry.github.io/panorama-to-cubemap/
    */
   std::vector<std::string> faces;
-  faces.push_back("space3/px.png");
-  faces.push_back("space3/nx.png");
-  faces.push_back("space3/py.png");
-  faces.push_back("space3/ny.png");
-  faces.push_back("space3/pz.png");
-  faces.push_back("space3/nz.png");
+  faces.push_back("use/space/px.png");
+  faces.push_back("use/space/nx.png");
+  faces.push_back("use/space/py.png");
+  faces.push_back("use/space/ny.png");
+  faces.push_back("use/space/pz.png");
+  faces.push_back("use/space/nz.png");
 
   space = Skybox(faces);
 }

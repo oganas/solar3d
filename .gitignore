@@ -11,6 +11,9 @@ todo.md
 *.fbx
 *.blend
 *.3ds
+*.glb
+*.gltf
+*.bin
 
 # *.exe
 # *.out

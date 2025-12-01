@@ -21,10 +21,11 @@ Texture::Texture(std::string name, std::vector<std::string> faces) {
 
 GLuint Texture::getId() const { return m_id; }
 
+void Texture::setId(GLuint id) { m_id = id; }
+
 GLuint Texture::loadTexture(const std::string &texPath) {
   int width, height, nrChannels;
   std::string path = textureBaseDir + texPath;
-  stbi_set_flip_vertically_on_load(true);
   unsigned char *data =
       stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 
