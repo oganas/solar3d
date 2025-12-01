@@ -27,7 +27,11 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
   shader.setUniform("light.diffuse", light.diffuse);
   shader.setUniform("light.specular", light.specular);
 
-  unsigned int diffuseTextureId = objectToRender.material.diffuseTextureId;
+  GLuint diffuseTextureId = 0;
+
+  if (objectToRender.material.diffuseTexture != nullptr) {
+    diffuseTextureId = objectToRender.material.diffuseTexture->getId();
+  }
 
   if (diffuseTextureId != 0) {
     glActiveTexture(GL_TEXTURE0);
@@ -36,9 +40,9 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
     shader.setUniform("material.hasTexture", 1);
   } else {
     shader.setUniform("material.hasTexture", 0);
-    shader.setUniform("material.diffuse", objectToRender.material.diffuse);
   }
 
+  shader.setUniform("material.diffuse", objectToRender.material.diffuse);
   shader.setUniform("material.ambient", objectToRender.material.ambient);
   shader.setUniform("material.specular", objectToRender.material.specular);
   shader.setUniform("material.shininess", objectToRender.material.shininess);

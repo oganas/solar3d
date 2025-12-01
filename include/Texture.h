@@ -5,17 +5,68 @@
 #include <string>
 #include <vector>
 
+/*
+ * Texture class.
+ * Handles texture loading.
+ * Layer of abstraction for handling texture related tasks.
+ */
 class Texture {
 public:
-  static std::string textureBaseDir;
+  /*
+   * Creates a new texture instance.
+   * This is the default constructor.
+   */
+  Texture();
 
-  static GLuint loadTexture(const std::string &texPath);
-  static GLuint loadCubemap(const std::vector<std::string> &faces);
+  /*
+   * Creates a new texture instance.
+   *
+   * Parameters:
+   * 	name: Name of the texture.
+   *	textureBaseDir: Base directory for loading textures.
+   */
+  Texture(std::string name, const std::string &texturePath);
 
-  static GLuint getTexture(const std::string &name);
+	/*
+   * Gets the texture's OpenGL ID.
+	 *
+   * Returns:
+   *	The texture's OpenGL ID.
+   */
+	GLuint getId() const;
 
-  static void cleanup();
+	/*
+   * Loads a texture.
+   *
+   * Parameters:
+   *	texPath: Path to the texture file.
+   * Returns:
+   *	The texture's OpenGL ID.
+   */
+  GLuint loadTexture(const std::string &texPath);
+
+	/*
+   * Loads a cubemap texture.
+   *
+   * Parameters:
+   *	faces: Vector of cubemap texture file paths.
+   * Returns:
+   *	The cubemap texture's OpenGL ID.
+   */
+  GLuint loadCubemap(const std::vector<std::string> &faces);
+
+	/*
+   * Cleans up the texture.
+   */
+  void cleanup();
 
 private:
-  static std::map<std::string, GLuint> textures;
+  // Texture name.
+  std::string m_name;
+
+  // Texture OpenGL ID.
+  GLuint m_id = 0;
+
+  // Texture base directory for loading textures.
+  std::string textureBaseDir = "assets/textures/";
 };

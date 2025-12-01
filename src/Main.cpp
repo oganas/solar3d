@@ -26,6 +26,9 @@ Object sun("sun", sphereMesh);
 
 Light light(glm::vec3(0.7f), glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f));
 
+Texture crateTex("crate", "crate.png");
+Texture sunTex("sun", "planets/sun.png");
+
 /*
  * Render logic.
  * This is where rendering objects is handled.
@@ -48,17 +51,16 @@ void start() {
 
   camera.sensitivity = 100.0f;
   camera.position = vec3(0.0f, 0.0f, 30.0f);
-	camera.movementSpeed = 5.0f;
-
-  unsigned int textureId = Texture::loadTexture("crate.png");
+  camera.movementSpeed = 5.0f;
 
   cube.transform.position = vec3(-10.0f, 0.0f, 0.0f);
-	cube.material.diffuseTextureId = textureId;
+  cube.material.diffuseTexture = &crateTex;
 
   sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
   sphere.material = MaterialPresets::MATERIAL_CHROME;
 
   sun.transform.position = vec3(0.0f, 10.0f, 10.0f);
+	sun.material.diffuseTexture = &sunTex;
 
   light.position = sun.transform.position;
 }

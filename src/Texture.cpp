@@ -7,8 +7,14 @@
 #include <iostream>
 #include <string>
 
-std::map<std::string, unsigned int> Texture::textures;
-std::string Texture::textureBaseDir = "assets/textures/";
+Texture::Texture() {}
+
+Texture::Texture(std::string name, const std::string &texturePath) {
+  m_name = name;
+	m_id = loadTexture(texturePath);
+}
+
+GLuint Texture::getId() const { return m_id; }
 
 GLuint Texture::loadTexture(const std::string &texPath) {
   int width, height, nrChannels;
@@ -83,18 +89,4 @@ GLuint Texture::loadCubemap(const std::vector<std::string> &faces) {
   return textureID;
 }
 
-GLuint Texture::getTexture(const std::string &name) {
-  if (textures.find(name) == textures.end()) {
-    std::cerr << "Texture not found: " << name << std::endl;
-    return 0;
-  }
-
-  return textures[name];
-}
-
-void Texture::cleanup() {
-  for (auto &[path, tex] : textures)
-    glDeleteTextures(1, &tex);
-
-  textures.clear();
-}
+void Texture::cleanup() { glDeleteTextures(1, &m_id); }

@@ -110,7 +110,7 @@ private:
 	std::string m_name;
 
   // Shader program ID.
-  GLuint m_Id = 0;
+  GLuint m_id = 0;
 
   // Shader program uniforms cache to avoid calling 'getUniformLocation()'' for
   // every 'setUniform()' call.

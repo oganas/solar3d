@@ -6,6 +6,8 @@ in vec2 fragTexCoord;
 
 out vec4 outputColour;
 
+uniform bool isLightSource;
+
 uniform vec3 viewPosition;
 
 struct Light { vec3 position; vec3 ambient; vec3 diffuse; vec3 specular; };

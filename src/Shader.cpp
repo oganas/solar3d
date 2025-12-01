@@ -22,15 +22,15 @@ Shader::Shader(const std::string &name, const std::string &vertexPath,
 
   m_name = name;
 
-  m_Id = glCreateProgram();
-  glAttachShader(m_Id, vert);
-  glAttachShader(m_Id, frag);
-  glLinkProgram(m_Id);
+  m_id = glCreateProgram();
+  glAttachShader(m_id, vert);
+  glAttachShader(m_id, frag);
+  glLinkProgram(m_id);
 
   // Debug why uniforms were not working / were not being found.
   /*
 GLint activeUniforms = 0;
-glGetProgramiv(m_Id, GL_ACTIVE_UNIFORMS, &activeUniforms);
+glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &activeUniforms);
 std::cout << "Active uniforms: " << activeUniforms << std::endl;
 
 if (activeUniforms > 0) {
@@ -39,7 +39,7 @@ char name[256];
 GLsizei length;
 GLint size;
 GLenum type;
-glGetActiveUniform(m_Id, i, 256, &length, &size, &type, name);
+glGetActiveUniform(m_id, i, 256, &length, &size, &type, name);
 std::cout << "Uniform " << i << ": " << name << std::endl;
 }
 } else {
@@ -48,12 +48,12 @@ std::cout << "NO uniform found in linked program." << std::endl;
   */
 
   GLint success;
-  glGetProgramiv(m_Id, GL_LINK_STATUS, &success);
+  glGetProgramiv(m_id, GL_LINK_STATUS, &success);
   if (!success) {
     GLint len;
-    glGetProgramiv(m_Id, GL_INFO_LOG_LENGTH, &len);
+    glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &len);
     std::string log(len, ' ');
-    glGetProgramInfoLog(m_Id, len, nullptr, &log[0]);
+    glGetProgramInfoLog(m_id, len, nullptr, &log[0]);
     throw std::runtime_error("Shader link error: " + log);
   }
 
@@ -61,9 +61,9 @@ std::cout << "NO uniform found in linked program." << std::endl;
   glDeleteShader(frag);
 }
 
-Shader::~Shader() { glDeleteProgram(m_Id); }
+Shader::~Shader() { glDeleteProgram(m_id); }
 
-void Shader::bind() const { glUseProgram(m_Id); }
+void Shader::bind() const { glUseProgram(m_id); }
 
 void Shader::unbind() const { glUseProgram(0); }
 
@@ -71,7 +71,7 @@ GLint Shader::getUniformLocation(const std::string &name) {
   if (m_uniformCache.find(name) != m_uniformCache.end())
     return m_uniformCache[name];
 
-  GLint location = glGetUniformLocation(m_Id, name.c_str());
+  GLint location = glGetUniformLocation(m_id, name.c_str());
   if (location == -1)
     std::cerr << "Uniform '" << name << "' not found in shader '" << m_name
               << "'!\n";
@@ -133,4 +133,4 @@ GLuint Shader::compileShader(GLenum type, const std::string &source) {
   return shader;
 }
 
-GLuint Shader::getId() const { return m_Id; }
+GLuint Shader::getId() const { return m_id; }
