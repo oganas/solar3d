@@ -1,3 +1,4 @@
+/*
 #include "Model.h"
 #include <iostream>
 
@@ -99,3 +100,4 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 
   return Mesh(vertices, indices); // Uses your existing Mesh constructor
 }
+*/

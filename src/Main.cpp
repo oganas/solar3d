@@ -1,6 +1,7 @@
 #include "Input.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Model.h"
 #include "Object.h"
 #include "Renderer.h"
 #include "Shader.h"
@@ -40,6 +41,8 @@ Texture earthTex("earth", "planets/earth_diffuse.jpg");
 // Skybox
 Skybox space;
 
+Model model("assets/models/spaceship6.glb");
+
 /*
  * Render logic.
  * This is where rendering objects is handled.
@@ -49,6 +52,10 @@ void render(Window *window) {
   renderer.renderObject(shader, sphere, light, false);
   renderer.renderObject(shader, sun, light, true);
   renderer.renderObject(shader, cube, light, false);
+
+  for (auto &obj : model.objects) {
+    renderer.renderObject(shader, obj, light, false);
+  }
 }
 
 /*
@@ -76,6 +83,15 @@ void start() {
   sun.material.diffuseTexture = &sunTex;
 
   light.position = sun.transform.position;
+
+	// print all material properties of model
+	for (auto &obj : model.objects) {
+		std::cout << obj.name << std::endl;
+		std::cout << "diffuse: " << obj.material.diffuse.x << " " << obj.material.diffuse.y << " " << obj.material.diffuse.z << std::endl;
+		std::cout << "ambient: " << obj.material.ambient.x << " " << obj.material.ambient.y << " " << obj.material.ambient.z << std::endl;
+		std::cout << "specular: " << obj.material.specular.x << " " << obj.material.specular.y << " " << obj.material.specular.z << std::endl;
+		std::cout << "shininess: " << obj.material.shininess << std::endl;
+	}
 
   /*
    * Used the following to generate the faces of the cubemap:
