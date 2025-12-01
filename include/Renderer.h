@@ -4,6 +4,7 @@
 #include "Light.h"
 #include "Object.h"
 #include "Shader.h"
+#include "Skybox.h"
 #include "Window.h"
 
 /*
@@ -37,14 +38,13 @@ public:
   void renderObject(Shader &shader, Object &objectToRender, Light light, bool isLightSource);
 
 	/*
-	 * Renders an object based on the provided shader, and the object's material's
-	 * detail (ambient strength, specular strength, and shininess)
+	 * Renders a skybox based on the provided shader and the skybox's cubemap texture.
 	 *
 	 * Parameters:
 	 *	shader: Shader instance to use for rendering.
-	 *	objectToRender: Object to render.
+	 *	skybox: Skybox to render.
 	 */
-  void renderLightSource(Shader &shader, Object &objectToRender);
+  void renderSkybox(Shader &shader, Skybox &skybox);
 
 private:
   /*

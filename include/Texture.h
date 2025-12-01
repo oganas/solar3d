@@ -28,6 +28,15 @@ public:
   Texture(std::string name, const std::string &texturePath);
 
 	/*
+   * Creates a new texture instance.
+   *
+   * Parameters:
+   * 	name: Name of the texture.
+   *	faces: Vector of cubemap texture file paths.
+   */
+	Texture(std::string name, std::vector<std::string> faces);
+
+	/*
    * Gets the texture's OpenGL ID.
 	 *
    * Returns:

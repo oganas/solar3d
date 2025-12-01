@@ -9,31 +9,42 @@
 
 #include <chrono>
 
+// Core
 Window window(1280, 720, "solar system");
 Input input(window);
 Camera camera;
 Renderer renderer(window, camera);
 
+// Shaders
 Shader shader("mainShader", "shaders/main.vert", "shaders/main.frag");
-Shader sunShader("sunShader", "shaders/sun.vert", "shaders/sun.frag");
+Shader skyboxShader("skyboxShader", "shaders/skybox.vert", "shaders/skybox.frag");
 
+// Meshes
 Mesh cubeMesh = MeshPrimitives::cube();
 Mesh sphereMesh = MeshPrimitives::sphere();
 
+// Objects
 Object cube("cube", cubeMesh);
 Object sphere("sphere", sphereMesh);
 Object sun("sun", sphereMesh);
 
-Light light(glm::vec3(0.7f), glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f));
+// Lights
+Light light(glm::vec3(0.7f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f));
 
+// Textures
 Texture crateTex("crate", "crate.png");
 Texture sunTex("sun", "planets/sun_diffuse.jpg");
+Texture earthTex("earth", "planets/earth_diffuse.jpg");
+
+// Skybox
+Skybox space;
 
 /*
  * Render logic.
  * This is where rendering objects is handled.
  */
 void render(Window *window) {
+	renderer.renderSkybox(skyboxShader, space);
   renderer.renderObject(shader, sphere, light, false);
   renderer.renderObject(shader, sun, light, true);
   renderer.renderObject(shader, cube, light, false);
@@ -57,12 +68,24 @@ void start() {
   cube.material.diffuseTexture = &crateTex;
 
   sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
-  sphere.material = MaterialPresets::MATERIAL_CHROME;
+	sphere.material.diffuseTexture = &earthTex;
+	sphere.material.specular = glm::vec3(0.01f);
+	sphere.material.shininess = 1.0f;
 
   sun.transform.position = vec3(0.0f, 10.0f, 10.0f);
-	sun.material.diffuseTexture = &sunTex;
+  sun.material.diffuseTexture = &sunTex;
 
   light.position = sun.transform.position;
+
+  std::vector<std::string> faces;
+  faces.push_back("space3/px.png");
+  faces.push_back("space3/nx.png");
+  faces.push_back("space3/py.png");
+  faces.push_back("space3/ny.png");
+  faces.push_back("space3/pz.png");
+  faces.push_back("space3/nz.png");
+	
+	space = Skybox(faces);
 }
 
 /*

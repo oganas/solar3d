@@ -14,6 +14,11 @@ Texture::Texture(std::string name, const std::string &texturePath) {
 	m_id = loadTexture(texturePath);
 }
 
+Texture::Texture(std::string name, std::vector<std::string> faces) {
+  m_name = name;
+	m_id = loadCubemap(faces);
+}
+
 GLuint Texture::getId() const { return m_id; }
 
 GLuint Texture::loadTexture(const std::string &texPath) {

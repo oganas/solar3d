@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Light.h"
+#include "Skybox.h"
 
 // Maximum number of lights that can be used in the shader.
 #define MAX_LIGHTS 4
@@ -14,8 +15,8 @@ void Renderer::setupViewProjection(Shader &shader) {
   shader.setUniform("view", view);
 }
 
-void Renderer::renderObject(Shader &shader, Object &objectToRender,
-                            Light light, bool isLightSource) {
+void Renderer::renderObject(Shader &shader, Object &objectToRender, Light light,
+                            bool isLightSource) {
   shader.bind();
 
   setupViewProjection(shader);
@@ -27,7 +28,7 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
   shader.setUniform("light.diffuse", light.diffuse);
   shader.setUniform("light.specular", light.specular);
 
-	shader.setUniform("isLightSource", isLightSource);
+  shader.setUniform("isLightSource", isLightSource);
 
   GLuint diffuseTextureId = 0;
 
@@ -59,15 +60,25 @@ void Renderer::renderObject(Shader &shader, Object &objectToRender,
   shader.unbind();
 }
 
-void Renderer::renderLightSource(Shader &shader, Object &objectToRender) {
+void Renderer::renderSkybox(Shader &shader, Skybox &skybox) {
+  glDepthFunc(GL_LEQUAL);
+
   shader.bind();
 
-  setupViewProjection(shader);
+  glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix()));
+  float aspect = (float)m_window.getWidth() / (float)m_window.getHeight();
+  glm::mat4 projection = m_camera.getProjectionMatrix(aspect);
 
-  glm::mat4 model = objectToRender.transform.getMatrix();
-  shader.setUniform("model", model);
+  shader.setUniform("view", view);
+  shader.setUniform("projection", projection);
 
-  objectToRender.draw();
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.cubemapTexture->getId());
+  shader.setUniform("skybox", 0);
+
+  skybox.draw();
+
+  glDepthFunc(GL_LESS);
 
   shader.unbind();
 }
