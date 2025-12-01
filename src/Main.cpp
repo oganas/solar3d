@@ -58,7 +58,6 @@ void render(Window *window) {
  */
 void start() {
   window.setRenderCallback(render);
-
   window.setBackgroundColour(Colour::BLACK);
 
   camera.sensitivity = 100.0f;

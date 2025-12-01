@@ -17,13 +17,12 @@ using namespace glm;
  */
 struct Vertex {
   vec3 position;
-  vec4 colour;
   vec3 normal;
   vec2 uv;
 
   Vertex() = default;
   Vertex(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoord)
-      : position(position), colour(Colour::WHITE), normal(normal), uv(texCoord) {}
+      : position(position), normal(normal), uv(texCoord) {}
 };
 
 /*
@@ -40,4 +39,4 @@ struct Vertex {
  * vec3 position the bug happens, when I define it under vec2 uv (all
  * the way at the bottom) it works fine, but I dont know why.
  */
-static_assert(sizeof(Vertex) == 48, "Vertex struct must be tightly packed");
+static_assert(sizeof(Vertex) == 32, "Vertex struct must be tightly packed");
