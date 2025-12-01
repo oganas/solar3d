@@ -12,7 +12,7 @@ using namespace glm;
  * Contains the position, colour, normal, and uv of a vertex.
  * Used in the Mesh class.
  *
- * !!! Partially inspired by LearnOpenGL !!!
+ * Partially inspired by:
  * source: https://learnopengl.com/Model-Loading/Mesh
  */
 struct Vertex {

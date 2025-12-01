@@ -12,7 +12,7 @@
  * Creates mesh objects.
  * Contains the vertices and indices of a mesh.
  *
- * !!! Partially inspired by LearnOpenGL !!!
+ * Partially inspired by:
  * source: https://learnopengl.com/Model-Loading/Mesh
  */
 class Mesh {

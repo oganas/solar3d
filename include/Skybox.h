@@ -10,6 +10,9 @@
  * Skybox class.
  *
  * Represents a skybox background.
+ *
+ * Partially inspired by:
+ * https://www.ogldev.org/www/tutorial25/tutorial25.html
  */
 class Skybox {
 public:
