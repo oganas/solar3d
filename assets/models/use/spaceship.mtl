@@ -9,7 +9,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd transport shuttle BS spaceship/Buster_Nor_2.jpg
+map_Kd spaceship/Buster_Col_1.jpg
 map_Bump spaceship/Buster_Nor_2.jpg
 map_Ks spaceship/Buster_Col_1.jpg
 refl spaceship/DH_Ref_3.jpg
@@ -55,7 +55,7 @@ Ks 0.344595 0.344595 0.344595
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd transport shuttle BS spaceship/Shuttle_Site_Col.jpg
+map_Kd spaceship/Shuttle_Site_Col.jpg
 map_Bump spaceship/Shuttle_Site_Nor.jpg
 map_Ks spaceship/Shuttle_Site_Col.jpg
 
@@ -67,7 +67,7 @@ Ks 0.587838 0.587838 0.587838
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd spaceship/Shuttle_Outside_Nor_2.jpg
+map_Kd spaceship/Shuttle_Outside_Col.jpg
 map_Bump spaceship/Shuttle_Outside_Nor_2.jpg
 map_Ks spaceship/Shuttle_Outside_Col.jpg
 refl spaceship/DH_Ref_3.jpg

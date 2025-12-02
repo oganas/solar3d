@@ -10,56 +10,59 @@
  * ambient, diffuse, specular, and shininess.
  */
 struct Material {
-	// Ambient colour of the material.
+  // Ambient colour of the material.
   glm::vec3 ambient;
 
-	// Diffuse colour of the material.
+  // Diffuse colour of the material.
   glm::vec3 diffuse;
 
-	// Specular colour of the material.
+  // Specular colour of the material.
   glm::vec3 specular;
 
-	// Shininess of the material.
+  // Shininess of the material.
   float shininess;
 
-	Texture* diffuseTexture;
+  Texture *diffuseTexture;
 
-	/*
-	 * Default constructor.
-	 * Creates a new material instance.
-	 */
+  Texture *normalTexture = nullptr;
+  bool hasNormal = false;
+
+  /*
+   * Default constructor.
+   * Creates a new material instance.
+   */
   Material()
       : ambient(0.1f, 0.1f, 0.1f), diffuse(Colour::WHITE),
         specular(0.1f, 0.1f, 0.1f), shininess(32.0f), diffuseTexture(nullptr) {}
 
-	/*
-	 * Constructor with all properties.
-	 *
-	 * Parameters:
-	 *	ambient: Ambient colour of the material.
-	 *	diffuse: Diffuse colour of the material.
-	 *	specular: Specular colour of the material.
-	 *	shininess: Shininess of the material.
-	 *	diffuseTexture: Diffuse texture of the material.
-	 */
-	Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
-			 float shininess, Texture* diffuseTexture)
-		: ambient(ambient), diffuse(diffuse), specular(specular),
-		  shininess(shininess), diffuseTexture(diffuseTexture) {}
+  /*
+   * Constructor with all properties.
+   *
+   * Parameters:
+   *	ambient: Ambient colour of the material.
+   *	diffuse: Diffuse colour of the material.
+   *	specular: Specular colour of the material.
+   *	shininess: Shininess of the material.
+   *	diffuseTexture: Diffuse texture of the material.
+   */
+  Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
+           float shininess, Texture *diffuseTexture)
+      : ambient(ambient), diffuse(diffuse), specular(specular),
+        shininess(shininess), diffuseTexture(diffuseTexture) {}
 
-	/*
-	 * Constructor with all properties except diffuseTexture.
-	 *
-	 * Parameters:
-	 *	ambient: Ambient colour of the material.
-	 *	diffuse: Diffuse colour of the material.
-	 *	specular: Specular colour of the material.
-	 *	shininess: Shininess of the material.
-	 */
-	Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
-			 float shininess)
-		: ambient(ambient), diffuse(diffuse), specular(specular),
-		  shininess(shininess), diffuseTexture(nullptr) {}
+  /*
+   * Constructor with all properties except diffuseTexture.
+   *
+   * Parameters:
+   *	ambient: Ambient colour of the material.
+   *	diffuse: Diffuse colour of the material.
+   *	specular: Specular colour of the material.
+   *	shininess: Shininess of the material.
+   */
+  Material(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,
+           float shininess)
+      : ambient(ambient), diffuse(diffuse), specular(specular),
+        shininess(shininess), diffuseTexture(nullptr) {}
 };
 
 /*

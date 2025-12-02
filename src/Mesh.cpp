@@ -40,6 +40,16 @@ Mesh::Mesh(const std::vector<Vertex> &vertices,
                         (void *)offsetof(Vertex, uv));
   // std::cout << "offsetof(Vertex, uv): " << offsetof(Vertex, uv) << std::endl;
 
+  // tangent: location 3
+  glEnableVertexAttribArray(3);
+  glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                        (void *)offsetof(Vertex, tangent));
+
+  // bitangent: location 4
+  glEnableVertexAttribArray(4);
+  glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                        (void *)offsetof(Vertex, bitangent));
+
   glBindVertexArray(0);
 }
 

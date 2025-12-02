@@ -8,7 +8,7 @@
 /*
  * Shader class.
  * Handles shader loading and uniform setting.
- * Layer of abstraction for handling shader related tasks.
+ * Essentialyl a layer of asbtraction / wrapper around shaders or shader programs.
  */
 class Shader {
 public:
