@@ -85,5 +85,5 @@ private:
   GLuint m_id = 0;
 
   // Texture base directory for loading textures.
-  std::string textureBaseDir = "assets/textures/";
+  std::string textureBaseDir = "assets/textures/use/";
 };

@@ -19,6 +19,8 @@ struct Vertex {
   vec3 position;
   vec3 normal;
   vec2 uv;
+  vec3 tangent;
+  vec3 bitangent;
 
   Vertex() = default;
   Vertex(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoord)
@@ -39,4 +41,4 @@ struct Vertex {
  * vec3 position the bug happens, when I define it under vec2 uv (all
  * the way at the bottom) it works fine, but I dont know why.
  */
-static_assert(sizeof(Vertex) == 32, "Vertex struct must be tightly packed");
+static_assert(sizeof(Vertex) == 56, "Vertex struct must be tightly packed");

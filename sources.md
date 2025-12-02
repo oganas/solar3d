@@ -12,3 +12,7 @@ https://antongerdelan.net/opengl/vertexbuffers.html
 https://antongerdelan.net/opengl/shaders.html
 https://www.glfw.org/documentation.html
 https://www.glfw.org/docs/latest/window_guide.html
+https://learnopengl.com/Advanced-Lighting/Normal-Mapping
+https://www.youtube.com/watch?v=TnewxQxtoKs
+https://www.youtube.com/watch?v=LRbgii6mVU4
+https://stackoverflow.com/questions/29042849/implementing-normal-mapping-using-opengl-glsl

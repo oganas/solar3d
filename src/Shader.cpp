@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 /*
- * Took inspiration of parts of the code from the following:
+ * Took inspiration of parts of the code from:
  * https://antongerdelan.net/opengl/shaders.html
  */
 
@@ -29,22 +29,22 @@ Shader::Shader(const std::string &name, const std::string &vertexPath,
 
   // Debug why uniforms were not working / were not being found.
   /*
-GLint activeUniforms = 0;
-glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &activeUniforms);
-std::cout << "Active uniforms: " << activeUniforms << std::endl;
+        GLint activeUniforms = 0;
+        glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &activeUniforms);
+        std::cout << "Active uniforms: " << activeUniforms << std::endl;
 
-if (activeUniforms > 0) {
-for (int i = 0; i < activeUniforms; i++) {
-char name[256];
-GLsizei length;
-GLint size;
-GLenum type;
-glGetActiveUniform(m_id, i, 256, &length, &size, &type, name);
-std::cout << "Uniform " << i << ": " << name << std::endl;
-}
-} else {
-std::cout << "NO uniform found in linked program." << std::endl;
-}
+        if (activeUniforms > 0) {
+        for (int i = 0; i < activeUniforms; i++) {
+        char name[256];
+        GLsizei length;
+        GLint size;
+        GLenum type;
+        glGetActiveUniform(m_id, i, 256, &length, &size, &type, name);
+        std::cout << "Uniform " << i << ": " << name << std::endl;
+        }
+        } else {
+        std::cout << "NO uniform found in linked program." << std::endl;
+        }
   */
 
   GLint success;
@@ -79,6 +79,11 @@ GLint Shader::getUniformLocation(const std::string &name) {
   m_uniformCache[name] = location;
   return location;
 }
+
+/*
+ * Overloaded setUniform() functions sepending on uniform type.
+ * Used to set uniforms in the shader.
+ */
 
 void Shader::setUniform(const std::string &name, int value) {
   glUniform1i(getUniformLocation(name), value);
