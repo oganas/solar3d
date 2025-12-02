@@ -1,8 +1,7 @@
 #include "Model.h"
+#include "Logger.h"
 
-Model::Model(const std::string &path) { 
-	loadModel(path); 
-}
+Model::Model(const std::string &path) { loadModel(path); }
 
 void Model::loadModel(const std::string &path) {
   Assimp::Importer importer;
@@ -18,11 +17,12 @@ void Model::loadModel(const std::string &path) {
 
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
       !scene->mRootNode) {
-    std::cerr << "Failed to load model: " << path << "\nAssimp error: " << importer.GetErrorString() << std::endl;
+    Logger::log("Failed to load model: ", path);
+    Logger::log("Assimp error: ", importer.GetErrorString());
     return;
   } else {
-		std::cout << "Loaded model: " << path << std::endl;
-	}
+    Logger::log("Loaded model: ", path);
+  }
 
   processNode(scene->mRootNode, scene);
 }
@@ -42,11 +42,11 @@ Object Model::processMesh(aiMesh *mesh, const aiScene *scene) {
   std::vector<Vertex> vertices;
   std::vector<GLuint> indices;
 
-	/*
-	 * Iterate through the mesh's vertices and indices and store them in
-	 * the vertices and indices vectors.
-	 * TODO: fill tangent aaand bitangent vectors for normal mapping.
-	 */
+  /*
+   * Iterate through the mesh's vertices and indices and store them in
+   * the vertices and indices vectors.
+   * TODO: fill tangent aaand bitangent vectors for normal mapping.
+   */
   for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
     Vertex vertex;
     vertex.position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y,
@@ -78,7 +78,7 @@ Object Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     vertices.push_back(vertex);
   }
 
-	// Fill indices
+  // Fill indices
   for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
     aiFace face = mesh->mFaces[i];
     for (unsigned int j = 0; j < face.mNumIndices; j++)

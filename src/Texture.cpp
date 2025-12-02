@@ -1,6 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#include "Logger.h"
 #include "Texture.h"
 #include "glad.h"
 
@@ -30,7 +31,8 @@ GLuint Texture::loadTexture(const std::string &texPath) {
       stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 
   if (!data) {
-    std::cerr << "Failed to load texture: " << path << std::endl;
+    Logger::log("Failed to load texture: ", path);
+    Logger::log("STB error: ", stbi_failure_reason());
     return 0;
   }
 
@@ -52,7 +54,7 @@ GLuint Texture::loadTexture(const std::string &texPath) {
 
   stbi_image_free(data);
 
-  std::cout << "Loaded texture: " << path << std::endl;
+  Logger::log("Loaded texture: ", path);
 
   return textureID;
 }
@@ -78,10 +80,13 @@ GLuint Texture::loadCubemap(const std::vector<std::string> &faces) {
 
       glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, width, height,
                    0, format, GL_UNSIGNED_BYTE, data);
+
+      Logger::log("Loaded cubemap texture: ", facePath);
+
       stbi_image_free(data);
     } else {
-      std::cerr << "Cubemap texture failed to load at path: " << faces[i]
-                << std::endl;
+      Logger::log("Failed to load cubemap texture: ", facePath);
+      Logger::log("STB error: ", stbi_failure_reason());
       stbi_image_free(data);
     }
   }
@@ -91,10 +96,6 @@ GLuint Texture::loadCubemap(const std::vector<std::string> &faces) {
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-  for (unsigned int i = 0; i < faces.size(); i++) {
-    std::cout << "Loaded cubemap texture: " << faces[i] << std::endl;
-  }
 
   return textureID;
 }

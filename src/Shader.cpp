@@ -1,4 +1,6 @@
 #include "Shader.h"
+#include "Logger.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -72,9 +74,9 @@ GLint Shader::getUniformLocation(const std::string &name) {
     return m_uniformCache[name];
 
   GLint location = glGetUniformLocation(m_id, name.c_str());
-  if (location == -1)
-    std::cerr << "Uniform '" << name << "' not found in shader '" << m_name
-              << "'!\n";
+  if (location == -1) {
+    Logger::log("Uniform '", name, "' not found in shader '", m_name);
+  }
 
   m_uniformCache[name] = location;
   return location;
