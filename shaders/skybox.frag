@@ -1,12 +1,12 @@
 #version 420 core
-out vec4 FragColor;
 
-in vec3 TexCoords;
+out vec4 fragColour;
 
-uniform samplerCube skybox; // Declare a cubemap sampler
+in vec3 texCoords;
+
+uniform samplerCube skybox;
 
 void main()
 {
-    // Sample the cubemap using the 3D texture coordinates
-    FragColor = texture(skybox, TexCoords);
+    fragColour = texture(skybox, texCoords);
 }

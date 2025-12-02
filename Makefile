@@ -1,18 +1,19 @@
 CXX = g++
-CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm
+CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp
 
 SRC_DIR = src
-EXTERNAL_DIR = external/imgui
+EXTERNAL_IMGUI_DIR = external/imgui
+EXTERNAL_GLAD_DIR = external/glad
 BUILD_DIR = build
 DIST_DIR = dist
 
 # gather all source files
-SRC = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.c) $(wildcard $(EXTERNAL_DIR)/*.cpp)
+SRC = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.c) $(wildcard $(EXTERNAL_DIR)/*.cpp) $(wildcard $(EXTERNAL_GLAD_DIR)/*.c)
 
 # linux build
 LINUX_BUILD_DIR = $(BUILD_DIR)/linux
 LINUX_OBJ = $(patsubst %.cpp,$(LINUX_BUILD_DIR)/%.o,$(SRC))
-LINUX_LDFLAGS = -lglfw -ldl -lGL
+LINUX_LDFLAGS = -lglfw -ldl -lGL -lassimp
 LINUX_OUT = $(LINUX_BUILD_DIR)/app
 
 linux: $(LINUX_OUT)
@@ -26,8 +27,8 @@ $(LINUX_BUILD_DIR)/%.o: %.cpp
 
 # windows cross compile
 WIN_CXX = x86_64-w64-mingw32-g++
-WIN_CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm
-WIN_LDFLAGS = -Llib/win -lglfw3 -lopengl32 -lgdi32 -luser32
+WIN_CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp/include
+WIN_LDFLAGS = -Llib/win -lassimp -lglfw3 -lopengl32 -lgdi32 -luser32 -lz
 
 WIN_BUILD_DIR = $(BUILD_DIR)/win
 WIN_OBJ = $(patsubst %.cpp,$(WIN_BUILD_DIR)/%.o,$(SRC))

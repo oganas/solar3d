@@ -5,8 +5,15 @@ todo.md
 # app
 *.o
 
-*.obj
-*.mtl
+assets/models/*.obj
+assets/models/*.mtl
+assets/models/*.dae
+assets/models/*.fbx
+assets/models/*.blend
+assets/models/*.3ds
+assets/models/*.glb
+assets/models/*.gltf
+assets/models/*.bin
 
 # *.exe
 # *.out

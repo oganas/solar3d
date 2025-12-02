@@ -1,18 +1,41 @@
 #pragma once
 
-#include "GLFW/WrapperGLFW.h"
 #include "Mesh.h"
-#include <glm/glm.hpp>
+#include "Texture.h"
+#include "glad.h"
 #include <string>
+#include <vector>
 
+/*
+ * Skybox class.
+ *
+ * Represents a skybox background.
+ *
+ * Partially inspired by:
+ * https://www.ogldev.org/www/tutorial25/tutorial25.html
+ */
 class Skybox {
 public:
-  Skybox(GLWrapper *glw, const std::vector<std::string> &faces);
-  void render(const glm::mat4 &view, const glm::mat4 &projection);
+  // Skybox cubemap texture.
+  Texture *cubemapTexture;
+
+  // Skybox mesh.
+  Mesh mesh;
+
+  /*
+   * Creates a skybox instance.
+   */
+  Skybox();
+
+  /*
+   * Creates a skybox with the given faces.
+   */
+  Skybox(const std::vector<std::string> &faces);
+
+  /*
+   * Draws the skybox.
+   */
+  void draw() const;
 
 private:
-  GLuint program;
-  GLuint viewId, projectionId, samplerId;
-  GLuint cubemapTexture;
-  Mesh cubeMesh;
 };
