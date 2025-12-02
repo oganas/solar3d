@@ -58,7 +58,7 @@ GLuint Texture::loadTexture(const std::string &texPath) {
 }
 
 /*
- * Partially inspired by:
+ * Used the following for help and inspiration:
  * https://www.ogldev.org/www/tutorial25/tutorial25.html
  */
 GLuint Texture::loadCubemap(const std::vector<std::string> &faces) {

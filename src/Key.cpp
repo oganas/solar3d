@@ -1,7 +1,7 @@
 #include "Key.h"
 
 /*
- * Array of GLFW key int macros
+ * Array of GLFW key int macros.
  *
  * !!! This was generated using AI. !!!
  */

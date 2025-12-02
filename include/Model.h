@@ -19,10 +19,11 @@
  * around a mesh. It can be externally loaded from a file or internally created.
  * This is very inefficient but oh well.
  *
- * Partially inspired by:
+ * Used the following for help and inspiration:
  * https://learnopengl.com/Model-Loading/Assimp
  * https://www.youtube.com/watch?v=sP_kiODC25Q
  * https://www.mbsoftworks.sk/tutorials/opengl3/20-assimp-model-loading/
+ * https://www.ogldev.org/www/tutorial22/tutorial22.html
  */
 class Model {
 public:

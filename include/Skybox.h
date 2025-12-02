@@ -11,7 +11,7 @@
  *
  * Represents a skybox background.
  *
- * Partially inspired by:
+ * Used the following for help and inspiration:
  * https://www.ogldev.org/www/tutorial25/tutorial25.html
  */
 class Skybox {

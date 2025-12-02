@@ -37,12 +37,13 @@ Light light(glm::vec3(0.7f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f));
 Texture crateTex("crate", "../crate.png");
 Texture sunTex("sun", "planets/sun_diffuse.jpg");
 Texture earthTex("earth", "planets/earth_diffuse.jpg");
+Texture earthTexNormal("earthNormal", "planets/earth_normal2.jpg");
 
 // Skybox
 Skybox space;
 
 // Models
-Model model("assets/models/use/rocket.obj");
+Model model("assets/models/use/spaceship.obj");
 
 /*
  * Render logic.
@@ -74,6 +75,8 @@ void start() {
 
   sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
   sphere.material.diffuseTexture = &earthTex;
+	sphere.material.normalTexture = &earthTexNormal;
+	sphere.material.hasNormal = true;
   sphere.material.specular = glm::vec3(0.01f);
   sphere.material.shininess = 1.0f;
 
@@ -83,7 +86,6 @@ void start() {
   light.position = sun.transform.position;
 
   model.setPosition(vec3(0.0f, 0.0f, 0.0f));
-	model.setScale(vec3(0.01f));
 
   /*
    * Used the following to generate the faces of the cubemap:

@@ -12,7 +12,7 @@
  * Creates mesh objects.
  * Contains the vertices and indices of a mesh.
  *
- * Partially inspired by:
+ * Used the following for help and inspiration:
  * source: https://learnopengl.com/Model-Loading/Mesh
  */
 class Mesh {
@@ -54,7 +54,7 @@ private:
 /*
  * Namespace containing mesh primitives such as cube, sphere, and torus.
  *
- * !!! These 3 functions were generated using AI. !!!
+ * !!! These functions were generated using AI. !!!
  */
 namespace MeshPrimitives {
 /*
@@ -115,49 +115,103 @@ inline Mesh cube(float size = 1.0f) {
  */
 inline Mesh sphere(float radius = 1.0f, int stacks = 32, int slices = 64) {
   std::vector<Vertex> vertices;
-  std::vector<GLuint> indices;
+  std::vector<unsigned int> indices;
 
-  for (int i = 0; i <= stacks; i++) {
-    float v = float(i) / stacks;
-    float phi = glm::pi<float>() * v;
+  const float PI = 3.14159265359f;
 
-    float sinPhi = sin(phi);
-    float cosPhi = cos(phi);
+  // ----------------------------------
+  // Generate positions, normals, UVs
+  // ----------------------------------
+  for (int i = 0; i <= stacks; ++i) {
+    float stackAngle = PI / 2 - (float)i * (PI / stacks);
+    float xy = radius * cosf(stackAngle);
+    float z = radius * sinf(stackAngle);
 
-    for (int j = 0; j <= slices; j++) {
-      float u = float(j) / slices;
-      float theta = glm::two_pi<float>() * u;
+    for (int j = 0; j <= slices; ++j) {
+      float sectorAngle = (float)j * (2.0f * PI / slices);
 
-      float x = radius * sinPhi * cos(theta);
-      float y = radius * cosPhi;
-      float z = radius * sinPhi * sin(theta);
+      float x = xy * cosf(sectorAngle);
+      float y = xy * sinf(sectorAngle);
 
-      glm::vec3 pos(x, y, z);
-      glm::vec3 normal = glm::normalize(pos);
+      Vertex v{};
+      v.position = glm::vec3(x, y, z);
+      v.normal = glm::normalize(glm::vec3(x, y, z));
+      v.uv = glm::vec2((float)j / slices, (float)i / stacks);
+      v.tangent = glm::vec3(0);
+      v.bitangent = glm::vec3(0);
 
-      vertices.emplace_back(pos, normal, glm::vec2(u, 1.0f - v));
+      vertices.push_back(v);
     }
   }
 
-  for (int i = 0; i < stacks; i++) {
-    for (int j = 0; j < slices; j++) {
+  // ----------------------------------
+  // Generate indices
+  // ----------------------------------
+  for (int i = 0; i < stacks; ++i) {
+    int k1 = i * (slices + 1);
+    int k2 = k1 + slices + 1;
 
-      int first = i * (slices + 1) + j;
-      int second = first + slices + 1;
-
-      indices.push_back(first);
-      indices.push_back(second);
-      indices.push_back(first + 1);
-
-      indices.push_back(second);
-      indices.push_back(second + 1);
-      indices.push_back(first + 1);
+    for (int j = 0; j < slices; ++j, ++k1, ++k2) {
+      if (i != 0) {
+        indices.push_back(k1);
+        indices.push_back(k2);
+        indices.push_back(k1 + 1);
+      }
+      if (i != (stacks - 1)) {
+        indices.push_back(k1 + 1);
+        indices.push_back(k2);
+        indices.push_back(k2 + 1);
+      }
     }
   }
 
-  Mesh sphere(vertices, indices);
+  // ----------------------------------
+  // Tangent + bitangent generation
+  // ----------------------------------
+  for (size_t i = 0; i < indices.size(); i += 3) {
+    Vertex &v0 = vertices[indices[i]];
+    Vertex &v1 = vertices[indices[i + 1]];
+    Vertex &v2 = vertices[indices[i + 2]];
 
-  return sphere;
+    glm::vec3 edge1 = v1.position - v0.position;
+    glm::vec3 edge2 = v2.position - v0.position;
+
+    glm::vec2 uv1 = v1.uv - v0.uv;
+    glm::vec2 uv2 = v2.uv - v0.uv;
+
+    float denom = uv1.x * uv2.y - uv2.x * uv1.y;
+    float f = (fabs(denom) < 1e-6f) ? 1.0f : 1.0f / denom;
+
+    glm::vec3 tangent(f * (uv2.y * edge1.x - uv1.y * edge2.x),
+                      f * (uv2.y * edge1.y - uv1.y * edge2.y),
+                      f * (uv2.y * edge1.z - uv1.y * edge2.z));
+
+    glm::vec3 bitangent(f * (-uv2.x * edge1.x + uv1.x * edge2.x),
+                        f * (-uv2.x * edge1.y + uv1.x * edge2.y),
+                        f * (-uv2.x * edge1.z + uv1.x * edge2.z));
+
+    v0.tangent += tangent;
+    v1.tangent += tangent;
+    v2.tangent += tangent;
+
+    v0.bitangent += bitangent;
+    v1.bitangent += bitangent;
+    v2.bitangent += bitangent;
+  }
+
+  // ----------------------------------
+  // Orthonormalize TBN
+  // ----------------------------------
+  for (auto &v : vertices) {
+    glm::vec3 T =
+        glm::normalize(v.tangent - v.normal * glm::dot(v.normal, v.tangent));
+    glm::vec3 B = glm::normalize(glm::cross(v.normal, T));
+
+    v.tangent = T;
+    v.bitangent = B;
+  }
+
+  return Mesh(vertices, indices);
 }
 
 /*
