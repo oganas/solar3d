@@ -17,6 +17,7 @@
  *
  * A model is a collection of objects. An object is a single unit or a wrapper
  * around a mesh. It can be externally loaded from a file or internally created.
+ * This is very inefficient but oh well.
  *
  * Partially inspired by:
  * https://learnopengl.com/Model-Loading/Assimp
@@ -25,21 +26,95 @@
  */
 class Model {
 public:
+	/*
+	 * Creates a new model instance.
+	 *
+	 * Parameters:
+	 *	path: Path to the model file.
+	 */
   Model(const std::string &path);
 
+	/*
+	 * Sets the position of the model.
+	 *
+	 * Parameters:
+	 *	position: Position of the model.
+	 */
   void setPosition(const glm::vec3 &position);
+
+	/*
+	 * Sets the rotation of the model.
+	 *
+	 * Parameters:
+	 *	rotation: Rotation of the model.
+	 */
   void setRotation(const glm::vec3 &rotation);
+
+	/*
+	 * Sets the scale of the model.
+	 *
+	 * Parameters:
+	 *	scale: Scale of the model.
+	 */
   void setScale(const glm::vec3 &scale);
 
+	/*
+	 * Gets the position of the model.
+	 *
+	 * Returns:
+	 *	The position of the model.
+	 */
   glm::vec3 getPosition() const;
+
+	/*
+	 * Gets the rotation of the model.
+	 *
+	 * Returns:
+	 *	The rotation of the model.
+	 */
   glm::vec3 getRotation() const;
+
+	/*
+	 * Gets the scale of the model.
+	 *
+	 * Returns:
+	 *	The scale of the model.
+	 */
   glm::vec3 getScale() const;
 
+	/*
+	 * Gets the objects of the model.
+	 *
+	 * Returns:
+	 *	The objects of the model.
+	 */
   std::vector<Object> getObjects() const;
 
 private:
+	/*
+	 * Loads a model.
+	 *
+	 * Parameters:
+	 *	path: Path to the model file.
+	 */
   void loadModel(const std::string &path);
+
+	/*
+	 * Processes a node in the assimp scene.
+	 *
+	 * Parameters:
+	 *	node: Node to process.
+	 *	scene: Scene to process.
+	 */
   void processNode(aiNode *node, const aiScene *scene);
+
+	/*
+	 * Processes assimp mesh.
+	 *
+	 * Parameters:
+	 *	mesh: Mesh to process.
+	 *	scene: Scene to process.
+	 */
   Object processMesh(aiMesh *mesh, const aiScene *scene);
 
   /*
