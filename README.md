@@ -2,14 +2,15 @@
 
 ## General features:
 
-- Phong lighting model implemented (ambient, diffuse, specular components).
-- 2D Texture Mapping.
-- Cube map scene skybox.
-- Primitive mesh generation (sphere, cube, etc.).
-- External .obj model and .mtl material loading (via tinyobjloader).
-- Frame rate independent physics.
-- Modular code structure with clear separation of concerns using dedicated classes: Camera, Scene, Skybox, TextureManager, etc.
-- ImGui Integration for UI/Controls and FPS display.
+- Modular code structure.
+- Basic lighting model.
+- External 3D model loading using Assimp.
+- Object component system (Mesh, Transform, etc.)
+- Primitive mesh generation (Cube, Sphere, Torus, etc.)
+- World skybox cubemap texture loading.
+- Object material customisation (Roughness, Metalness, Colour, Light interaction, etc.)
+- Diffuse Texture mapping & Normal texture mapping.
+- Easy to use abstractions on top of OpenGL.
 
 ## Run:
 
