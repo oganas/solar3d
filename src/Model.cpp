@@ -1,6 +1,8 @@
 #include "Model.h"
 
-Model::Model(const std::string &path) { loadModel(path); }
+Model::Model(const std::string &path) { 
+	loadModel(path); 
+}
 
 void Model::loadModel(const std::string &path) {
   Assimp::Importer importer;
@@ -16,9 +18,11 @@ void Model::loadModel(const std::string &path) {
 
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
       !scene->mRootNode) {
-    std::cerr << "Assimp error: " << importer.GetErrorString() << std::endl;
+    std::cerr << "Failed to load model: " << path << "\nAssimp error: " << importer.GetErrorString() << std::endl;
     return;
-  }
+  } else {
+		std::cout << "Loaded model: " << path << std::endl;
+	}
 
   processNode(scene->mRootNode, scene);
 }

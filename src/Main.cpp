@@ -43,7 +43,9 @@ Texture earthTexNormal("earthNormal", "planets/earth_normal2.jpg");
 Skybox space;
 
 // Models
-Model model("assets/models/use/spaceship.obj");
+Model spaceship("assets/models/use/spaceship.obj");
+Model rocket("assets/models/use/rocket.obj");
+Model tieFighter("assets/models/use/scene.gltf");
 
 /*
  * Render logic.
@@ -54,7 +56,9 @@ void render(Window *window) {
   renderer.renderObject(shader, sphere, light, false);
   renderer.renderObject(shader, sun, light, true);
   renderer.renderObject(shader, cube, light, false);
-  renderer.renderModel(shader, model, light, false);
+  renderer.renderModel(shader, spaceship, light, false);
+  renderer.renderModel(shader, rocket, light, false);
+  renderer.renderModel(shader, tieFighter, light, false);
 }
 
 /*
@@ -75,8 +79,8 @@ void start() {
 
   sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
   sphere.material.diffuseTexture = &earthTex;
-	sphere.material.normalTexture = &earthTexNormal;
-	sphere.material.hasNormal = true;
+  sphere.material.normalTexture = &earthTexNormal;
+  sphere.material.hasNormal = true;
   sphere.material.specular = glm::vec3(0.01f);
   sphere.material.shininess = 1.0f;
 
@@ -85,7 +89,12 @@ void start() {
 
   light.position = sun.transform.position;
 
-  model.setPosition(vec3(0.0f, 0.0f, 0.0f));
+  spaceship.setPosition(vec3(0.0f, 0.0f, 0.0f));
+
+  rocket.setPosition(vec3(0.0f, 0.0f, 10.0f));
+  rocket.setScale(vec3(0.01f));
+
+  tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
 
   /*
    * Used the following to generate the faces of the cubemap:
@@ -140,9 +149,6 @@ void update(float dt) {
   }
 
   cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
-
-  model.setPosition(model.getPosition() + vec3(-0.5f, 0.0f, 0.0f) * dt);
-
 }
 
 int main() {
