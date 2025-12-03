@@ -37,8 +37,15 @@ Light light(glm::vec3(0.7f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f));
 // Textures
 Texture crateTex("crate", "../crate.png");
 Texture sunTex("sun", "planets/sun_diffuse.jpg");
+
 Texture earthTex("earth", "planets/earth_diffuse.jpg");
-Texture earthTexNormal("earthNormal", "planets/earth_normal2.jpg");
+Texture earthTexNormal("earthNormal", "planets/earth_normal.jpg");
+
+Texture rocket2Tex("rocket2", "RedShip_Color.png");
+Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
+Texture rocket2LandingGearTex("rocket2LandingGear", "LandingGear1_Color.png");
+Texture rocket2LandingGearTexNormal("rocket2LandingGearNormal",
+                                     "LandingGear1_Normal_OpenGL.png");
 
 // Skybox
 Skybox space;
@@ -47,6 +54,8 @@ Skybox space;
 Model spaceship("assets/models/use/spaceship.obj");
 Model rocket("assets/models/use/rocket.obj");
 Model tieFighter("assets/models/use/scene.gltf");
+
+Model rocket2("assets/models/use/Body.fbx");
 
 /*
  * Render logic.
@@ -60,6 +69,7 @@ void render(Window *window) {
   renderer.renderModel(shader, spaceship, light, false);
   renderer.renderModel(shader, rocket, light, false);
   renderer.renderModel(shader, tieFighter, light, false);
+  renderer.renderModel(shader, rocket2, light, false);
 }
 
 /*
@@ -71,9 +81,9 @@ void start() {
   window.setRenderCallback(render);
   window.setBackgroundColour(Colour::BLACK);
 
-  camera.sensitivity = 100.0f;
+  camera.sensitivity = 120.0f;
   camera.position = vec3(0.0f, 0.0f, 30.0f);
-  camera.movementSpeed = 5.0f;
+  camera.movementSpeed = 20.0f;
 
   cube.transform.position = vec3(-10.0f, 0.0f, 0.0f);
   cube.material.diffuseTexture = &crateTex;
@@ -96,6 +106,30 @@ void start() {
   rocket.setScale(vec3(0.01f));
 
   tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
+
+  rocket2.appendModel("assets/models/use/LandingGear1.fbx");
+  rocket2.appendModel("assets/models/use/LandingGear1.fbx");
+
+  rocket2.setPosition(vec3(0.0f, 0.0f, -30.0f));
+  rocket2.setScale(vec3(0.1f));
+
+	rocket2.objects[0].transform.rotation += vec3(0.0f, 90.0f, 0.0f);
+  rocket2.objects[0].material.diffuseTexture = &rocket2Tex;
+  rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
+  rocket2.objects[0].material.hasNormal = true;
+
+	rocket2.objects[1].transform.position += vec3(0.0f, -1.1f, 0.0f);
+  rocket2.objects[1].material.diffuseTexture = &rocket2LandingGearTex;
+  rocket2.objects[1].material.normalTexture = &rocket2LandingGearTexNormal;
+  rocket2.objects[1].material.hasNormal = true;
+
+	// other side
+	rocket2.objects[2].transform.position += vec3(0.0f, -1.1f, 0.0f);
+	rocket2.objects[2].transform.scale *= vec3(1.0f, 1.0f, -1.0f);
+  rocket2.objects[2].material.diffuseTexture = &rocket2LandingGearTex;
+  rocket2.objects[2].material.normalTexture = &rocket2LandingGearTexNormal;
+  rocket2.objects[2].material.hasNormal = true;
+
 
   /*
    * Used the following to generate the faces of the cubemap:

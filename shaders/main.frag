@@ -56,6 +56,7 @@ void main() {
 	 * https://www.youtube.com/watch?v=TnewxQxtoKs
    * https://www.youtube.com/watch?v=LRbgii6mVU4
    * https://stackoverflow.com/questions/29042849/implementing-normal-mapping-using-opengl-glsl
+   * https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
 	 */
   vec3 norm = normalize(fragNormal);
   if (material.hasNormal == 1) {

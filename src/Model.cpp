@@ -27,6 +27,36 @@ void Model::loadModel(const std::string &path) {
   processNode(scene->mRootNode, scene);
 }
 
+void Model::appendModel(const std::string &path) {
+  // 1. Create a new Assimp importer instance for the new file.
+  Assimp::Importer importer;
+
+  // 2. Read the new model file. We use the same processing flags
+  //    (Triangulate, FlipUVs, CalcTangentSpace) as we assume you used
+  //    for the main model.
+  const aiScene *scene =
+      importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs |
+                                  aiProcess_CalcTangentSpace);
+
+  // 3. Check for loading errors.
+  if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
+      !scene->mRootNode) {
+    std::cerr << "ASSIMP Error loading appended model: "
+              << importer.GetErrorString() << std::endl;
+    return;
+  }
+
+  // 4. Use your existing recursive processing function on the new scene's root
+  // node.
+  //    Crucially, your processNode function *appends* to the 'objects' vector,
+  //    so the new meshes will be added to the rocket's existing list of
+  //    objects.
+  processNode(scene->mRootNode, scene);
+
+  // After this function returns, the landing gear's objects are now part of the
+  // rocket model.
+}
+
 void Model::processNode(aiNode *node, const aiScene *scene) {
   for (unsigned int i = 0; i < node->mNumMeshes; i++) {
     aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
