@@ -272,15 +272,33 @@ void Model::setPosition(const glm::vec3 &position) {
   }
 }
 
+void Model::updatePosition(const glm::vec3 &position) {
+  for (auto &obj : objects) {
+    obj.transform.position += position;
+  }
+}
+
 void Model::setRotation(const glm::vec3 &rotation) {
   for (auto &obj : objects) {
     obj.setRotation(rotation);
   }
 }
 
+void Model::updateRotation(const glm::vec3 &rotation) {
+  for (auto &obj : objects) {
+    obj.transform.rotation += rotation;
+  }
+}
+
 void Model::setScale(const glm::vec3 &scale) {
   for (auto &obj : objects) {
     obj.setScale(scale);
+  }
+}
+
+void Model::updateScale(const glm::vec3 &scale) {
+  for (auto &obj : objects) {
+    obj.transform.scale += scale;
   }
 }
 

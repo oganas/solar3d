@@ -9,7 +9,7 @@
  */
 class Logger {
 public:
-  static inline bool isEnabled = false;
+  static inline bool isEnabled = true;
 
   // Base case function (non-recursive)
   static void log_impl() {

@@ -52,6 +52,14 @@ public:
    */
   void setPosition(const glm::vec3 &position);
 
+	/*
+	 * Updates the position of the model.
+	 *
+	 * Parameters:
+	 *	position: Position of the model.
+	 */
+	void updatePosition(const glm::vec3 &position);
+
   /*
    * Sets the rotation of the model.
    *
@@ -60,6 +68,14 @@ public:
    */
   void setRotation(const glm::vec3 &rotation);
 
+	/*
+	 * Updates the rotation of the model.
+	 *
+	 * Parameters:
+	 *	rotation: Rotation of the model.
+	 */
+	void updateRotation(const glm::vec3 &rotation);
+
   /*
    * Sets the scale of the model.
    *
@@ -67,6 +83,14 @@ public:
    *	scale: Scale of the model.
    */
   void setScale(const glm::vec3 &scale);
+
+	/*
+	 * Updates the scale of the model.
+	 *
+	 * Parameters:
+	 *	scale: Scale of the model.
+	 */
+	void updateScale(const glm::vec3 &scale);
 
   /*
    * Gets the position of the model.
