@@ -99,14 +99,14 @@ void setupPlanets() {
 
   const float PLANET_SIZE_MULTIPLIER = 20.0f;
 
-  const float MERCURY_AU = 2.73f;   // 0.39 * 7
-  const float VENUS_AU = 5.04f;     // 0.72 * 7
-  const float EARTH_AU = 7.00f;     // 1.00 * 7
-  const float MARS_AU = 10.64f;     // 1.52 * 7
-  const float JUPITER_AU = 36.40f;  // 5.20 * 7
-  const float SATURN_AU = 67.06f;   // 9.58 * 7
-  const float URANUS_AU = 134.61f;  // 19.23 * 7
-  const float NEPTUNE_AU = 210.70f; // 30.10 * 7
+  const float MERCURY_AU = 2.73f;   
+  const float VENUS_AU = 5.04f;     
+  const float EARTH_AU = 7.00f;     
+  const float MARS_AU = 10.64f;  
+  const float JUPITER_AU = 36.40f;  
+  const float SATURN_AU = 67.06f;   
+  const float URANUS_AU = 134.61f; 
+  const float NEPTUNE_AU = 210.70f;
 
   const float SUN_REL_SCALE = 5.0f * PLANET_SIZE_MULTIPLIER;
   const float MERCURY_REL_SCALE = 0.25f * PLANET_SIZE_MULTIPLIER;
