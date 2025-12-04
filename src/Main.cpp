@@ -1,5 +1,4 @@
 #include "Input.h"
-#include "Logger.h"
 #include "Material.h"
 #include "Mesh.h"
 #include "Model.h"
@@ -10,24 +9,22 @@
 #include "Window.h"
 
 #include <chrono>
+#include <cstdlib>
+#include <ctime>
 
-// Core
 Window window(1280, 720, "solar system");
 Input input(window);
 Camera camera;
 Renderer renderer(window, camera);
 
-// Shaders
 Shader shader("mainShader", "shaders/main.vert", "shaders/main.frag");
 Shader skyboxShader("skyboxShader", "shaders/skybox.vert",
                     "shaders/skybox.frag");
 
-// Meshes
 Mesh cubeMesh = MeshPrimitives::cube();
 Mesh planetMesh = MeshPrimitives::sphere();
 Mesh saturnRingMesh = MeshPrimitives::torus(1.3, 0.3);
 
-// Objects
 Object sun("sun", planetMesh);
 Object moon("moon", planetMesh);
 Object mercury("mercury", planetMesh);
@@ -40,10 +37,8 @@ Object uranus("uranus", planetMesh);
 Object neptune("neptune", planetMesh);
 Object saturnRing("saturnRing", saturnRingMesh);
 
-// Lights
 Light light(glm::vec3(0.7f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f));
 
-// Textures
 Texture sunTex("sun", "planets/sun_diffuse.jpg");
 Texture moonTex("moon", "planets/moon_diffuse.jpg");
 Texture mercuryTex("mercury", "planets/mercury_diffuse.jpg");
@@ -60,19 +55,88 @@ Texture saturnRingTex("saturnRing", "planets/saturn_ring_diffuse2.jpg");
 Texture rocket2Tex("rocket2", "RedShip_Color.png");
 Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
 
-// Skybox
 Skybox space;
 
-// Models
 Model spaceship("assets/models/use/spaceship.obj");
 Model rocket("assets/models/use/rocket.obj");
 Model tieFighter("assets/models/use/scene.gltf");
 Model rocket2("assets/models/use/Body.fbx");
 
-/*
- * Render logic.
- * This is where rendering objects is handled.
- */
+static float totalSimulationTime = 0.0f;
+
+static const float ORBITAL_SPEED_MULTIPLIER = 0.07f;
+
+static const float AXIAL_SPEED_MULTIPLIER = 0.07f;
+
+struct PlanetData {
+  Object &object;
+  float orbitalSpeed;
+  float axialSpeed;
+  float orbitalRadius;
+};
+
+void updatePlanet(PlanetData &data, float dt, float time) {
+  data.object.transform.rotation.z += data.axialSpeed * dt;
+
+  float angle = time * data.orbitalSpeed;
+
+  data.object.transform.position.x = data.orbitalRadius * cos(angle);
+  data.object.transform.position.z = data.orbitalRadius * sin(angle);
+}
+
+void handleSolarSystemMotion(float dt) {
+  totalSimulationTime += dt;
+
+  const float BASE_AU_DISTANCE = 50.0f;
+  const float MERCURY_AU = 2.73f;
+  const float VENUS_AU = 5.04f;
+  const float EARTH_AU = 7.00f;
+  const float MARS_AU = 10.64f;
+  const float JUPITER_AU = 36.40f;
+  const float SATURN_AU = 67.06f;
+  const float URANUS_AU = 134.61f;
+  const float NEPTUNE_AU = 210.70f;
+  const float MOON_ORBIT_DISTANCE = 1.0f * 20.0f;
+
+  PlanetData planets[] = {
+      {sun, 0.0f, 0.05f * AXIAL_SPEED_MULTIPLIER, 0.0f},
+      {mercury, 1.8f * ORBITAL_SPEED_MULTIPLIER, 1.5f * AXIAL_SPEED_MULTIPLIER,
+       MERCURY_AU * BASE_AU_DISTANCE},
+      {venus, 1.1f * ORBITAL_SPEED_MULTIPLIER, 0.1f * AXIAL_SPEED_MULTIPLIER,
+       VENUS_AU * BASE_AU_DISTANCE},
+      {earth, 1.0f * ORBITAL_SPEED_MULTIPLIER, 2.0f * AXIAL_SPEED_MULTIPLIER,
+       EARTH_AU * BASE_AU_DISTANCE},
+      {mars, 0.8f * ORBITAL_SPEED_MULTIPLIER, 1.8f * AXIAL_SPEED_MULTIPLIER,
+       MARS_AU * BASE_AU_DISTANCE},
+      {jupiter, 0.4f * ORBITAL_SPEED_MULTIPLIER, 3.5f * AXIAL_SPEED_MULTIPLIER,
+       JUPITER_AU * BASE_AU_DISTANCE},
+      {saturn, 0.3f * ORBITAL_SPEED_MULTIPLIER, 3.0f * AXIAL_SPEED_MULTIPLIER,
+       SATURN_AU * BASE_AU_DISTANCE},
+      {uranus, 0.2f * ORBITAL_SPEED_MULTIPLIER, 2.5f * AXIAL_SPEED_MULTIPLIER,
+       URANUS_AU * BASE_AU_DISTANCE},
+      {neptune, 0.15f * ORBITAL_SPEED_MULTIPLIER, 2.2f * AXIAL_SPEED_MULTIPLIER,
+       NEPTUNE_AU * BASE_AU_DISTANCE}};
+
+  for (auto &planet : planets) {
+    updatePlanet(planet, dt, totalSimulationTime);
+  }
+
+  saturnRing.transform.position = saturn.transform.position;
+  saturnRing.transform.rotation.y += planets[6].axialSpeed * dt;
+
+  float moonOrbitSpeed = 6.0f * ORBITAL_SPEED_MULTIPLIER;
+  float moonAngle = totalSimulationTime * moonOrbitSpeed;
+
+  float moonRelativeX = MOON_ORBIT_DISTANCE * cos(moonAngle);
+  float moonRelativeZ = MOON_ORBIT_DISTANCE * sin(moonAngle);
+
+  moon.transform.position.x = earth.transform.position.x + moonRelativeX;
+  moon.transform.position.y = earth.transform.position.y;
+  moon.transform.position.z = earth.transform.position.z + moonRelativeZ;
+
+  moon.transform.rotation.y += 2.0f * AXIAL_SPEED_MULTIPLIER * dt;
+}
+
 void render(Window *window) {
   renderer.renderSkybox(skyboxShader, space);
 
@@ -99,13 +163,13 @@ void setupPlanets() {
 
   const float PLANET_SIZE_MULTIPLIER = 20.0f;
 
-  const float MERCURY_AU = 2.73f;   
-  const float VENUS_AU = 5.04f;     
-  const float EARTH_AU = 7.00f;     
-  const float MARS_AU = 10.64f;  
-  const float JUPITER_AU = 36.40f;  
-  const float SATURN_AU = 67.06f;   
-  const float URANUS_AU = 134.61f; 
+  const float MERCURY_AU = 2.73f;
+  const float VENUS_AU = 5.04f;
+  const float EARTH_AU = 7.00f;
+  const float MARS_AU = 10.64f;
+  const float JUPITER_AU = 36.40f;
+  const float SATURN_AU = 67.06f;
+  const float URANUS_AU = 134.61f;
   const float NEPTUNE_AU = 210.70f;
 
   const float SUN_REL_SCALE = 5.0f * PLANET_SIZE_MULTIPLIER;
@@ -202,14 +266,12 @@ void setupPlanets() {
   neptune.material.shininess = 1.0f;
 }
 
-/*
- * Initialisation logic.
- * This is where the window is set up and the camera is initialised.
- * + anything else that needs to be initialised.
- */
 void start() {
   window.setRenderCallback(render);
   window.setBackgroundColour(Colour::BLACK);
+
+  srand(static_cast<unsigned int>(time(NULL)));
+  totalSimulationTime = static_cast<float>(rand() % 1000);
 
   camera.sensitivity = 120.0f;
   camera.position = vec3(0.0f, 0.0f, 300.0f);
@@ -251,12 +313,9 @@ void start() {
   space = Skybox(faces);
 }
 
-/*
- * Program logic.
- * This is where the main logic is handled.
- * + anything else that needs to be updated every frame.
- */
 void update(float dt) {
+  handleSolarSystemMotion(dt);
+
   if (input.isKeyDown(Key::W)) {
     camera.move(Direction::FORWARD, dt);
   }
@@ -311,7 +370,6 @@ void update(float dt) {
 int main() {
   start();
 
-  // last frame time
   auto last = std::chrono::high_resolution_clock::now();
 
   while (window.update()) {
