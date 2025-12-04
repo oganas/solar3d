@@ -4,8 +4,8 @@
 #include <glm/gtc/constants.hpp>
 
 static float totalSimulationTime = 0.0f;
-static const float ORBITAL_SPEED_MULTIPLIER = 0.07f;
-static const float AXIAL_SPEED_MULTIPLIER = 0.07f;
+static const float ORBITAL_SPEED_MULTIPLIER = 0.05f;
+static const float AXIAL_SPEED_MULTIPLIER = 0.05f;
 
 void updatePlanet(PlanetData &data, float dt, float time) {
   data.object.transform.rotation.z += data.axialSpeed * dt;
@@ -32,11 +32,11 @@ void SolarSystem::handleSolarSystemMotion(float dt) {
 
   PlanetData planets[] = {
       {sun, 0.0f, 0.05f * AXIAL_SPEED_MULTIPLIER, 0.0f},
-      {mercury, 1.8f * ORBITAL_SPEED_MULTIPLIER, 1.5f * AXIAL_SPEED_MULTIPLIER,
+      {mercury, 1.2f * ORBITAL_SPEED_MULTIPLIER, 0.9f * AXIAL_SPEED_MULTIPLIER,
        MERCURY_AU * BASE_AU_DISTANCE},
-      {venus, 1.1f * ORBITAL_SPEED_MULTIPLIER, 0.1f * AXIAL_SPEED_MULTIPLIER,
+      {venus, 0.5f * ORBITAL_SPEED_MULTIPLIER, 0.1f * AXIAL_SPEED_MULTIPLIER,
        VENUS_AU * BASE_AU_DISTANCE},
-      {earth, 1.0f * ORBITAL_SPEED_MULTIPLIER, 2.0f * AXIAL_SPEED_MULTIPLIER,
+      {earth, 0.4f * ORBITAL_SPEED_MULTIPLIER, 1.3f * AXIAL_SPEED_MULTIPLIER,
        EARTH_AU * BASE_AU_DISTANCE},
       {mars, 0.8f * ORBITAL_SPEED_MULTIPLIER, 1.8f * AXIAL_SPEED_MULTIPLIER,
        MARS_AU * BASE_AU_DISTANCE},

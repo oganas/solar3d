@@ -8,24 +8,27 @@
 #include "Texture.h"
 #include "Window.h"
 #include "Planets.h"
+#include "Logger.h"
 
 #include <chrono>
-#include <cstdlib>
-#include <ctime>
 
+// Core
 Window window(1280, 720, "solar system");
 Input input(window);
 Camera camera;
 Renderer renderer(window, camera);
 
+// Shaders
 Shader shader("mainShader", "shaders/main.vert", "shaders/main.frag");
 Shader skyboxShader("skyboxShader", "shaders/skybox.vert",
                     "shaders/skybox.frag");
 
+// Meshes
 Mesh cubeMesh = MeshPrimitives::cube();
 Mesh planetMesh = MeshPrimitives::sphere();
 Mesh saturnRingMesh = MeshPrimitives::torus(1.3, 0.3);
 
+// Internally generated models
 Object sun("sun", planetMesh);
 Object moon("moon", planetMesh);
 Object mercury("mercury", planetMesh);
@@ -38,8 +41,10 @@ Object uranus("uranus", planetMesh);
 Object neptune("neptune", planetMesh);
 Object saturnRing("saturnRing", saturnRingMesh);
 
+// Lights
 Light light(glm::vec3(0.7f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f));
 
+// Textures
 Texture sunTex("sun", "planets/sun_diffuse.jpg");
 Texture moonTex("moon", "planets/moon_diffuse.jpg");
 Texture mercuryTex("mercury", "planets/mercury_diffuse.jpg");
@@ -52,20 +57,30 @@ Texture saturnTex("saturn", "planets/saturn_diffuse.jpg");
 Texture uranusTex("uranus", "planets/uranus_diffuse.jpg");
 Texture neptuneTex("neptune", "planets/neptune_diffuse.jpg");
 Texture saturnRingTex("saturnRing", "planets/saturn_ring_diffuse2.jpg");
-
 Texture rocket2Tex("rocket2", "RedShip_Color.png");
 Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
+Texture asteroidTex("asteroid", "Asteroid1a_Color_2K.png");
+Texture asteroidTexNormal("asteroidNormal", "Asteroid1a_Normal_OpenGL_2K.png");
 
+// Skybox
 Skybox space;
 
+// Externally loaded models
 Model spaceship("assets/models/use/spaceship.obj");
 Model rocket("assets/models/use/rocket.obj");
 Model tieFighter("assets/models/use/scene.gltf");
 Model rocket2("assets/models/use/Body.fbx");
+Model asteroid("assets/models/use/Asteroid_1a.fbx");
+Model asteroid2 = asteroid;
 
+/*
+ * Render logic.
+ */
 void render(Window *window) {
+	// Skybox
   renderer.renderSkybox(skyboxShader, space);
 
+	// Internally generated models
   renderer.renderObject(shader, sun, light, true);
   renderer.renderObject(shader, moon, light, false);
   renderer.renderObject(shader, mercury, light, false);
@@ -78,34 +93,49 @@ void render(Window *window) {
   renderer.renderObject(shader, uranus, light, false);
   renderer.renderObject(shader, neptune, light, false);
 
+	// Externally loaded models
   renderer.renderModel(shader, spaceship, light, false);
   renderer.renderModel(shader, rocket, light, false);
   renderer.renderModel(shader, tieFighter, light, false);
   renderer.renderModel(shader, rocket2, light, false);
+	renderer.renderModel(shader, asteroid, light, false);
+	renderer.renderModel(shader, asteroid2, light, false);
 }
 
+/*
+ * Setup / Initialisation logic.
+ */
 void start() {
   window.setRenderCallback(render);
   window.setBackgroundColour(Colour::BLACK);
 
-  camera.sensitivity = 120.0f;
+  camera.sensitivity = 90.0f;
   camera.position = vec3(0.0f, 0.0f, 300.0f);
-  camera.position = saturnRing.transform.position;
-  camera.movementSpeed = 200.0f;
+  camera.movementSpeed = 10.0f;
   camera.farClip = 100000000.0f;
 
 	SolarSystem::setupPlanets();
 
   light.position = sun.transform.position;
 
-  spaceship.setPosition(vec3(0.0f, 0.0f, 0.0f));
+	asteroid.setPosition(vec3(camera.position));
+	asteroid.setScale(vec3(30.0f));
+	asteroid.objects[0].material.diffuseTexture = &asteroidTex;
+	asteroid.objects[0].material.normalTexture = &asteroidTexNormal;
+	asteroid.objects[0].material.hasNormal = true;
 
-  rocket.setPosition(vec3(0.0f, 0.0f, 10.0f));
+	asteroid2.setPosition(vec3(300.0f, 100.0f, 500.0f));
+	asteroid2.objects = asteroid.objects;
+
+  spaceship.setPosition(vec3(300.0f, 100.0f, 500.0f));
+
+  rocket.setPosition(vec3(0.0f, 0.0f, 300.0f));
+	rocket.updateRotation(vec3(0.0f, 1.0f, 1.0f));
   rocket.setScale(vec3(0.01f));
 
   tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
 
-  rocket2.setPosition(vec3(0.0f, 0.0f, -30.0f));
+  rocket2.setPosition(vec3(-10.0f, 0.0f, 300.0f));
   rocket2.setScale(vec3(0.1f));
 
   rocket2.objects[0].transform.rotation += vec3(0.0f, 1.6f, 0.0f);
@@ -128,6 +158,13 @@ void start() {
   space = Skybox(faces);
 }
 
+/*
+ * Executed every frame. 
+ * Frame independent logic.
+ *
+ * Parameters:
+ *   dt: delta time
+ */
 void update(float dt) {
 	SolarSystem::handleSolarSystemMotion(dt);
 
@@ -162,29 +199,28 @@ void update(float dt) {
     camera.look(0.0f, -1.0f, dt);
   }
 
-  if (input.isKeyDown(Key::L)) {
-    saturnRing.transform.rotation =
-        saturnRing.transform.rotation + vec3(0.0f, 0.0f, 0.5f) * dt;
-    saturn.transform.rotation =
-        saturn.transform.rotation + vec3(0.0f, 0.0f, 0.5f) * dt;
+  if (input.isKeyPressed(Key::L)) {
+		camera.position = rocket2.getPosition();
   }
-  if (input.isKeyDown(Key::K)) {
-    saturnRing.transform.rotation =
-        saturnRing.transform.rotation - vec3(0.0f, 0.5f, 0.0f) * dt;
-    saturn.transform.rotation =
-        saturn.transform.rotation - vec3(0.0f, 0.5f, 0.0f) * dt;
+  if (input.isKeyPressed(Key::K)) {
+		camera.position = tieFighter.getPosition();
   }
   if (input.isKeyDown(Key::J)) {
-    saturnRing.transform.rotation =
-        saturnRing.transform.rotation + vec3(0.5f, 0.0f, 0.0f) * dt;
-    saturn.transform.rotation =
-        saturn.transform.rotation + vec3(0.5f, 0.0f, 0.0f) * dt;
+		camera.position = spaceship.getPosition();
   }
+	if (input.isKeyDown(Key::F)) {
+		camera.position = asteroid.getPosition();
+	}
+
+	rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
+	spaceship.updatePosition(vec3(-5.0f, 0.0f, 0.0f) * dt);
+	asteroid.updateRotation(vec3(0.06f, 0.06f, 0.06f) * dt);
 }
 
 int main() {
   start();
 
+	// last frame time
   auto last = std::chrono::high_resolution_clock::now();
 
   while (window.update()) {
