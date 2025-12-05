@@ -1,3 +1,4 @@
+#include "App/AsteroidBelt.h" // Include the new header
 #include "App/Planets.h"
 #include "Input.h"
 #include "Logger.h"
@@ -15,12 +16,6 @@
 #include <ctime>
 #include <glm/gtc/constants.hpp>
 #include <vector>
-
-// --- NEW GLOBAL CONSTANTS AND VARIABLES FOR ASTEROID BELT ---
-const int ASTEROID_COUNT = 700;
-std::vector<Model> asteroidBelt;
-static float asteroidBeltTime = 0.0f; // Separate time tracker for belt motion
-// --- END NEW GLOBALS ---
 
 // Core
 Window window(1280, 720, "solar system");
@@ -71,6 +66,8 @@ Texture rocket2Tex("rocket2", "RedShip_Color.png");
 Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
 Texture asteroidTex("asteroid", "Asteroid1a_Color_2K.png");
 Texture asteroidTexNormal("asteroidNormal", "Asteroid1a_Normal_OpenGL_2K.png");
+
+// Textures used by AsteroidBelt (Declared as extern in AsteroidBelt.h)
 Texture asteroid2Tex("asteroid2", "rock_Base_Color.png");
 Texture asteroid2TexNormal("asteroid2Normal", "rock_Normal_DirectX.png");
 
@@ -83,14 +80,9 @@ Model rocket("assets/models/use/rocket.obj");
 Model tieFighter("assets/models/use/scene.gltf");
 Model rocket2("assets/models/use/Body.fbx");
 Model asteroid("assets/models/use/Asteroid_1a.fbx");
-Model asteroid2("assets/models/use/asteroid2.obj");
 
-// --- NEW FUNCTION: RENDER ASTEROID BELT ---
-void renderAsteroidBelt() {
-  for (auto &beltAsteroid : asteroidBelt) {
-    renderer.renderModel(shader, beltAsteroid, light, false);
-  }
-}
+// Model used by AsteroidBelt (Declared as extern in AsteroidBelt.h)
+Model asteroid2("assets/models/use/asteroid2.obj");
 
 /*
  * Render logic.
@@ -118,71 +110,7 @@ void render(Window *window) {
   renderer.renderModel(shader, tieFighter, light, false);
   renderer.renderModel(shader, rocket2, light, false);
   renderer.renderModel(shader, asteroid, light, false);
-
-  // --- RENDER THE NEW ASTEROID BELT ---
-  renderAsteroidBelt();
-  // ------------------------------------
-}
-
-// --- NEW FUNCTION: SETUP ASTEROID BELT ---
-void setupAsteroidBelt() {
-  // Define the belt's orbital zone (between Mars and Jupiter)
-  // We'll place the belt from 600 units to 1300 units for a visible gap.
-  const float INNER_RADIUS = 2400.0f; // Start after Mars
-  const float OUTER_RADIUS = 3400.0f; // End well before Jupiter
-
-  // Seed for random numbers
-  srand(static_cast<unsigned int>(time(NULL)));
-
-  for (int i = 0; i < ASTEROID_COUNT; ++i) {
-    // 1. DUPLICATE MODEL: Create a new asteroid by copying the original,
-    // which shares the underlying mesh data.
-    Model newAsteroid = asteroid2;
-
-    // 2. COPY OBJECTS AND MATERIALS: Ensure the material/textures are linked
-    newAsteroid.objects = asteroid2.objects;
-
-    // 3. TEXTURE ASSIGNMENT (Critical for duplicates)
-    newAsteroid.objects[0].material.diffuseTexture = &asteroid2Tex;
-    newAsteroid.objects[0].material.normalTexture = &asteroid2TexNormal;
-    newAsteroid.objects[0].material.hasNormal = true;
-
-    // 4. RANDOM POSITION (Polar Coordinates to Cartesian)
-
-    // Get a random radius within the belt zone
-    float radius =
-        INNER_RADIUS +
-        static_cast<float>(rand()) /
-            (static_cast<float>(RAND_MAX / (OUTER_RADIUS - INNER_RADIUS)));
-
-    // Get a random angle (0 to 360 degrees)
-    float angle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) *
-                  2.0f * glm::pi<float>();
-
-    // Introduce small vertical scatter (Y-axis)
-    float y_scatter =
-        (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) *
-        300.0f;
-
-    newAsteroid.setPosition(
-        vec3(radius * cos(angle), y_scatter, radius * sin(angle)));
-
-    // 5. RANDOM SCALE AND ROTATION
-
-    // Random small scale (e.g., between 5.0f and 15.0f)
-    float randomScale =
-        0.1f + static_cast<float>(rand()) /
-                   (static_cast<float>(RAND_MAX / (0.08f - 0.001f)));
-    newAsteroid.setScale(vec3(randomScale));
-
-    // Random initial rotation to make them look unique
-    newAsteroid.updateRotation(vec3(static_cast<float>(rand()),
-                                    static_cast<float>(rand()),
-                                    static_cast<float>(rand())));
-
-    // Add the configured asteroid to the vector
-    asteroidBelt.push_back(newAsteroid);
-  }
+  AsteroidBelt::renderBelt(shader, renderer);
 }
 
 /*
@@ -197,8 +125,6 @@ void start() {
   camera.movementSpeed = 300.0f;
   camera.farClip = 100000000.0f;
 
-  SolarSystem::setupPlanets();
-
   light.position = sun.transform.position;
 
   // ORIGINAL ASTEROID SETUP
@@ -208,9 +134,8 @@ void start() {
   asteroid.objects[0].material.normalTexture = &asteroidTexNormal;
   asteroid.objects[0].material.hasNormal = true;
 
-  // --- CALL THE NEW ASTEROID BELT SETUP FUNCTION ---
-  setupAsteroidBelt();
-  // -------------------------------------------------
+  SolarSystem::setupPlanets();
+  AsteroidBelt::setupBelt();
 
   spaceship.setPosition(vec3(300.0f, 100.0f, 500.0f));
 
@@ -242,39 +167,6 @@ void start() {
 
   space = Skybox(faces);
 }
-
-// --- NEW FUNCTION: UPDATE ASTEROID BELT MOTION ---
-void updateAsteroidBeltMotion(float dt) {
-  asteroidBeltTime += dt * 0.5f; // Slower time for the belt (adjustable)
-
-  for (auto &beltAsteroid : asteroidBelt) {
-    // 1. AXIAL ROTATION (Spinning)
-    // Each asteroid rotates slowly on its own axis.
-    float spinSpeed = 0.01f; // Slow rotation speed
-    beltAsteroid.updateRotation(vec3(spinSpeed, spinSpeed, spinSpeed) * dt);
-
-    // 2. ORBITAL MOTION
-    // Use the current position's magnitude (radius) and rotate it around the
-    // origin (Sun).
-    vec3 currentPos = beltAsteroid.getPosition();
-    float radius = glm::length(vec2(currentPos.x, currentPos.z));
-
-    // Calculate the current angle
-    float currentAngle = atan2(currentPos.z, currentPos.x);
-
-    // Define orbital speed (slower for larger radius)
-    float orbitalSpeed =
-        0.02f / (radius / 100.0f); // Slower asteroids further out
-
-    // Update the angle
-    float newAngle = currentAngle + orbitalSpeed * dt;
-
-    // Set the new position, keeping the original y-scatter
-    beltAsteroid.setPosition(
-        vec3(radius * cos(newAngle), currentPos.y, radius * sin(newAngle)));
-  }
-}
-// --- END NEW FUNCTION ---
 
 /*
  * Executed every frame.
@@ -334,9 +226,7 @@ void update(float dt) {
   spaceship.updatePosition(vec3(-5.0f, 0.0f, 0.0f) * dt);
   asteroid.updateRotation(vec3(0.06f, 0.06f, 0.06f) * dt);
 
-  // --- CALL THE NEW ASTEROID BELT UPDATE FUNCTION ---
-  updateAsteroidBeltMotion(dt);
-  // --------------------------------------------------
+  AsteroidBelt::updateMotion(dt);
 }
 
 int main() {

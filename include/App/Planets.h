@@ -38,7 +38,6 @@ extern Texture saturnRingTex;
 namespace SolarSystem {
 void setupPlanets();
 void handleSolarSystemMotion(float dt);
-} // namespace SolarSystem
 
 struct PlanetData {
   Object &object;
@@ -46,3 +45,4 @@ struct PlanetData {
   float axialSpeed;
   float orbitalRadius;
 };
+} // namespace SolarSystem

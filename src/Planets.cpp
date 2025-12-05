@@ -3,6 +3,7 @@
 #include <ctime>
 #include <glm/gtc/constants.hpp>
 
+namespace SolarSystem {
 static float totalSimulationTime = 0.0f;
 static const float ORBITAL_SPEED_MULTIPLIER = 0.02f;
 static const float AXIAL_SPEED_MULTIPLIER = 0.05f;
@@ -29,7 +30,7 @@ void updatePlanet(PlanetData &data, float dt, float time) {
   data.object.transform.position.z = data.orbitalRadius * sin(angle);
 }
 
-void SolarSystem::handleSolarSystemMotion(float dt) {
+void handleSolarSystemMotion(float dt) {
   totalSimulationTime += dt;
 
   PlanetData planets[] = {
@@ -71,7 +72,7 @@ void SolarSystem::handleSolarSystemMotion(float dt) {
   moon.transform.rotation.y += 2.0f * AXIAL_SPEED_MULTIPLIER * dt;
 }
 
-void SolarSystem::setupPlanets() {
+void setupPlanets() {
   srand(static_cast<unsigned int>(time(NULL)));
   totalSimulationTime = static_cast<float>(rand() % 1000);
 
@@ -169,3 +170,4 @@ void SolarSystem::setupPlanets() {
   neptune.material.specular = glm::vec3(0.01f);
   neptune.material.shininess = 1.0f;
 }
+} // namespace SolarSystem
