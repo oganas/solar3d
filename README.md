@@ -55,14 +55,14 @@ $ cmake --build .              # Compile
 Create Distribution Package:
 ```
 $ cmake -- build . --target dist-win
-
 ```
 
 ## Run:
 
 ### Linux:
 
-Directly: Through `build/linux/app` or `dist/linux/app`
+Directly: Through `build/linux/app` or `dist/linux/app`    
+
 Cmake:
 ```
 $ cd build
@@ -73,7 +73,7 @@ $ cmake --build . --target run
 Through `build-win/app.exe` or `dist/win/app.exe`
 
 ### Sources:   
-Planet textures obtained from:
+Planet textures obtained from:   
 https://www.solarsystemscope.com/textures/
 
 External models and their textures obtained from:        
