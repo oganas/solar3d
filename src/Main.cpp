@@ -123,13 +123,13 @@ void start() {
   camera.sensitivity = 120.0f;
   camera.position = vec3(0.0f, 0.0f, 300.0f);
   camera.movementSpeed = 300.0f;
-  camera.farClip = 100000000.0f;
+  camera.farClip = 100000000000000000000.0f;
 
   light.position = sun.transform.position;
 
   // ORIGINAL ASTEROID SETUP
   asteroid.setPosition(vec3(camera.position));
-  asteroid.setScale(vec3(30.0f));
+  asteroid.setScale(vec3(100.0f));
   asteroid.objects[0].material.diffuseTexture = &asteroidTex;
   asteroid.objects[0].material.normalTexture = &asteroidTexNormal;
   asteroid.objects[0].material.hasNormal = true;
@@ -154,8 +154,8 @@ void start() {
   rocket2.objects[0].material.hasNormal = true;
 
 	planitia.setPosition(mars.transform.position);
-	planitia.setRotation(vec3(0.0f, 0.0f, 0.5f));
-	planitia.setScale(vec3(100.0f));
+	planitia.setRotation(vec3(0.0f, 0.0f, -0.5f));
+	planitia.setScale(vec3(10.0f));
 
   /*
    * Used the following to generate the faces of the cubemap:
@@ -229,6 +229,7 @@ void update(float dt) {
   rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
   spaceship.updatePosition(vec3(-5.0f, 0.0f, 0.0f) * dt);
   asteroid.updateRotation(vec3(0.06f, 0.06f, 0.06f) * dt);
+	planitia.updateRotation(vec3(0.0f, 0.07f, 0.0f) * dt);
 
   AsteroidBelt::updateMotion(dt);
 }

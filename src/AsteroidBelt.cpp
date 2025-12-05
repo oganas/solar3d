@@ -12,12 +12,12 @@
 namespace AsteroidBelt {
 
 std::vector<Model> beltModels;
-const int ASTEROID_COUNT = 700;
+const int ASTEROID_COUNT = 600;
 static float beltTime = 0.0f;
 
 // Define the orbital zone radii (using the values from your last main.cpp)
-const float INNER_RADIUS = 2400.0f; // Start after Mars
-const float OUTER_RADIUS = 3400.0f; // End well before Jupiter
+const float INNER_RADIUS = 3600.0f; // Start after Mars
+const float OUTER_RADIUS = 5200.0f; // End well before Jupiter
 
 void setupBelt() {
   // Seed for random numbers
@@ -61,7 +61,7 @@ void setupBelt() {
     // Small vertical scatter (Y-axis)
     float y_scatter =
         (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f) *
-        300.0f;
+        600.0f;
 
     newAsteroid.setPosition(
         glm::vec3(radius * cos(angle), y_scatter, radius * sin(angle)));
@@ -69,8 +69,8 @@ void setupBelt() {
     // 5. RANDOM SCALE AND ROTATION
 
     // Random scale (0.001f to 0.08f based on your last code)
-    float minScale = 0.1f;
-    float maxScale = 0.3f;
+    float minScale = 0.2f;
+    float maxScale = 0.4f;
     float randomScale =
         minScale + static_cast<float>(rand()) /
                        (static_cast<float>(RAND_MAX / (maxScale - minScale)));
@@ -113,7 +113,7 @@ void updateMotion(float dt) {
 
     // Orbital speed: slower for larger radius, scaled for visibility
     // Divide by 100.0f to keep the orbital speed multiplier sensible
-    float orbitalSpeed = 0.02f / (radius / 100.0f);
+    float orbitalSpeed = 0.4f / (radius / 100.0f);
 
     float newAngle = currentAngle + orbitalSpeed * dt;
 

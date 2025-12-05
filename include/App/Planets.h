@@ -2,6 +2,7 @@
 
 #include "Light.h"
 #include "Mesh.h"
+#include "Model.h"
 #include "Object.h"
 #include "Texture.h"
 #include <glm/glm.hpp>
@@ -34,6 +35,8 @@ extern Texture saturnTex;
 extern Texture uranusTex;
 extern Texture neptuneTex;
 extern Texture saturnRingTex;
+
+extern Model planitia;
 
 namespace SolarSystem {
 void setupPlanets();
