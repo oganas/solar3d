@@ -1,7 +1,6 @@
-#include "App/AsteroidBelt.h" // Include the new header
+#include "App/AsteroidBelt.h"
 #include "App/Planets.h"
 #include "Input.h"
-#include "Logger.h"
 #include "Material.h"
 #include "Mesh.h"
 #include "Model.h"
@@ -12,8 +11,6 @@
 #include "Window.h"
 
 #include <chrono>
-#include <cstdlib>
-#include <ctime>
 #include <glm/gtc/constants.hpp>
 #include <vector>
 
@@ -84,6 +81,8 @@ Model asteroid("assets/models/use/Asteroid_1a.fbx");
 // Model used by AsteroidBelt (Declared as extern in AsteroidBelt.h)
 Model asteroid2("assets/models/use/asteroid2.obj");
 
+Model planitia("assets/models/use/up_base.obj");
+
 /*
  * Render logic.
  */
@@ -111,6 +110,7 @@ void render(Window *window) {
   renderer.renderModel(shader, rocket2, light, false);
   renderer.renderModel(shader, asteroid, light, false);
   AsteroidBelt::renderBelt(shader, renderer);
+	renderer.renderModel(shader, planitia, light, false);
 }
 
 /*
@@ -152,6 +152,10 @@ void start() {
   rocket2.objects[0].material.diffuseTexture = &rocket2Tex;
   rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
   rocket2.objects[0].material.hasNormal = true;
+
+	planitia.setPosition(mars.transform.position);
+	planitia.setRotation(vec3(0.0f, 0.0f, 0.5f));
+	planitia.setScale(vec3(100.0f));
 
   /*
    * Used the following to generate the faces of the cubemap:
@@ -219,7 +223,7 @@ void update(float dt) {
     camera.position = spaceship.getPosition();
   }
   if (input.isKeyDown(Key::F)) {
-    camera.position = saturn.transform.position;
+    camera.position = planitia.getPosition();
   }
 
   rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
