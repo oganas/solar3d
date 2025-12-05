@@ -1,5 +1,5 @@
-#include "Skybox.h"
-#include "Texture.h"
+#include "Scene/Skybox.h"
+#include "Render/Texture.h"
 
 Skybox::Skybox() {}
 

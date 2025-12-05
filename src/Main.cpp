@@ -15,7 +15,7 @@
 #include <vector>
 
 // Core
-Window window(1280, 720, "solar system");
+Window window(1280, 720, "Solar System Simulation");
 Input input(window);
 Camera camera;
 Renderer renderer(window, camera);
@@ -59,8 +59,10 @@ Texture saturnTex("saturn", "planets/saturn_diffuse.jpg");
 Texture uranusTex("uranus", "planets/uranus_diffuse.jpg");
 Texture neptuneTex("neptune", "planets/neptune_diffuse.jpg");
 Texture saturnRingTex("saturnRing", "planets/saturn_ring_diffuse.jpg");
+
 Texture rocket2Tex("rocket2", "RedShip_Color.png");
 Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
+
 Texture asteroidTex("asteroid", "Asteroid1a_Color_2K.png");
 Texture asteroidTexNormal("asteroidNormal", "Asteroid1a_Normal_OpenGL_2K.png");
 Texture asteroid2Tex("asteroid2", "rock_Base_Color.png");
@@ -71,9 +73,9 @@ Skybox space;
 
 // Externally loaded models
 Model spaceship("assets/models/spaceship.obj");
-Model rocket("assets/models/rocket.obj");
+// Model rocket("assets/models/rocket.obj");
 Model tieFighter("assets/models/tie_fighter.gltf");
-Model rocket2("assets/models/rocket2.fbx");
+// Model rocket2("assets/models/rocket2.fbx");
 Model asteroid("assets/models/asteroid.fbx");
 Model asteroid2("assets/models/small_asteroid.obj");
 Model planitia("assets/models/planitia.obj");
@@ -100,9 +102,9 @@ void render(Window *window) {
 
   // Externally loaded models
   renderer.renderModel(shader, spaceship, light, false);
-  renderer.renderModel(shader, rocket, light, false);
+  // renderer.renderModel(shader, rocket, light, false);
   renderer.renderModel(shader, tieFighter, light, false);
-  renderer.renderModel(shader, rocket2, light, false);
+  // renderer.renderModel(shader, rocket2, light, false);
   renderer.renderModel(shader, asteroid, light, false);
   AsteroidBelt::renderBelt(shader, renderer);
   renderer.renderModel(shader, planitia, light, false);
@@ -115,14 +117,16 @@ void start() {
   window.setRenderCallback(render);
   window.setBackgroundColour(Colour::BLACK);
 
-  camera.sensitivity = 120.0f;
-  camera.position = vec3(0.0f, 0.0f, 300.0f);
-  camera.movementSpeed = 300.0f;
+  camera.sensitivity = 75.0f;
+  camera.position = vec3(-10300.2f, 6316.2f, 6295.68f);
+	camera.yaw = -32.9743f;
+	camera.pitch = -31.0065f;
+  camera.movementSpeed = 40.0f;
   camera.farClip = 100000000000000000000.0f;
 
   light.position = sun.transform.position;
 
-  asteroid.setPosition(vec3(camera.position));
+  asteroid.setPosition(vec3(vec3(-1000.0f, 400.0f, -1000.0f)));
   asteroid.setScale(vec3(100.0f));
   asteroid.objects[0].material.diffuseTexture = &asteroidTex;
   asteroid.objects[0].material.normalTexture = &asteroidTexNormal;
@@ -133,23 +137,23 @@ void start() {
 
   spaceship.setPosition(vec3(300.0f, 100.0f, 500.0f));
 
-  rocket.setPosition(vec3(0.0f, 0.0f, 300.0f));
-  rocket.updateRotation(vec3(0.0f, 1.0f, 1.0f));
-  rocket.setScale(vec3(0.01f));
+  // rocket.setPosition(vec3(0.0f, 0.0f, 300.0f));
+  // rocket.updateRotation(vec3(0.0f, 1.0f, 1.0f));
+  // rocket.setScale(vec3(0.01f));
 
   tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
 
-  rocket2.setPosition(vec3(-10.0f, 0.0f, 300.0f));
-  rocket2.setScale(vec3(0.1f));
+  // rocket2.setPosition(vec3(-10.0f, 0.0f, 300.0f));
+  // rocket2.setScale(vec3(0.1f));
 
-  rocket2.objects[0].transform.rotation += vec3(0.0f, 1.6f, 0.0f);
-  rocket2.objects[0].material.diffuseTexture = &rocket2Tex;
-  rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
-  rocket2.objects[0].material.hasNormal = true;
+  // rocket2.objects[0].transform.rotation += vec3(0.0f, 1.6f, 0.0f);
+  // rocket2.objects[0].material.diffuseTexture = &rocket2Tex;
+  // rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
+  // rocket2.objects[0].material.hasNormal = true;
 
   planitia.setPosition(mars.transform.position);
   planitia.setRotation(vec3(0.0f, 0.0f, -0.5f));
-  planitia.setScale(vec3(10.0f));
+  planitia.setScale(vec3(5.0f));
 
   /*
    * Used the following to generate the faces of the cubemap:
@@ -212,7 +216,7 @@ void update(float dt) {
 
   // For debugging
   if (input.isKeyPressed(Key::L)) {
-    camera.position = rocket2.getPosition();
+    // camera.position = rocket2.getPosition();
   }
   if (input.isKeyPressed(Key::K)) {
     camera.position = tieFighter.getPosition();
@@ -221,12 +225,13 @@ void update(float dt) {
     camera.position = spaceship.getPosition();
   }
   if (input.isKeyDown(Key::F)) {
-    camera.position = planitia.getPosition();
+		std::cout << "Camera position: (" << camera.position.x << ", " << camera.position.y << ", " << camera.position.z << ")" << std::endl;
+		std::cout << "Camera yaw and pitch: (" << camera.yaw << ", " << camera.pitch << ")" << std::endl;
   }
 
-  rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
+  // rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
   spaceship.updatePosition(vec3(-5.0f, 0.0f, 0.0f) * dt);
-  asteroid.updateRotation(vec3(0.06f, 0.06f, 0.06f) * dt);
+  asteroid.updateRotation(vec3(0.05f, 0.05f, 0.05f) * dt);
   planitia.updateRotation(vec3(0.0f, 0.07f, 0.0f) * dt);
 
   AsteroidBelt::updateMotion(dt);

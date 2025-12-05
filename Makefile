@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp
+CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp -Iexternal/GLFW
 
 SRC_DIR = src
 EXTERNAL_IMGUI_DIR = external/imgui
@@ -9,19 +9,15 @@ BUILD_DIR = build
 DIST_DIR  = dist
 
 # --- SOURCE LISTS ---
-SRC_CPP  := $(wildcard $(SRC_DIR)/*.cpp)
-SRC_APP_CPP := $(wildcard $(SRC_DIR)/App/*.cpp)
+SRC_CPP := $(shell find $(SRC_DIR) -name '*.cpp')
 SRC_C    := $(wildcard $(SRC_DIR)/*.c)
-IMGUI_CPP := $(wildcard $(EXTERNAL_IMGUI_DIR)/*.cpp)
 GLAD_C    := $(wildcard $(EXTERNAL_GLAD_DIR)/*.c)
 
 # --- LINUX ---
 LINUX_BUILD_DIR = $(BUILD_DIR)/linux
 
-LINUX_OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(LINUX_BUILD_DIR)/%.o,$(SRC_CPP))
-LINUX_OBJ += $(patsubst $(SRC_DIR)/%.c,$(LINUX_BUILD_DIR)/%.o,$(SRC_C))
-LINUX_OBJ += $(patsubst $(SRC_DIR)/App/%.cpp,$(LINUX_BUILD_DIR)/App/%.o,$(SRC_APP_CPP))
-LINUX_OBJ += $(patsubst $(EXTERNAL_IMGUI_DIR)/%.cpp,$(LINUX_BUILD_DIR)/external/imgui/%.o,$(IMGUI_CPP))
+LINUX_OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(LINUX_BUILD_DIR)/%.o,$(filter %.cpp, $(SRC_CPP)))
+LINUX_OBJ += $(patsubst $(SRC_DIR)/%.c,$(LINUX_BUILD_DIR)/%.o,$(filter %.c, $(SRC_C)))
 LINUX_OBJ += $(patsubst $(EXTERNAL_GLAD_DIR)/%.c,$(LINUX_BUILD_DIR)/external/glad/%.o,$(GLAD_C))
 
 LINUX_LDFLAGS = -lglfw -ldl -lGL -lassimp
@@ -53,15 +49,14 @@ $(LINUX_BUILD_DIR)/external/glad/%.o: $(EXTERNAL_GLAD_DIR)/%.c
 
 # --- WINDOWS ---
 WIN_CXX = x86_64-w64-mingw32-g++
-WIN_CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp/include
-WIN_LDFLAGS = -Llib/win -lassimp -lglfw3 -lopengl32 -lgdi32 -luser32 -lz
+WIN_CXXFLAGS = -std=c++23 -O2 -g -Iinclude -Iexternal/imgui -Iexternal/glm -Iexternal/glad -Iexternal/stb -Iexternal/assimp/include -Iexternal/GLFW
+WIN_LDFLAGS = -Llib/win -lglfw3 -lassimp -lopengl32 -lgdi32 -lkernel32 -luser32 -lz
 
 WIN_BUILD_DIR = $(BUILD_DIR)/win
 
 WIN_OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(WIN_BUILD_DIR)/%.o,$(SRC_CPP))
 WIN_OBJ += $(patsubst $(SRC_DIR)/%.c,$(WIN_BUILD_DIR)/%.o,$(SRC_C))
 WIN_OBJ += $(patsubst $(SRC_DIR)/App/%.cpp,$(WIN_BUILD_DIR)/App/%.o,$(SRC_APP_CPP))
-WIN_OBJ += $(patsubst $(EXTERNAL_IMGUI_DIR)/%.cpp,$(WIN_BUILD_DIR)/external/imgui/%.o,$(IMGUI_CPP))
 WIN_OBJ += $(patsubst $(EXTERNAL_GLAD_DIR)/%.c,$(WIN_BUILD_DIR)/external/glad/%.o,$(GLAD_C))
 
 WIN_OUT = $(WIN_BUILD_DIR)/app.exe

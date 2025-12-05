@@ -1,4 +1,7 @@
-Models obtained from:        
+Planet textures obtained from:
+https://www.solarsystemscope.com/textures/
+
+External models and their textures obtained from:        
 https://sketchfab.com/features/free-3d-models   
 https://free3d.com/   
 https://www.cgtrader.com/free-3d-models   
