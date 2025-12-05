@@ -60,8 +60,8 @@ Texture uranusTex("uranus", "planets/uranus_diffuse.jpg");
 Texture neptuneTex("neptune", "planets/neptune_diffuse.jpg");
 Texture saturnRingTex("saturnRing", "planets/saturn_ring_diffuse.jpg");
 
-Texture rocket2Tex("rocket2", "RedShip_Color.png");
-Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
+// Texture rocket2Tex("rocket2", "RedShip_Color.png");
+// Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
 
 Texture asteroidTex("asteroid", "Asteroid1a_Color_2K.png");
 Texture asteroidTexNormal("asteroidNormal", "Asteroid1a_Normal_OpenGL_2K.png");
@@ -74,7 +74,7 @@ Skybox space;
 // Externally loaded models
 Model spaceship("assets/models/spaceship.obj");
 // Model rocket("assets/models/rocket.obj");
-Model tieFighter("assets/models/tie_fighter.gltf");
+// Model tieFighter("assets/models/tie_fighter.gltf");
 // Model rocket2("assets/models/rocket2.fbx");
 Model asteroid("assets/models/asteroid.fbx");
 Model asteroid2("assets/models/small_asteroid.obj");
@@ -103,7 +103,7 @@ void render(Window *window) {
   // Externally loaded models
   renderer.renderModel(shader, spaceship, light, false);
   // renderer.renderModel(shader, rocket, light, false);
-  renderer.renderModel(shader, tieFighter, light, false);
+  // renderer.renderModel(shader, tieFighter, light, false);
   // renderer.renderModel(shader, rocket2, light, false);
   renderer.renderModel(shader, asteroid, light, false);
   AsteroidBelt::renderBelt(shader, renderer);
@@ -141,7 +141,7 @@ void start() {
   // rocket.updateRotation(vec3(0.0f, 1.0f, 1.0f));
   // rocket.setScale(vec3(0.01f));
 
-  tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
+  // tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
 
   // rocket2.setPosition(vec3(-10.0f, 0.0f, 300.0f));
   // rocket2.setScale(vec3(0.1f));
@@ -219,7 +219,7 @@ void update(float dt) {
     // camera.position = rocket2.getPosition();
   }
   if (input.isKeyPressed(Key::K)) {
-    camera.position = tieFighter.getPosition();
+    // camera.position = tieFighter.getPosition();
   }
   if (input.isKeyDown(Key::J)) {
     camera.position = spaceship.getPosition();
