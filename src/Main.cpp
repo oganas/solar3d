@@ -122,7 +122,7 @@ void start() {
   camera.position = vec3(-10300.2f, 6316.2f, 6295.68f);
 	camera.yaw = -32.9743f;
 	camera.pitch = -31.0065f;
-  camera.movementSpeed = 40.0f;
+  camera.movementSpeed = 20.0f;
   camera.farClip = 100000000000000000000.0f;
 
 	// Light settings, starts at sun's position
@@ -189,6 +189,9 @@ void update(float dt) {
   if (input.isKeyDown(Key::W)) {
     camera.move(Direction::FORWARD, dt);
   }
+	if (input.isKeyDown(Key::Q)) {
+		camera.move(Direction::FORWARD, 2.0f);
+	}
   if (input.isKeyDown(Key::S)) {
     camera.move(Direction::BACKWARD, dt);
   }

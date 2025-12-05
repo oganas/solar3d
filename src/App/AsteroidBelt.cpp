@@ -8,10 +8,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
+/*
+ * Asteroid belt logic.
+ *
+ * !!! Used AI to generate some of the math and asteroid spread logic. !!!
+ */
 namespace AsteroidBelt {
-
 std::vector<Model> beltModels;
-const int ASTEROID_COUNT = 600;
+const int ASTEROID_COUNT = 200;
 static float beltTime = 0.0f;
 
 // Where the asteroids start generating
