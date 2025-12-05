@@ -1,11 +1,24 @@
-#include "Planets.h"
+#include "App/Planets.h"
 #include <cstdlib>
 #include <ctime>
 #include <glm/gtc/constants.hpp>
 
 static float totalSimulationTime = 0.0f;
-static const float ORBITAL_SPEED_MULTIPLIER = 0.05f;
+static const float ORBITAL_SPEED_MULTIPLIER = 0.02f;
 static const float AXIAL_SPEED_MULTIPLIER = 0.05f;
+
+const float BASE_AU_DISTANCE = 50.0f;
+
+const float MERCURY_AU = 8.19f;
+const float VENUS_AU = 15.12f;
+const float EARTH_AU = 21.00f;
+const float MARS_AU = 31.92f;
+const float JUPITER_AU = 100.0f;  // 109.20 * 0.75
+const float SATURN_AU = 150.89f;  // 201.18 * 0.75
+const float URANUS_AU = 200.87f;  // 403.83 * 0.75
+const float NEPTUNE_AU = 300.08f; // 632.10 * 0.75
+
+const float MOON_ORBIT_DISTANCE = 1.0f * 20.0f;
 
 void updatePlanet(PlanetData &data, float dt, float time) {
   data.object.transform.rotation.z += data.axialSpeed * dt;
@@ -18,17 +31,6 @@ void updatePlanet(PlanetData &data, float dt, float time) {
 
 void SolarSystem::handleSolarSystemMotion(float dt) {
   totalSimulationTime += dt;
-
-  const float BASE_AU_DISTANCE = 50.0f;
-  const float MERCURY_AU = 2.73f;
-  const float VENUS_AU = 5.04f;
-  const float EARTH_AU = 7.00f;
-  const float MARS_AU = 10.64f;
-  const float JUPITER_AU = 36.40f;
-  const float SATURN_AU = 67.06f;
-  const float URANUS_AU = 134.61f;
-  const float NEPTUNE_AU = 210.70f;
-  const float MOON_ORBIT_DISTANCE = 1.0f * 20.0f;
 
   PlanetData planets[] = {
       {sun, 0.0f, 0.05f * AXIAL_SPEED_MULTIPLIER, 0.0f},
@@ -73,29 +75,18 @@ void SolarSystem::setupPlanets() {
   srand(static_cast<unsigned int>(time(NULL)));
   totalSimulationTime = static_cast<float>(rand() % 1000);
 
-  const float BASE_AU_DISTANCE = 50.0f;
+  const float PLANET_SIZE_MULTIPLIER = 30.0f;
 
-  const float PLANET_SIZE_MULTIPLIER = 20.0f;
-
-  const float MERCURY_AU = 2.73f;
-  const float VENUS_AU = 5.04f;
-  const float EARTH_AU = 7.00f;
-  const float MARS_AU = 10.64f;
-  const float JUPITER_AU = 36.40f;
-  const float SATURN_AU = 67.06f;
-  const float URANUS_AU = 134.61f;
-  const float NEPTUNE_AU = 210.70f;
-
-  const float SUN_REL_SCALE = 5.0f * PLANET_SIZE_MULTIPLIER;
-  const float MERCURY_REL_SCALE = 0.25f * PLANET_SIZE_MULTIPLIER;
-  const float VENUS_REL_SCALE = 0.4f * PLANET_SIZE_MULTIPLIER;
-  const float EARTH_REL_SCALE = 0.5f * PLANET_SIZE_MULTIPLIER;
-  const float MARS_REL_SCALE = 0.3f * PLANET_SIZE_MULTIPLIER;
-  const float JUPITER_REL_SCALE = 1.5f * PLANET_SIZE_MULTIPLIER;
-  const float SATURN_REL_SCALE = 1.2f * PLANET_SIZE_MULTIPLIER;
-  const float URANUS_REL_SCALE = 0.8f * PLANET_SIZE_MULTIPLIER;
-  const float NEPTUNE_REL_SCALE = 0.7f * PLANET_SIZE_MULTIPLIER;
-  const float MOON_REL_SCALE = 0.1f * PLANET_SIZE_MULTIPLIER;
+  const float SUN_REL_SCALE = 8.0f * PLANET_SIZE_MULTIPLIER;
+  const float MERCURY_REL_SCALE = 0.50f * PLANET_SIZE_MULTIPLIER;
+  const float VENUS_REL_SCALE = 0.80f * PLANET_SIZE_MULTIPLIER;
+  const float EARTH_REL_SCALE = 1.00f * PLANET_SIZE_MULTIPLIER;
+  const float MARS_REL_SCALE = 0.60f * PLANET_SIZE_MULTIPLIER;
+  const float JUPITER_REL_SCALE = 3.00f * PLANET_SIZE_MULTIPLIER;
+  const float SATURN_REL_SCALE = 2.40f * PLANET_SIZE_MULTIPLIER;
+  const float URANUS_REL_SCALE = 1.60f * PLANET_SIZE_MULTIPLIER;
+  const float NEPTUNE_REL_SCALE = 1.40f * PLANET_SIZE_MULTIPLIER;
+  const float MOON_REL_SCALE = 0.20f * PLANET_SIZE_MULTIPLIER;
 
   const float degree = -90.0f;
   const float ROTATE_90_DEGREES = degree * glm::pi<float>() / 180.0f;
@@ -159,12 +150,10 @@ void SolarSystem::setupPlanets() {
   saturn.material.shininess = 1.0f;
 
   saturnRing.transform.position = saturn.transform.position;
-  saturnRing.transform.scale = vec3(35.0f, 1.0f, 35.0f);
+  saturnRing.transform.scale = vec3(95.0f, 1.0f, 95.0f);
   saturnRing.transform.rotation = vec3(0.3, 0.0f, 0.0f);
   saturnRing.material.diffuseTexture = &saturnRingTex;
-  saturnRing.material.specular = glm::vec3(1.0f);
-  saturnRing.material.shininess = 8.0f;
-  saturnRing.material.ambient = glm::vec3(2.0f);
+  saturnRing.material.ambient = glm::vec3(100.0f);
 
   uranus.transform.position = vec3(URANUS_AU * BASE_AU_DISTANCE, 0.0f, 0.0f);
   uranus.transform.scale = vec3(URANUS_REL_SCALE);
