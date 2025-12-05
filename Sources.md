@@ -15,6 +15,7 @@ https://www.youtube.com/watch?v=sP_kiODC25Q
 https://www.mbsoftworks.sk/tutorials/opengl3/20-assimp-model-loading/    
 https://www.ogldev.org/www/tutorial22/tutorial22.html    
 https://www.ogldev.org/www/tutorial25/tutorial25.html    
+https://learnopengl.com/Advanced-OpenGL/Cubemaps   
 https://jaxry.github.io/panorama-to-cubemap/    
 https://antongerdelan.net/opengl/vertexbuffers.html     
 https://antongerdelan.net/opengl/shaders.html    

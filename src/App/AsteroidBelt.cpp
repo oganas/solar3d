@@ -11,7 +11,8 @@
 /*
  * Asteroid belt logic.
  *
- * !!! Used AI to generate some of the math and asteroid spread logic. !!!
+ * !!! Used AI to generate some of the math and asteroid spread logic. It was
+ * not used as generated, it was adapted into the already existing code. !!!
  */
 namespace AsteroidBelt {
 std::vector<Model> beltModels;

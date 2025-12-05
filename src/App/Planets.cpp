@@ -5,7 +5,8 @@
 
 /*
  * !!! Used AI in here to generate the orbit logic and the math and stuff
- * like that. !!!
+ * like that. It was not used as generated, it was adapted into the already
+ * existing code. !!!
  */
 
 namespace SolarSystem {
@@ -42,7 +43,8 @@ void updatePlanet(PlanetData &data, float dt, float time) {
 }
 
 /*
- * !!! Used AI for part going down and other parts of this file as well. !!!
+ * !!! Used AI for part going down and other parts of this file as well. It was
+ * not used as generated, it was adapted into the already existing code. !!!
  */
 void handleSolarSystemMotion(float dt) {
   totalSimulationTime += dt;
@@ -112,7 +114,7 @@ void setupPlanets() {
   /*
    * This basically simulates randomness by fast forwarding the time of the
    * simulation and guaranteeing that it will look random because each planet
-   * has its own orbital speed
+   * has its own orbital speed. This was influenced by AI.
    */
   srand(static_cast<unsigned int>(time(NULL)));
   totalSimulationTime = static_cast<float>(rand() % 1000);

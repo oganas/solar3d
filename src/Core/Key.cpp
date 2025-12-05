@@ -3,7 +3,7 @@
 /*
  * Array of GLFW key int macros.
  *
- * !!! This was generated using AI. !!!
+ * !!! This was generated using AI. It was used as generated, only the name is changed. !!!
  */
 int keyToOpenGL[] = {
     GLFW_KEY_A,
@@ -95,7 +95,7 @@ int keyToOpenGL[] = {
 /*
  * Map of GLFW key macros to my custom key enum types.
  *
- * !!! This was generated using AI. !!!
+ * !!! This was generated using AI. It was used as generated, only the name is changed. !!!
  */
 std::unordered_map<int, int> openGLtoKey = {
     {GLFW_KEY_A, Key::A},

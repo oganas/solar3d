@@ -16,20 +16,26 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-void main()
-{
-    vec4 worldPos = model * vec4(position, 1.0);
-    fragPosition = vec3(worldPos);
+void main() {
+  vec4 worldPos = model * vec4(position, 1.0);
+  fragPosition = vec3(worldPos);
 
-    // Pass UVs
-    fragTexCoord = texCoord;
+  fragTexCoord = texCoord;
 
-    // Transform normals, tangent, bitangent to world space
-    mat3 normalMatrix = transpose(inverse(mat3(model)));
-    fragNormal = normalize(normalMatrix * normal);
-    fragTangent = normalize(normalMatrix * tangent);
-    fragBitangent = normalize(normalMatrix * bitangent);
+ /*
+  * Normal mapping
+  * 
+  * Used the following for help:
+  * https://learnopengl.com/Lighting/Normal-Mapping
+  * https://www.youtube.com/watch?v=TnewxQxtoKs
+  * https://www.youtube.com/watch?v=LRbgii6mVU4
+  * https://stackoverflow.com/questions/29042849/implementing-normal-mapping-using-opengl-glsl
+  * https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
+  */
+  mat3 normalMatrix = transpose(inverse(mat3(model)));
+  fragNormal = normalize(normalMatrix * normal);
+  fragTangent = normalize(normalMatrix * tangent);
+  fragBitangent = normalize(normalMatrix * bitangent);
 
-    // Standard MVP transform
-    gl_Position = projection * view * worldPos;
+  gl_Position = projection * view * worldPos;
 }

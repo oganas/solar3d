@@ -54,7 +54,7 @@ private:
 /*
  * Namespace containing mesh primitives such as cube, sphere, and torus.
  *
- * !!! These functions were generated using AI. !!!
+ * !!! These functions were generated using AI. This was used as generated. !!!
  */
 namespace MeshPrimitives {
 /*

@@ -22,13 +22,13 @@ struct Material {
   // Shininess of the material.
   float shininess;
 
-	// Diffuse texture of the material.
+  // Diffuse texture of the material.
   Texture *diffuseTexture;
 
-	// Normal texture of the material.
+  // Normal texture of the material.
   Texture *normalTexture = nullptr;
 
-	// Has normal texture?
+  // Has normal texture?
   bool hasNormal = false;
 
   /*
@@ -72,7 +72,8 @@ struct Material {
 /*
  * Namespace containing material presets.
  *
- * !!! These presets were generated using AI. !!!
+ * !!! These presets were generated using AI. This was mostly used as generated, I
+ * changed some of values and the names. !!!
  */
 namespace MaterialPresets {
 const Material MATERIAL_GOLD = {glm::vec3(0.24725f, 0.1995f, 0.0745f),
