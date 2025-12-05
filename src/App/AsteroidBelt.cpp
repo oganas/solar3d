@@ -12,8 +12,7 @@
 namespace AsteroidBelt {
 
 std::vector<Model> beltModels;
-// const int ASTEROID_COUNT = 600;
-const int ASTEROID_COUNT = 200;
+const int ASTEROID_COUNT = 600;
 static float beltTime = 0.0f;
 
 // Define the orbital zone radii (using the values from your last main.cpp)
