@@ -31,8 +31,10 @@ public:
    * Creates a new light instance.
    *
    * Parameters:
-   *	pos: Position of the light in world space.
-   *	col: Colour of the light.
+   *	position: Position of the light in world space.
+   *	ambient: Ambient colour of the light.
+   *	diffuse: Diffuse colour of the light.
+   *	specular: Specular colour of the light.
    */
   Light(const glm::vec3 &position, const glm::vec3 ambient,
         const glm::vec3 diffuse, const glm::vec3 specular)

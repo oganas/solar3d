@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(GPU_Engine_Project C CXX)
 
-# --- 1. CONFIGURATION ---
+# configuration
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -20,7 +20,7 @@ else()
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${LINUX_BUILD_DIR})
 endif()
 
-# --- 2. SOURCE FILES ---
+# source files
 file(GLOB_RECURSE ALL_CPP_SOURCES
     "src/*.cpp"
     "src/App/*.cpp"
@@ -34,11 +34,11 @@ file(GLOB GLAD_SOURCES "${EXTERNAL_GLAD_DIR}/*.c")
 
 list(APPEND ALL_SOURCES ${ALL_CPP_SOURCES} ${GLAD_SOURCES})
 
-# --- 3. GLAD LIB ---
+# glad lib
 add_library(glad_lib STATIC ${GLAD_SOURCES})
 target_include_directories(glad_lib PUBLIC external/glad)
 
-# --- 4. EXECUTABLE ---
+# executable
 add_executable(${EXECUTABLE_NAME} ${ALL_SOURCES})
 target_include_directories(${EXECUTABLE_NAME} PUBLIC
     include
@@ -49,7 +49,7 @@ target_include_directories(${EXECUTABLE_NAME} PUBLIC
 		external/GLFW/include
 )
 
-# --- 5. LINKING ---
+# linking
 if(WIN32)
     target_link_libraries(${EXECUTABLE_NAME}
         opengl32
@@ -68,7 +68,7 @@ if(WIN32)
         glad_lib
     )
 
-    # Copy all required DLLs to runtime folder
+    # copy all required dlls to runtime folder
     add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_SOURCE_DIR}/lib/win
@@ -85,14 +85,14 @@ else()
     )
 endif()
 
-# --- 6. RUN TARGET ---
+# run target
 add_custom_target(run
     COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR}
             ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${EXECUTABLE_NAME}
     DEPENDS ${EXECUTABLE_NAME}
 )
 
-# --- 7. DISTRIBUTION TARGETS ---
+# distribution targets
 add_custom_target(dist-linux
     COMMAND ${CMAKE_COMMAND} -E make_directory ${DIST_DIR}/linux
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${EXECUTABLE_NAME} ${DIST_DIR}/linux/

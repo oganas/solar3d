@@ -5,7 +5,6 @@
 #include "Render/Texture.h"
 #include "glad.h"
 
-#include <iostream>
 #include <string>
 
 Texture::Texture() {}

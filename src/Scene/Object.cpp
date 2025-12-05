@@ -18,9 +18,7 @@ Object::Object(std::string name, Mesh mesh, Material material)
 void Object::draw() const { mesh.draw(); }
 
 /*
- * Since an object's components are public, these exist solely as a gateway for
- * the model to set the position, rotation, and scale of it's objects. But in
- * reality they dont need to exist.
+ * Objects are public so these don't need to exist but makes it easier.
  */
 
 void Object::setPosition(const glm::vec3 &position) {

@@ -22,9 +22,13 @@ struct Material {
   // Shininess of the material.
   float shininess;
 
+	// Diffuse texture of the material.
   Texture *diffuseTexture;
 
+	// Normal texture of the material.
   Texture *normalTexture = nullptr;
+
+	// Has normal texture?
   bool hasNormal = false;
 
   /*

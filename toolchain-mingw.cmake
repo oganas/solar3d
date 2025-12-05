@@ -1,6 +1,4 @@
-
-# --- 8. TOOLCHAIN (FOR CROSS-COMPILING TO WINDOWS) ---
-# Save this as toolchain-mingw.cmake and pass with -DCMAKE_TOOLCHAIN_FILE
+# cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain-mingw.cmake
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR x86_64)
 set(CMAKE_C_COMPILER x86_64-w64-mingw32-gcc)

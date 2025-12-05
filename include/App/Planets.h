@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Scene/Light.h"
 #include "Render/Mesh.h"
+#include "Render/Texture.h"
+#include "Scene/Light.h"
 #include "Scene/Model.h"
 #include "Scene/Object.h"
-#include "Render/Texture.h"
 #include <glm/glm.hpp>
 
 using namespace glm;
 
+// THese objects are declared in Main.cpp
 extern Object sun;
 extern Object moon;
 extern Object mercury;
@@ -39,9 +40,23 @@ extern Texture saturnRingTex;
 extern Model planitia;
 
 namespace SolarSystem {
+/*
+ * Initialises all the planets with all their properties like textures and
+ * positions.
+ */
 void setupPlanets();
+
+/*
+ * Updates the axial rotation and orbital motion of all planets.
+ *
+ * Parameters:
+ *   dt: delta time
+ */
 void handleSolarSystemMotion(float dt);
 
+/*
+ * Holding all the data for a planet in context of orbitig the sun.
+ */
 struct PlanetData {
   Object &object;
   float orbitalSpeed;

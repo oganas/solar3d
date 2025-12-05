@@ -46,15 +46,7 @@ void Model::appendModel(const std::string &path) {
     return;
   }
 
-  // 4. Use your existing recursive processing function on the new scene's root
-  // node.
-  //    Crucially, your processNode function *appends* to the 'objects' vector,
-  //    so the new meshes will be added to the rocket's existing list of
-  //    objects.
   processNode(scene->mRootNode, scene);
-
-  // After this function returns, the landing gear's objects are now part of the
-  // rocket model.
 }
 
 void Model::processNode(aiNode *node, const aiScene *scene) {
@@ -75,7 +67,7 @@ Object Model::processMesh(aiMesh *mesh, const aiScene *scene) {
   /*
    * Iterate through the mesh's vertices and indices and store them in
    * the vertices and indices vectors.
-   * TODO: fill tangent aaand bitangent vectors for normal mapping.
+   * 26/11 TODO: fill tangent aaand bitangent vectors for normal mapping.
    */
   for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
     Vertex vertex;

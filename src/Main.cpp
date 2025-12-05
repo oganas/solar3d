@@ -117,6 +117,7 @@ void start() {
   window.setRenderCallback(render);
   window.setBackgroundColour(Colour::BLACK);
 
+	// Camera settings
   camera.sensitivity = 75.0f;
   camera.position = vec3(-10300.2f, 6316.2f, 6295.68f);
 	camera.yaw = -32.9743f;
@@ -124,14 +125,17 @@ void start() {
   camera.movementSpeed = 40.0f;
   camera.farClip = 100000000000000000000.0f;
 
+	// Light settings, starts at sun's position
   light.position = sun.transform.position;
 
+	// Big asteroid next to the sun
   asteroid.setPosition(vec3(vec3(-1000.0f, 400.0f, -1000.0f)));
   asteroid.setScale(vec3(100.0f));
   asteroid.objects[0].material.diffuseTexture = &asteroidTex;
   asteroid.objects[0].material.normalTexture = &asteroidTexNormal;
   asteroid.objects[0].material.hasNormal = true;
 
+	// Setup the solar system and the asteroid belt
   SolarSystem::setupPlanets();
   AsteroidBelt::setupBelt();
 
@@ -151,6 +155,7 @@ void start() {
   // rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
   // rocket2.objects[0].material.hasNormal = true;
 
+	// Star Trek utopia planitia orbiting mars (implemented in Planets.cpp)
   planitia.setPosition(mars.transform.position);
   planitia.setRotation(vec3(0.0f, 0.0f, -0.5f));
   planitia.setScale(vec3(5.0f));
@@ -180,6 +185,7 @@ void start() {
 void update(float dt) {
   SolarSystem::handleSolarSystemMotion(dt);
 
+	// Keyboard controls
   if (input.isKeyDown(Key::W)) {
     camera.move(Direction::FORWARD, dt);
   }
@@ -229,11 +235,11 @@ void update(float dt) {
 		std::cout << "Camera yaw and pitch: (" << camera.yaw << ", " << camera.pitch << ")" << std::endl;
   }
 
+	// Update objects / models motion
   // rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
   spaceship.updatePosition(vec3(-5.0f, 0.0f, 0.0f) * dt);
   asteroid.updateRotation(vec3(0.05f, 0.05f, 0.05f) * dt);
   planitia.updateRotation(vec3(0.0f, 0.07f, 0.0f) * dt);
-
   AsteroidBelt::updateMotion(dt);
 }
 
@@ -243,6 +249,7 @@ int main() {
   // last frame time
   auto last = std::chrono::high_resolution_clock::now();
 
+	// As long as the window is open
   while (window.update()) {
     input.update();
 
@@ -250,6 +257,7 @@ int main() {
     float dt = std::chrono::duration<float>(now - last).count();
     last = now;
 
+		// Plug in the delta time
     update(dt);
 
     input.endFrame();

@@ -64,8 +64,28 @@ public:
    */
   void draw() const;
 
+	/*
+   * Sets the position of the object.
+   *
+   * Parameters:
+   *	position: new poosition of the object.
+   */
 	void setPosition(const glm::vec3 &position);
+
+	/*
+   * Sets the rotation of the object.
+   *
+   * Parameters:
+   *	rotation: new rotation of the object.
+   */
 	void setRotation(const glm::vec3 &rotation);
+
+	/*
+   * Sets the scale of the object.
+   *
+   * Parameters:
+   *	scale: new scale of the object.
+   */
 	void setScale(const glm::vec3 &scale);
 
 private:

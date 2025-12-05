@@ -29,11 +29,7 @@ class Model {
 public:
   void appendModel(const std::string &path);
 
-  /*
-   * Private because there is no reason to access it from the outside,
-   * especially because they're not "main" objects, bur rather "sub-objects"
-   * that make up a model. This is very inefficient though, I dont like it.
-   */
+	// Vector of sub objects that make up the model.
   std::vector<Object> objects;
 
   /*

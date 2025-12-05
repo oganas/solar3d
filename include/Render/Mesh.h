@@ -119,9 +119,6 @@ inline Mesh sphere(float radius = 1.0f, int stacks = 32, int slices = 64) {
 
   const float PI = 3.14159265359f;
 
-  // ----------------------------------
-  // Generate positions, normals, UVs
-  // ----------------------------------
   for (int i = 0; i <= stacks; ++i) {
     float stackAngle = PI / 2 - (float)i * (PI / stacks);
     float xy = radius * cosf(stackAngle);
@@ -144,9 +141,6 @@ inline Mesh sphere(float radius = 1.0f, int stacks = 32, int slices = 64) {
     }
   }
 
-  // ----------------------------------
-  // Generate indices
-  // ----------------------------------
   for (int i = 0; i < stacks; ++i) {
     int k1 = i * (slices + 1);
     int k2 = k1 + slices + 1;
@@ -165,9 +159,6 @@ inline Mesh sphere(float radius = 1.0f, int stacks = 32, int slices = 64) {
     }
   }
 
-  // ----------------------------------
-  // Tangent + bitangent generation
-  // ----------------------------------
   for (size_t i = 0; i < indices.size(); i += 3) {
     Vertex &v0 = vertices[indices[i]];
     Vertex &v1 = vertices[indices[i + 1]];
@@ -199,9 +190,6 @@ inline Mesh sphere(float radius = 1.0f, int stacks = 32, int slices = 64) {
     v2.bitangent += bitangent;
   }
 
-  // ----------------------------------
-  // Orthonormalize TBN
-  // ----------------------------------
   for (auto &v : vertices) {
     glm::vec3 T =
         glm::normalize(v.tangent - v.normal * glm::dot(v.normal, v.tangent));
