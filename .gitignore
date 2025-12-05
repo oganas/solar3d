@@ -1,19 +1,20 @@
 /build/
+/build-win/
 # /dist/
 todo.md
 
 # app
 *.o
 
-assets/models/*.obj
-assets/models/*.mtl
-assets/models/*.dae
-assets/models/*.fbx
-assets/models/*.blend
-assets/models/*.3ds
-assets/models/*.glb
-assets/models/*.gltf
-assets/models/*.bin
+# assets/models/*.obj
+# assets/models/*.mtl
+# assets/models/*.dae
+# assets/models/*.fbx
+# assets/models/*.blend
+# assets/models/*.3ds
+# assets/models/*.glb
+# assets/models/*.gltf
+# assets/models/*.bin
 
 # *.exe
 # *.out

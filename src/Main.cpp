@@ -1,18 +1,21 @@
-#include "Input.h"
-#include "Logger.h"
-#include "Material.h"
-#include "Mesh.h"
-#include "Model.h"
-#include "Object.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Window.h"
+#include "App/AsteroidBelt.h"
+#include "App/Planets.h"
+#include "Component/Material.h"
+#include "Core/Input/Input.h"
+#include "Core/Window.h"
+#include "Render/Mesh.h"
+#include "Render/Renderer.h"
+#include "Render/Shader.h"
+#include "Render/Texture.h"
+#include "Scene/Model.h"
+#include "Scene/Object.h"
 
 #include <chrono>
+#include <glm/gtc/constants.hpp>
+#include <vector>
 
 // Core
-Window window(1280, 720, "solar system");
+Window window(1280, 720, "Solar System Simulation");
 Input input(window);
 Camera camera;
 Renderer renderer(window, camera);
@@ -24,112 +27,138 @@ Shader skyboxShader("skyboxShader", "shaders/skybox.vert",
 
 // Meshes
 Mesh cubeMesh = MeshPrimitives::cube();
-Mesh sphereMesh = MeshPrimitives::sphere();
+Mesh planetMesh = MeshPrimitives::sphere();
+Mesh saturnRingMesh = MeshPrimitives::torus(1.4, 0.4);
 
-// Objects
-Object cube("cube", cubeMesh);
-Object sphere("sphere", sphereMesh);
-Object sun("sun", sphereMesh);
+// Internally generated models
+Object sun("sun", planetMesh);
+Object moon("moon", planetMesh);
+Object mercury("mercury", planetMesh);
+Object venus("venus", planetMesh);
+Object earth("earth", planetMesh);
+Object mars("mars", planetMesh);
+Object jupiter("jupiter", planetMesh);
+Object saturn("saturn", planetMesh);
+Object uranus("uranus", planetMesh);
+Object neptune("neptune", planetMesh);
+Object saturnRing("saturnRing", saturnRingMesh);
 
 // Lights
 Light light(glm::vec3(0.7f), glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f));
 
 // Textures
-Texture crateTex("crate", "../crate.png");
 Texture sunTex("sun", "planets/sun_diffuse.jpg");
-
+Texture moonTex("moon", "planets/moon_diffuse.jpg");
+Texture mercuryTex("mercury", "planets/mercury_diffuse.jpg");
+Texture venusTex("venus", "planets/venus_diffuse.jpg");
 Texture earthTex("earth", "planets/earth_diffuse.jpg");
 Texture earthTexNormal("earthNormal", "planets/earth_normal.jpg");
+Texture marsTex("mars", "planets/mars_diffuse.jpg");
+Texture jupiterTex("jupiter", "planets/jupiter_diffuse.jpg");
+Texture saturnTex("saturn", "planets/saturn_diffuse.jpg");
+Texture uranusTex("uranus", "planets/uranus_diffuse.jpg");
+Texture neptuneTex("neptune", "planets/neptune_diffuse.jpg");
+Texture saturnRingTex("saturnRing", "planets/saturn_ring_diffuse.jpg");
 
-Texture rocket2Tex("rocket2", "RedShip_Color.png");
-Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
-Texture rocket2LandingGearTex("rocket2LandingGear", "LandingGear1_Color.png");
-Texture rocket2LandingGearTexNormal("rocket2LandingGearNormal",
-                                     "LandingGear1_Normal_OpenGL.png");
+// Texture rocket2Tex("rocket2", "RedShip_Color.png");
+// Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
+
+Texture asteroidTex("asteroid", "Asteroid1a_Color_2K.png");
+Texture asteroidTexNormal("asteroidNormal", "Asteroid1a_Normal_OpenGL_2K.png");
+Texture asteroid2Tex("asteroid2", "rock_Base_Color.png");
+Texture asteroid2TexNormal("asteroid2Normal", "rock_Normal_DirectX.png");
 
 // Skybox
 Skybox space;
 
-// Models
-Model spaceship("assets/models/use/spaceship.obj");
-Model rocket("assets/models/use/rocket.obj");
-Model tieFighter("assets/models/use/scene.gltf");
-
-Model rocket2("assets/models/use/Body.fbx");
+// Externally loaded models
+Model spaceship("assets/models/spaceship.obj");
+// Model rocket("assets/models/rocket.obj");
+// Model tieFighter("assets/models/tie_fighter.gltf");
+// Model rocket2("assets/models/rocket2.fbx");
+Model asteroid("assets/models/asteroid.fbx");
+Model asteroid2("assets/models/small_asteroid.obj");
+Model planitia("assets/models/planitia.obj");
 
 /*
  * Render logic.
- * This is where rendering objects is handled.
  */
 void render(Window *window) {
+  // Skybox
   renderer.renderSkybox(skyboxShader, space);
-  renderer.renderObject(shader, sphere, light, false);
+
+  // Internally generated models
   renderer.renderObject(shader, sun, light, true);
-  renderer.renderObject(shader, cube, light, false);
+  renderer.renderObject(shader, moon, light, false);
+  renderer.renderObject(shader, mercury, light, false);
+  renderer.renderObject(shader, venus, light, false);
+  renderer.renderObject(shader, earth, light, false);
+  renderer.renderObject(shader, mars, light, false);
+  renderer.renderObject(shader, jupiter, light, false);
+  renderer.renderObject(shader, saturn, light, false);
+  renderer.renderObject(shader, saturnRing, light, false);
+  renderer.renderObject(shader, uranus, light, false);
+  renderer.renderObject(shader, neptune, light, false);
+
+  // Externally loaded models
   renderer.renderModel(shader, spaceship, light, false);
-  renderer.renderModel(shader, rocket, light, false);
-  renderer.renderModel(shader, tieFighter, light, false);
-  renderer.renderModel(shader, rocket2, light, false);
+  // renderer.renderModel(shader, rocket, light, false);
+  // renderer.renderModel(shader, tieFighter, light, false);
+  // renderer.renderModel(shader, rocket2, light, false);
+  renderer.renderModel(shader, asteroid, light, false);
+  AsteroidBelt::renderBelt(shader, renderer);
+  renderer.renderModel(shader, planitia, light, false);
 }
 
 /*
- * Initialisation logic.
- * This is where the window is set up and the camera is initialised.
- * + anything else that needs to be initialised.
+ * Setup / Initialisation logic.
  */
 void start() {
   window.setRenderCallback(render);
   window.setBackgroundColour(Colour::BLACK);
 
-  camera.sensitivity = 120.0f;
-  camera.position = vec3(0.0f, 0.0f, 30.0f);
+	// Camera settings
+  camera.sensitivity = 75.0f;
+  camera.position = vec3(-10300.2f, 6316.2f, 6295.68f);
+	camera.yaw = -32.9743f;
+	camera.pitch = -31.0065f;
   camera.movementSpeed = 20.0f;
+  camera.farClip = 100000000000000000000.0f;
 
-  cube.transform.position = vec3(-10.0f, 0.0f, 0.0f);
-  cube.material.diffuseTexture = &crateTex;
-
-  sphere.transform.position = vec3(10.0f, 0.0f, 0.0f);
-  sphere.material.diffuseTexture = &earthTex;
-  sphere.material.normalTexture = &earthTexNormal;
-  sphere.material.hasNormal = true;
-  sphere.material.specular = glm::vec3(0.01f);
-  sphere.material.shininess = 1.0f;
-
-  sun.transform.position = vec3(0.0f, 10.0f, 10.0f);
-  sun.material.diffuseTexture = &sunTex;
-
+	// Light settings, starts at sun's position
   light.position = sun.transform.position;
 
-  spaceship.setPosition(vec3(0.0f, 0.0f, 0.0f));
+	// Big asteroid next to the sun
+  asteroid.setPosition(vec3(vec3(-1000.0f, 400.0f, -1000.0f)));
+  asteroid.setScale(vec3(100.0f));
+  asteroid.objects[0].material.diffuseTexture = &asteroidTex;
+  asteroid.objects[0].material.normalTexture = &asteroidTexNormal;
+  asteroid.objects[0].material.hasNormal = true;
 
-  rocket.setPosition(vec3(0.0f, 0.0f, 10.0f));
-  rocket.setScale(vec3(0.01f));
+	// Setup the solar system and the asteroid belt
+  SolarSystem::setupPlanets();
+  AsteroidBelt::setupBelt();
 
-  tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
+  spaceship.setPosition(vec3(300.0f, 100.0f, 500.0f));
 
-  rocket2.appendModel("assets/models/use/LandingGear1.fbx");
-  rocket2.appendModel("assets/models/use/LandingGear1.fbx");
+  // rocket.setPosition(vec3(0.0f, 0.0f, 300.0f));
+  // rocket.updateRotation(vec3(0.0f, 1.0f, 1.0f));
+  // rocket.setScale(vec3(0.01f));
 
-  rocket2.setPosition(vec3(0.0f, 0.0f, -30.0f));
-  rocket2.setScale(vec3(0.1f));
+  // tieFighter.setPosition(vec3(0.0f, 0.0f, -10.0f));
 
-	rocket2.objects[0].transform.rotation += vec3(0.0f, 90.0f, 0.0f);
-  rocket2.objects[0].material.diffuseTexture = &rocket2Tex;
-  rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
-  rocket2.objects[0].material.hasNormal = true;
+  // rocket2.setPosition(vec3(-10.0f, 0.0f, 300.0f));
+  // rocket2.setScale(vec3(0.1f));
 
-	rocket2.objects[1].transform.position += vec3(0.0f, -1.1f, 0.0f);
-  rocket2.objects[1].material.diffuseTexture = &rocket2LandingGearTex;
-  rocket2.objects[1].material.normalTexture = &rocket2LandingGearTexNormal;
-  rocket2.objects[1].material.hasNormal = true;
+  // rocket2.objects[0].transform.rotation += vec3(0.0f, 1.6f, 0.0f);
+  // rocket2.objects[0].material.diffuseTexture = &rocket2Tex;
+  // rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
+  // rocket2.objects[0].material.hasNormal = true;
 
-	// other side
-	rocket2.objects[2].transform.position += vec3(0.0f, -1.1f, 0.0f);
-	rocket2.objects[2].transform.scale *= vec3(1.0f, 1.0f, -1.0f);
-  rocket2.objects[2].material.diffuseTexture = &rocket2LandingGearTex;
-  rocket2.objects[2].material.normalTexture = &rocket2LandingGearTexNormal;
-  rocket2.objects[2].material.hasNormal = true;
-
+	// Star Trek utopia planitia orbiting mars (implemented in Planets.cpp)
+  planitia.setPosition(mars.transform.position);
+  planitia.setRotation(vec3(0.0f, 0.0f, -0.5f));
+  planitia.setScale(vec3(5.0f));
 
   /*
    * Used the following to generate the faces of the cubemap:
@@ -147,14 +176,22 @@ void start() {
 }
 
 /*
- * Program logic.
- * This is where the main logic is handled.
- * + anything else that needs to be updated every frame.
+ * Executed every frame.
+ * Frame independent logic.
+ *
+ * Parameters:
+ *    dt: delta time
  */
 void update(float dt) {
+  SolarSystem::handleSolarSystemMotion(dt);
+
+	// Keyboard controls
   if (input.isKeyDown(Key::W)) {
     camera.move(Direction::FORWARD, dt);
   }
+	if (input.isKeyDown(Key::Q)) {
+		camera.move(Direction::FORWARD, 2.0f);
+	}
   if (input.isKeyDown(Key::S)) {
     camera.move(Direction::BACKWARD, dt);
   }
@@ -182,8 +219,31 @@ void update(float dt) {
   if (input.isKeyDown(Key::ARROW_KEY_DOWN)) {
     camera.look(0.0f, -1.0f, dt);
   }
+  if (input.isKeyPressed(Key::ESC)) {
+    window.close();
+  }
 
-  cube.transform.rotation += vec3(0.1f, 0.1f, 0.1f) * dt;
+  // For debugging
+  if (input.isKeyPressed(Key::L)) {
+    // camera.position = rocket2.getPosition();
+  }
+  if (input.isKeyPressed(Key::K)) {
+    // camera.position = tieFighter.getPosition();
+  }
+  if (input.isKeyDown(Key::J)) {
+    camera.position = spaceship.getPosition();
+  }
+  if (input.isKeyDown(Key::F)) {
+		std::cout << "Camera position: (" << camera.position.x << ", " << camera.position.y << ", " << camera.position.z << ")" << std::endl;
+		std::cout << "Camera yaw and pitch: (" << camera.yaw << ", " << camera.pitch << ")" << std::endl;
+  }
+
+	// Update objects / models motion
+  // rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
+  spaceship.updatePosition(vec3(-5.0f, 0.0f, 0.0f) * dt);
+  asteroid.updateRotation(vec3(0.05f, 0.05f, 0.05f) * dt);
+  planitia.updateRotation(vec3(0.0f, 0.07f, 0.0f) * dt);
+  AsteroidBelt::updateMotion(dt);
 }
 
 int main() {
@@ -192,6 +252,7 @@ int main() {
   // last frame time
   auto last = std::chrono::high_resolution_clock::now();
 
+	// As long as the window is open
   while (window.update()) {
     input.update();
 
@@ -199,6 +260,7 @@ int main() {
     float dt = std::chrono::duration<float>(now - last).count();
     last = now;
 
+		// Plug in the delta time
     update(dt);
 
     input.endFrame();

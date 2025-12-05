@@ -7,7 +7,7 @@
 * [Install / Build](#install--build)
     * [Linux](#linux)
     * [Windows (Cross-Compilation)](#windows-cross-compilation)
-* [Sources Used](#sources-used)
+* [Sources](#sources)
 
 ---
 
@@ -23,16 +23,7 @@
 * **Diffuse Texture mapping** & **Normal texture mapping**.
 * Easy to use abstractions on top of **OpenGL**.
 
-
-## Run:
-
-Distribution pakacges with pre-compiled executables / binaries are available at: 
-
-Linux: `dist/linux/app`
-
-Windows: `dist/win/app.exe`
-
-## Install / Build:
+## Build:
 
 ### Linux:
 
@@ -40,56 +31,73 @@ The latest pre-compiled executable is available in `dist/linux`
 
 Build:
 ```
-$ make linux
-```
-
-Run (Directly):
-```
-$ ./build/linux/app
-```
-
-Run (Using default target):
-```
-$ make run
+$ mkdir build && cd build
+$ cmake .. 
+$ cmake --build .              # Compile
 ```
 
 Create Distribution Package:
 ```
-$ make dist-linux
+$ cmake -- build . --target dist-linux
 ```
 
 ### Windows (Cross-Compilation):
 
-You have to be on Linux in order to cros-compile this to Windows.   
-
-The latest pre-compiled executable is available in `dist/win` along with the required dlls.
+The latest pre-compiled executable is available in `dist/win` along with the required libraries.
 
 Build:
 ```
-$ make win
+$ mkdir build-win && cd build-win
+$ cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain-mingw.cmake
+$ cmake --build .              # Compile
 ```
 
 Create Distribution Package:
 ```
-$ make dist-win
+$ cmake -- build . --target dist-win
 ```
 
-### Sources used:   
+## Run:
+
+### Linux:
+
+Directly: Through `build/linux/app` or `dist/linux/app`    
+
+Cmake:
+```
+$ cd build
+$ cmake --build . --target run
+```
+
+###  Windows:
+Through `build-win/app.exe` or `dist/win/app.exe`
+
+### Sources:   
+Planet textures obtained from:   
+https://www.solarsystemscope.com/textures/
+
+External models and their textures obtained from:        
+https://sketchfab.com/features/free-3d-models   
+https://free3d.com/   
+https://www.cgtrader.com/free-3d-models   
+
+Sources used:         
 https://learnopengl.com/Model-Loading/Mesh   
 https://learnopengl.com/Lighting/Basic-Lighting   
 https://learnopengl.com/Lighting/Materials   
-https://learnopengl.com/Model-Loading/Assimp   
-https://www.youtube.com/watch?v=sP_kiODC25Q   
-https://www.mbsoftworks.sk/tutorials/opengl3/20-assimp-model-loading/   
-https://www.ogldev.org/www/tutorial22/tutorial22.html   
-https://www.ogldev.org/www/tutorial25/tutorial25.html   
-https://jaxry.github.io/panorama-to-cubemap/   
-https://antongerdelan.net/opengl/vertexbuffers.html   
-https://antongerdelan.net/opengl/shaders.html   
-https://www.glfw.org/documentation.html   
-https://www.glfw.org/docs/latest/window_guide.html   
-https://learnopengl.com/Advanced-Lighting/Normal-Mapping   
-https://www.youtube.com/watch?v=TnewxQxtoKs   
-https://www.youtube.com/watch?v=LRbgii6mVU4   
-https://stackoverflow.com/questions/29042849/implementing-normal-mapping-using-opengl-glsl   
-https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/   
+https://learnopengl.com/Model-Loading/Assimp    
+https://www.youtube.com/watch?v=sP_kiODC25Q    
+https://www.mbsoftworks.sk/tutorials/opengl3/20-assimp-model-loading/    
+https://www.ogldev.org/www/tutorial22/tutorial22.html    
+https://www.ogldev.org/www/tutorial25/tutorial25.html    
+https://learnopengl.com/Advanced-OpenGL/Cubemaps    
+https://jaxry.github.io/panorama-to-cubemap/    
+https://antongerdelan.net/opengl/vertexbuffers.html     
+https://antongerdelan.net/opengl/shaders.html    
+https://www.glfw.org/documentation.html         
+https://www.glfw.org/docs/latest/window_guide.html        
+https://learnopengl.com/Advanced-Lighting/Normal-Mapping         
+https://www.youtube.com/watch?v=TnewxQxtoKs         
+https://www.youtube.com/watch?v=LRbgii6mVU4            
+https://stackoverflow.com/questions/29042849/implementing-normal-mapping-using-opengl-glsl         
+https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/             
