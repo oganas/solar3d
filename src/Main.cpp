@@ -1,14 +1,14 @@
 #include "App/AsteroidBelt.h"
 #include "App/Planets.h"
-#include "Input.h"
-#include "Material.h"
-#include "Mesh.h"
-#include "Model.h"
-#include "Object.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Window.h"
+#include "Component/Material.h"
+#include "Core/Input/Input.h"
+#include "Core/Window.h"
+#include "Render/Mesh.h"
+#include "Render/Renderer.h"
+#include "Render/Shader.h"
+#include "Render/Texture.h"
+#include "Scene/Model.h"
+#include "Scene/Object.h"
 
 #include <chrono>
 #include <glm/gtc/constants.hpp>
@@ -58,13 +58,11 @@ Texture jupiterTex("jupiter", "planets/jupiter_diffuse.jpg");
 Texture saturnTex("saturn", "planets/saturn_diffuse.jpg");
 Texture uranusTex("uranus", "planets/uranus_diffuse.jpg");
 Texture neptuneTex("neptune", "planets/neptune_diffuse.jpg");
-Texture saturnRingTex("saturnRing", "planets/saturn_ring_diffuse2.jpg");
+Texture saturnRingTex("saturnRing", "planets/saturn_ring_diffuse.jpg");
 Texture rocket2Tex("rocket2", "RedShip_Color.png");
 Texture rocket2TexNormal("rocket2Normal", "RedShip_Normal_OpenGL.png");
 Texture asteroidTex("asteroid", "Asteroid1a_Color_2K.png");
 Texture asteroidTexNormal("asteroidNormal", "Asteroid1a_Normal_OpenGL_2K.png");
-
-// Textures used by AsteroidBelt (Declared as extern in AsteroidBelt.h)
 Texture asteroid2Tex("asteroid2", "rock_Base_Color.png");
 Texture asteroid2TexNormal("asteroid2Normal", "rock_Normal_DirectX.png");
 
@@ -72,16 +70,13 @@ Texture asteroid2TexNormal("asteroid2Normal", "rock_Normal_DirectX.png");
 Skybox space;
 
 // Externally loaded models
-Model spaceship("assets/models/use/spaceship.obj");
-Model rocket("assets/models/use/rocket.obj");
-Model tieFighter("assets/models/use/scene.gltf");
-Model rocket2("assets/models/use/Body.fbx");
-Model asteroid("assets/models/use/Asteroid_1a.fbx");
-
-// Model used by AsteroidBelt (Declared as extern in AsteroidBelt.h)
-Model asteroid2("assets/models/use/asteroid2.obj");
-
-Model planitia("assets/models/use/up_base.obj");
+Model spaceship("assets/models/spaceship.obj");
+Model rocket("assets/models/rocket.obj");
+Model tieFighter("assets/models/tie_fighter.gltf");
+Model rocket2("assets/models/rocket2.fbx");
+Model asteroid("assets/models/asteroid.fbx");
+Model asteroid2("assets/models/small_asteroid.obj");
+Model planitia("assets/models/planitia.obj");
 
 /*
  * Render logic.
@@ -110,7 +105,7 @@ void render(Window *window) {
   renderer.renderModel(shader, rocket2, light, false);
   renderer.renderModel(shader, asteroid, light, false);
   AsteroidBelt::renderBelt(shader, renderer);
-	renderer.renderModel(shader, planitia, light, false);
+  renderer.renderModel(shader, planitia, light, false);
 }
 
 /*
@@ -127,7 +122,6 @@ void start() {
 
   light.position = sun.transform.position;
 
-  // ORIGINAL ASTEROID SETUP
   asteroid.setPosition(vec3(camera.position));
   asteroid.setScale(vec3(100.0f));
   asteroid.objects[0].material.diffuseTexture = &asteroidTex;
@@ -153,9 +147,9 @@ void start() {
   rocket2.objects[0].material.normalTexture = &rocket2TexNormal;
   rocket2.objects[0].material.hasNormal = true;
 
-	planitia.setPosition(mars.transform.position);
-	planitia.setRotation(vec3(0.0f, 0.0f, -0.5f));
-	planitia.setScale(vec3(10.0f));
+  planitia.setPosition(mars.transform.position);
+  planitia.setRotation(vec3(0.0f, 0.0f, -0.5f));
+  planitia.setScale(vec3(10.0f));
 
   /*
    * Used the following to generate the faces of the cubemap:
@@ -212,7 +206,11 @@ void update(float dt) {
   if (input.isKeyDown(Key::ARROW_KEY_DOWN)) {
     camera.look(0.0f, -1.0f, dt);
   }
+  if (input.isKeyPressed(Key::ESC)) {
+    window.close();
+  }
 
+  // For debugging
   if (input.isKeyPressed(Key::L)) {
     camera.position = rocket2.getPosition();
   }
@@ -229,7 +227,7 @@ void update(float dt) {
   rocket.updateRotation(vec3(0.0f, 0.0f, 0.8f) * dt);
   spaceship.updatePosition(vec3(-5.0f, 0.0f, 0.0f) * dt);
   asteroid.updateRotation(vec3(0.06f, 0.06f, 0.06f) * dt);
-	planitia.updateRotation(vec3(0.0f, 0.07f, 0.0f) * dt);
+  planitia.updateRotation(vec3(0.0f, 0.07f, 0.0f) * dt);
 
   AsteroidBelt::updateMotion(dt);
 }

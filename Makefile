@@ -10,6 +10,7 @@ DIST_DIR  = dist
 
 # --- SOURCE LISTS ---
 SRC_CPP  := $(wildcard $(SRC_DIR)/*.cpp)
+SRC_APP_CPP := $(wildcard $(SRC_DIR)/App/*.cpp)
 SRC_C    := $(wildcard $(SRC_DIR)/*.c)
 IMGUI_CPP := $(wildcard $(EXTERNAL_IMGUI_DIR)/*.cpp)
 GLAD_C    := $(wildcard $(EXTERNAL_GLAD_DIR)/*.c)
@@ -19,6 +20,7 @@ LINUX_BUILD_DIR = $(BUILD_DIR)/linux
 
 LINUX_OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(LINUX_BUILD_DIR)/%.o,$(SRC_CPP))
 LINUX_OBJ += $(patsubst $(SRC_DIR)/%.c,$(LINUX_BUILD_DIR)/%.o,$(SRC_C))
+LINUX_OBJ += $(patsubst $(SRC_DIR)/App/%.cpp,$(LINUX_BUILD_DIR)/App/%.o,$(SRC_APP_CPP))
 LINUX_OBJ += $(patsubst $(EXTERNAL_IMGUI_DIR)/%.cpp,$(LINUX_BUILD_DIR)/external/imgui/%.o,$(IMGUI_CPP))
 LINUX_OBJ += $(patsubst $(EXTERNAL_GLAD_DIR)/%.c,$(LINUX_BUILD_DIR)/external/glad/%.o,$(GLAD_C))
 
@@ -58,6 +60,7 @@ WIN_BUILD_DIR = $(BUILD_DIR)/win
 
 WIN_OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(WIN_BUILD_DIR)/%.o,$(SRC_CPP))
 WIN_OBJ += $(patsubst $(SRC_DIR)/%.c,$(WIN_BUILD_DIR)/%.o,$(SRC_C))
+WIN_OBJ += $(patsubst $(SRC_DIR)/App/%.cpp,$(WIN_BUILD_DIR)/App/%.o,$(SRC_APP_CPP))
 WIN_OBJ += $(patsubst $(EXTERNAL_IMGUI_DIR)/%.cpp,$(WIN_BUILD_DIR)/external/imgui/%.o,$(IMGUI_CPP))
 WIN_OBJ += $(patsubst $(EXTERNAL_GLAD_DIR)/%.c,$(WIN_BUILD_DIR)/external/glad/%.o,$(GLAD_C))
 

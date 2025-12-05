@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Light.h"
-#include "Mesh.h"
-#include "Model.h"
-#include "Object.h"
-#include "Texture.h"
+#include "Scene/Light.h"
+#include "Render/Mesh.h"
+#include "Scene/Model.h"
+#include "Scene/Object.h"
+#include "Render/Texture.h"
 #include <glm/glm.hpp>
 
 using namespace glm;

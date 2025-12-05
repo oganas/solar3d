@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Light.h"
-#include "Model.h"
-#include "Renderer.h"
-#include "Texture.h"
+#include "Scene/Light.h"
+#include "Scene/Model.h"
+#include "Render/Renderer.h"
+#include "Render/Texture.h"
 #include <vector>
 
 // Forward declarations for external objects used by the belt.
